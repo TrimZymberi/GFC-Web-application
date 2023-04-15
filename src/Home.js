@@ -1,10 +1,9 @@
 import React from 'react';
-import Itemcard from "./Itemcard";
+import Itemcard from "./Components/Itemcard";
 import data from "./data";
 import {Container, Row, Tabs, Tab} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './tabStyle.css';
-
+import './styles/tabStyle.css';
 
 
 const Home = () => {
