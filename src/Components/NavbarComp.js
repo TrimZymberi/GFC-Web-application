@@ -10,6 +10,8 @@ import {
 import Home from './Home';
 import Contact from './Contact';
 import About from './About';
+import Login from './Login';
+import Signup from './Signup';
 
 export default class NavbarComp extends Component {
     render() {
@@ -23,13 +25,17 @@ export default class NavbarComp extends Component {
                         <Navbar.Collapse id="navbarScroll">
                             <Nav
                                
-                                className="mr-auto my-2 my-lg-0"
+                                className="ml-auto my-2 my-lg-2 gap-5 px-5 "
                                 style={{ maxHeight: '100px'}}
                                 navbarScroll
                             >
                                 <Nav.Link as={Link} to="/home">Home</Nav.Link>
                                 <Nav.Link as={Link} to="/about">About</Nav.Link>
-                                <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+                                <Nav.Link as={Link}  to="/contact">Contact</Nav.Link>
+
+                                <Nav.Link as={Link}  to="/login">Login</Nav.Link>
+                                <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+
 
                             </Nav>
 
@@ -46,6 +52,12 @@ export default class NavbarComp extends Component {
                         </Route>
                         <Route path="/">
                             <Home />
+                        </Route>
+                        <Route path="/login">
+                            <Login />
+                        </Route>
+                        <Route path="/signup">
+                            <Signup />
                         </Route>
                     </Switch>
                 </div>
