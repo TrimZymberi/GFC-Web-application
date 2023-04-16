@@ -1,15 +1,15 @@
 import React from 'react';
-import Itemcard from "./Components/Itemcard";
-import data from "./data";
+import Itemcard from "./Itemcard";
+import data from "../data";
 import {Container, Row, Tabs, Tab} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles/tabStyle.css';
+import '../styles/tabStyle.css';
 
 
 const Home = () => {
     return(
         <>
-         
+         <h1>Menu</h1>
     <Container className="py-4">
         <Row className="justify-content-center">
             <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1 p-0">

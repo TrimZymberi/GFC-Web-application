@@ -3,7 +3,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarComp from './Components/NavbarComp';
-import Home from "./Home";
+import Menu from "./Components/Menu";
 
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       
       <NavbarComp/>
-      <Home/>
+      <Menu/>
     </div>
   );
 }
