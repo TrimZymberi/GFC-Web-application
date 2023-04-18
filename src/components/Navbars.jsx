@@ -13,7 +13,7 @@ const Navbars = () => {
   ];
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar className='bg-danger' variant="dark" expand="lg">
       <Navbar.Brand href="#">GFC</Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
