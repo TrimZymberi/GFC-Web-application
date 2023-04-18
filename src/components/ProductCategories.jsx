@@ -8,71 +8,66 @@ import ProductData from '../data/ProductData'
 
 
 export default function ProductCategories() {
-  return (
-      
-    <div>
-                     <h1>Menu</h1>
-    <Container className="py-4">
-        <Row className="justify-content-center">
-            <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1 p-0" >
-                <Tab eventKey="tab-1" title="Burgers & wraps" tabClassName='aa'>
-                    <section className="py-4 container">
-                        <div className="row justify-content-center">
-                        {ProductData.Burgerswraps.map((item, index) =>{
-                            return(
-                            <ItemCard img={item.img} title={item.title}  desc={item.desc} price={item.price} key={index} />
-                            )
-                        })}                
-                        </div>
-                    </section>                        
+    return (
 
-                </Tab>
-                
-                <Tab eventKey="tab-2" title="Buckets & Pieces" >
-                    <section className="py-4 container">
-                        <div className="row justify-content-center">
-                        {ProductData.BucketsPieces.map((item, index) =>{
-                            return(
-                            <ItemCard img={item.img} title={item.title}  desc={item.desc} price={item.price} key={index} />
-                            )
-                        })}                
-                        </div>
-                    </section>                      
-                </Tab>
-                
-                <Tab eventKey="tab-3" title="Snacks & Sides">
-                <section className="py-4 container">
-                        <div className="row justify-content-center">
-                        {ProductData.SnacksSides.map((item, index) =>{
-                            return(
-                            <ItemCard img={item.img} title={item.title}  desc={item.desc} price={item.price} key={index} />
-                            )
-                        })}                
-                        </div>
-                    </section>
+        <div>
+            <h1>Menu</h1>
+            <Container className="py-4">
+                <Row className="justify-content-center">
+                    <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1 p-0" >
+                        <Tab eventKey="tab-1" title="Burgers & wraps" tabClassName='aa'>
+                            <section className="py-4 container">
+                                <div className="row justify-content-center">
+                                    {ProductData.Burgerswraps.map((item, index) => {
+                                        return (
+                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                        )
+                                    })}
+                                </div>
+                            </section>
 
-                </Tab>
+                        </Tab>
 
-                <Tab eventKey="tab-4" title="Beverages & Desserts" >
-                <section className="py-4 container">
-                        <div className="row justify-content-center">
-                        {ProductData.BeveragesDesserts.map((item, index) =>{
-                            return(
-                            <ItemCard img={item.img} title={item.title}  desc={item.desc} price={item.price} key={index} />
-                            )
-                        })}                
-                        </div>
-                    </section>
-    
+                        <Tab eventKey="tab-2" title="Buckets & Pieces" >
+                            <section className="py-4 container">
+                                <div className="row justify-content-center">
+                                    {ProductData.BucketsPieces.map((item, index) => {
+                                        return (
+                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                        )
+                                    })}
+                                </div>
+                            </section>
+                        </Tab>
 
-               </Tab>
-              
-    
+                        <Tab eventKey="tab-3" title="Snacks & Sides">
+                            <section className="py-4 container">
+                                <div className="row justify-content-center">
+                                    {ProductData.SnacksSides.map((item, index) => {
+                                        return (
+                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                        )
+                                    })}
+                                </div>
+                            </section>
 
-                </Tabs>
-            </Row>
-        </Container>    
-    
+                        </Tab>
+
+                        <Tab eventKey="tab-4" title="Beverages & Desserts" >
+                            <section className="py-4 container">
+                                <div className="row justify-content-center">
+                                    {ProductData.BeveragesDesserts.map((item, index) => {
+                                        return (
+                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                        )
+                                    })}
+                                </div>
+                            </section>
+                        </Tab>
+                    </Tabs>
+                </Row>
+            </Container>
+
         </div>
-  )
+    )
 }
