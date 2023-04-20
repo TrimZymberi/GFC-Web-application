@@ -10,5 +10,6 @@ export default function GuestLayout() {
       <Outlet />
       <Footer/>
     </div>
+    
   )
 }
