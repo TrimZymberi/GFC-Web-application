@@ -12,7 +12,7 @@ function Footer() {
                     <h4>Contact us</h4>
                     <ul className="list-unstyled">
                         <li>Gjilan 60000, Kosove</li>
-                        <li>Rr. Trim huruglica</li> 
+                        <li>Rr. Nikolla Tesla</li> 
                         <li>+383 44 123 456</li>
                         <li>+383 49 123 456</li>
                        
