@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function NotFound() {
   return (
-    <div>404 - NOT FOUND</div>
+    <div>
+      <h1>404 - NOT FOUND</h1>
+    </div>
   )
 }
