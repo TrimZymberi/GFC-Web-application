@@ -69,7 +69,7 @@ export default function ProductCategories() {
                 </Row>
             </Container>
             
-            <Footer />
+            
 
         </div>
     )
