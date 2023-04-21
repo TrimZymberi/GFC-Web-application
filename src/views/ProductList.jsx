@@ -10,6 +10,7 @@ import ProductTable from '../components/ProductTable'
 function ProductList() {
     return (
         <div id="parent">
+            <title>GFC | Products List</title>
             <div className="preferences">
                 <div className="preferences-img">
                     <img src={AddIcon} alt="" />
@@ -26,8 +27,8 @@ function ProductList() {
                 </div>
             </div>
             <div className="order-list">
-                <div className="order-tb">                    
-                        <ProductTable />
+                <div className="order-tb">
+                    <ProductTable />
                 </div>
             </div>
         </div>

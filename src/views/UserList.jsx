@@ -11,6 +11,8 @@ export default function UserList() {
     return (
 
         <div id="parent">
+            <title>GFC | Users List</title>
+
             <div className="preferences">
                 <div className="preferences-img">
                     <img src={AddIcon} alt="" />

@@ -1,9 +1,9 @@
 import React from 'react'
-import Footer from '../components/Footer'
 
 export default function Login() {
   return (
     <div>
+      <title>GFC | Contact Us</title>
       <h1>Login</h1>
     </div>
   )
