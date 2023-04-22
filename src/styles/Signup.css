@@ -1,0 +1,29 @@
+*{
+    margin: auto;
+    box-sizing: border-box;
+    
+ }
+ body{
+    background-color: rgb(198, 193, 193);
+ }
+ 
+ .wrapper{
+     height: 100vh;
+   padding: 50px;
+    
+ }
+ .login{
+     background-color: rgb(245, 246, 246);
+     padding: 20px;
+     width: 500px;
+     height: min-content;
+     border-radius: 15px;
+     text-align: left;
+     box-shadow: 15px 15px #961313;
+ }
+ .form-control{
+     box-shadow: 5px 5px #9c9999;
+ }.btnGuest{
+    box-shadow: 5px 5px #9c9999;
+    border: 1px solid black;
+}
