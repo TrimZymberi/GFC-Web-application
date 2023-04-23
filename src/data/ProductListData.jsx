@@ -1,9 +1,9 @@
 
 const ProductListData = [
     {
-        imgpreview: 'https://example.com/image.jpg',
+        imgpreview: '/src/images/vakti1.png',
         id: 1,
-        details: 'Product details',
+        header: 'Vakti I',
         description: 'Product description',
         retailprice: 10.99,
         marketprice: 12.99,
