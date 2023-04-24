@@ -19,7 +19,12 @@ export default function OrderCategories() {
                                 <div className="row justify-content-center">
                                     {ProductData.Burgerswraps.map((item, index) => {
                                         return (
-                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                            <ItemCard img={item.img}
+                                             title={item.title} 
+                                             desc={item.desc} 
+                                             price={item.price}
+                                             item={item}
+                                            key={index}  />
                                         )
                                     })}
                                 </div>
@@ -32,7 +37,12 @@ export default function OrderCategories() {
                                 <div className="row justify-content-center">
                                     {ProductData.BucketsPieces.map((item, index) => {
                                         return (
-                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                            <ItemCard img={item.img}
+                                             title={item.title} 
+                                             desc={item.desc} 
+                                             price={item.price}
+                                             item={item}
+                                              key={index} />
                                         )
                                     })}
                                 </div>
@@ -44,7 +54,12 @@ export default function OrderCategories() {
                                 <div className="row justify-content-center">
                                     {ProductData.SnacksSides.map((item, index) => {
                                         return (
-                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                            <ItemCard img={item.img}
+                                             title={item.title} 
+                                             desc={item.desc}
+                                              price={item.price}
+                                              item={item}
+                                               key={index} />
                                         )
                                     })}
                                 </div>
@@ -57,7 +72,12 @@ export default function OrderCategories() {
                                 <div className="row justify-content-center">
                                     {ProductData.BeveragesDesserts.map((item, index) => {
                                         return (
-                                            <ItemCard img={item.img} title={item.title} desc={item.desc} price={item.price} key={index} />
+                                            <ItemCard img={item.img}
+                                             title={item.title}
+                                              desc={item.desc}
+                                               price={item.price}
+                                               item={item}
+                                                key={index} />
                                         )
                                     })}
                                 </div>
@@ -67,6 +87,7 @@ export default function OrderCategories() {
                 </Row>
             </Container>
             
+          
             
 
         </div>
