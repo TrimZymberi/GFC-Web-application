@@ -5,7 +5,7 @@
  
  .wrapper{
      height: 100vh;
-     background-color: rgb(198, 193, 193);
+     /* background-color: rgb(198, 193, 193); */
  }
  .login{
      background-color: rgb(245, 246, 246);
