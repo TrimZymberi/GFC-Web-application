@@ -24,8 +24,8 @@ const [values,setValues]=useState({
     }
 
   return (
-    <div className="wrapper  d-flex  align-items-center justify-content-center ">
-      <div className="login ">
+    <div className="wrapper  d-flex  align-items-center justify-content-center mb-5">
+      <div className="signup ">
         <h2 className="mb-3 text-center">Sign up </h2>
         <form onSubmit={handleValidation}>
           <div className="form-group  mb-2 ">
