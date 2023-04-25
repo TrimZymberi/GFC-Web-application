@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+
+
 export default function ItemCard(props) {
   const location = useLocation();
   const links = [{ to: '/order'}];
