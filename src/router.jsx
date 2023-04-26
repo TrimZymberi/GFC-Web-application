@@ -8,6 +8,7 @@ import NotFound from "./layouts/NotFound";
 import AboutUs from "./views/AboutUs";
 import ContactUs from "./views/ContactUs";
 import Order from "./views/Order";
+import Roles from "./views/roles";
 
 const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
                 path: 'Order',
                 element: <Order />
             },
+            {
+                path: 'roles',
+                element: <Roles />
+            }
         ]
     },
     {
