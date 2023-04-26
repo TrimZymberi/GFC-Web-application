@@ -15,6 +15,10 @@ export default function OrderCart() {
 
   if (isEmpty) return<h1 className="text-center ">Your Cart is Empty</h1>;
 
+  if (isEmpty) return
+  
+    <h1 className="text-center ">Your Order is Empty</h1>
+  
   return (
     <section className="py-4 container">
       <div className="row justify-content-center">
@@ -31,7 +35,7 @@ export default function OrderCart() {
                       
                         </td>
                         <td>{item.title}</td>
-                        <td>{item.price}</td>
+                        <td>{item.price}€</td>
                         <td>Quantity ({item.quantity})</td>
                         <td>
                             <button 
@@ -56,7 +60,7 @@ export default function OrderCart() {
           </table>
         </div>
         <div className="col-auto ms-auto">
-            <h2>Total Price: {cartTotal}</h2>
+            <h2>Total Price: {cartTotal}€</h2>
         </div>
         <div className="col-auto">
               <button
@@ -67,5 +71,5 @@ export default function OrderCart() {
         </div>
       </div>
     </section>
-  );
+  )
 }
