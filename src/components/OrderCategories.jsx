@@ -10,10 +10,9 @@ export default function OrderCategories() {
     return (
 
         <div>
-            <h1>Menu</h1>
             <Container className="py-4">
                 <Row className="justify-content-center">
-                    <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1 p-0" >
+                    <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1"  style={{ width: "28rem" }} >
                         <Tab eventKey="tab-1" title="Burgers & wraps" tabClassName='aa'>
                             <section className="py-4 container">
                                 <div className="row justify-content-center">

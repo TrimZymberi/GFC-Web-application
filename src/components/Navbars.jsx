@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
+import '../styles/tab-style.css';
 
 const Navbars = () => {
   const location = useLocation();

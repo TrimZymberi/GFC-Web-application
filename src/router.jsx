@@ -52,17 +52,13 @@ const router = createBrowserRouter([
                 element: <Roles />
             },
             {
-                path: 'dash',
-                element: <Dashboard />
+                path: 'UserList',
+                element: <UserList />
             },
             {
-                path:'ProdReg',
-                element: <ProductRegister />
+                path: 'ProductList',
+                element: <ProductList />
             },
-            {
-                path: 'categoryReg',
-                element: <CategoryRegister />
-            }
             
         ]
     },

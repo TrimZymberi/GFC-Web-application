@@ -13,6 +13,8 @@ export default function OrderCart() {
     emptyCart,
   } = useCart();
 
+  if (isEmpty) return<h1 className="text-center ">Your Cart is Empty</h1>;
+
   if (isEmpty) return
   
     <h1 className="text-center ">Your Order is Empty</h1>
@@ -30,24 +32,24 @@ export default function OrderCart() {
                 return (
                     <tr key={index}>
                         <td>
-                        <img src={item.img} style={{ height: "6rem" }} />
+                      
                         </td>
                         <td>{item.title}</td>
                         <td>{item.price}€</td>
                         <td>Quantity ({item.quantity})</td>
                         <td>
                             <button 
-                            className="btn btn-info ms-2"
+                            className="btn btn-info ms-2 btn-sm text-center"  style={{ width: "1.7rem", height: "1.8rem" }} 
                             onClick={()=> updateItemQuantity(item.id, item.quantity -1)}
                             >-</button>
                             <button
-                             className="btn btn-info ms-2"
+                             className="btn btn-info ms-2 btn-sm"  style={{ width: "1.7rem", height: "1.8rem" }}  
                              onClick={()=> updateItemQuantity(item.id, item.quantity +1) }
                              >+</button>
                             <button
-                             className="btn btn-danger ms-2"
+                             className="btn btn-danger ms-2 btn-sm text-center"  style={{ width: "4.1rem", height: "1.6rem" }} 
                              onClick={()=> removeItem(item.id)}
-                             >Remove Item</button>
+                             >Remove</button>
 
                         </td>
                     </tr>
