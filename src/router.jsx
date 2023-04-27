@@ -56,11 +56,11 @@ const router = createBrowserRouter([
                 element: <Dashboard />
             },
             {
-                path:'/ProdReg',
+                path:'ProdReg',
                 element: <ProductRegister />
             },
             {
-                path: '/categoryReg',
+                path: 'categoryReg',
                 element: <CategoryRegister />
             }
             
