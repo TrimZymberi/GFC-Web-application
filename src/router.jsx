@@ -9,6 +9,8 @@ import AboutUs from "./views/AboutUs";
 import ContactUs from "./views/ContactUs";
 import Order from "./views/Order";
 import Roles from "./views/roles";
+import UserList from "./views/UserList"
+import ProductList from "./views/ProductList"
 
 const router = createBrowserRouter([
     {
@@ -46,7 +48,16 @@ const router = createBrowserRouter([
             {
                 path: 'roles',
                 element: <Roles />
-            }
+            },
+            {
+                path: 'UserList',
+                element: <UserList />
+            },
+            {
+                path: 'ProductList',
+                element: <ProductList />
+            },
+            
         ]
     },
     {
