@@ -1,8 +1,10 @@
-import RolesRegistration from "../layouts/Dashboard/AdminDashboard/RolesRegistration"
+
+import RolesRegistration from "../layouts/Dashboard/RolesRegistration";
 
 const Roles = () =>{
     return(
         <RolesRegistration/>
+       
     )
 }
 export default Roles;

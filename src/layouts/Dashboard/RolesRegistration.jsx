@@ -1,7 +1,7 @@
 import React,{ useState }from "react";
-import "../../../styles/Signup.css";
+import "../../styles/Signup.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import validation from "../../../Validation/Validation";
+import validation from "../../Validation/Validation";
 
 
 
@@ -33,12 +33,12 @@ const [values,setValues]=useState({
         <h2 className="mb-3 text-center">Roles  </h2>
         <form onSubmit={handleValidation}>
           <div className="form-group  mb-2 ">
-            <label htmlFor="text" className="form-label">
+            <label htmlFor="Name" className="form-label">
               Name
             </label>
             <input
               type="text"
-              name="username"
+              name="Name"
               className="form-control"
               placeholder="Enter your name"
               onChange={handleInput}
@@ -48,12 +48,12 @@ const [values,setValues]=useState({
           </div>
 
           <div className="form-group  mb-2">
-            <label htmlFor="text" className="form-label">
+            <label htmlFor="lastName" className="form-label">
               Last Name
             </label>
             <input
               type="text"
-              name="text"
+              name="lastName"
               className="form-control"
               placeholder="Enter your last name"
               onChange={handleInput}
@@ -80,18 +80,18 @@ const [values,setValues]=useState({
           
 
           <div className="form-group  mb-2">
-            <label htmlFor="text" className="form-label">
+            <label htmlFor="Role" className="form-label">
               Role
             </label>
-            <input
-              type="text"
-              name="Role"
-              className="form-control"
-              placeholder="What is your role"
-              onChange={handleInput}
-            ></input>
-            {errors.Role && <p className="text-danger">{errors.Role}</p>}
+            <select id="disabledSelect" class="form-select">
+            <option>Select your role</option>
+              <option>Manager 1</option>
+              <option>Driver</option>
+              <option>Employee</option>
 
+
+            </select>
+            <div className="invalid-feedback">Please select your address!</div>
           </div>
 
           <div className="form-group  mb-2">

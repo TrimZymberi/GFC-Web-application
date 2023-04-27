@@ -10,6 +10,9 @@ import ContactUs from "./views/ContactUs";
 import Order from "./views/Order";
 import Roles from "./views/roles";
 import Dashboard from "./layouts/Dashboard/Dashboard";
+import ProductRegister from "./layouts/Dashboard/ProductRegister";
+import CategoryRegister from "./layouts/Dashboard/CategoryRegister";
+
 
 const router = createBrowserRouter([
     {
@@ -52,6 +55,15 @@ const router = createBrowserRouter([
                 path: 'dash',
                 element: <Dashboard />
             },
+            {
+                path:'/ProdReg',
+                element: <ProductRegister />
+            },
+            {
+                path: '/categoryReg',
+                element: <CategoryRegister />
+            }
+            
         ]
     },
     {
