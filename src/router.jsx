@@ -9,6 +9,7 @@ import AboutUs from "./views/AboutUs";
 import ContactUs from "./views/ContactUs";
 import Order from "./views/Order";
 import Roles from "./views/roles";
+import Dashboard from "./layouts/Dashboard/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -46,7 +47,11 @@ const router = createBrowserRouter([
             {
                 path: 'roles',
                 element: <Roles />
-            }
+            },
+            {
+                path: 'dash',
+                element: <Dashboard />
+            },
         ]
     },
     {
