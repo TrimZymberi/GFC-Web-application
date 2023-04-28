@@ -1,6 +1,8 @@
 import React from 'react'
 import '../styles/user-list-style.css'
 
+import { Link } from 'react-router-dom';
+
 import SearchIcon from '../images/Search-s.svg'
 import AddIcon from '../images/Add-s.svg'
 import AZIcon from '../images/FunnelSimple-r.svg'

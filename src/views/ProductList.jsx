@@ -1,6 +1,8 @@
 import React from 'react'
 import '../styles/product-list-style.css'
 
+import { Link } from 'react-router-dom';
+
 import SearchIcon from '../images/Search-s.svg'
 import AddIcon from '../images/Add-s.svg'
 import AZIcon from '../images/FunnelSimple-r.svg'
@@ -13,7 +15,7 @@ function ProductList() {
             <title>GFC | Products List</title>
             <div className="preferences">
                 <div className="preferences-img">
-                   <link rel="stylesheet" href="./src/layouts/Dashboard/ProductRegister" /> <img src={AddIcon} alt="" />
+                   <Link to="/prodReg"> <img src={AddIcon} alt="" /></Link>
                     <img src={AZIcon} alt="" />
                     <img src={ArrowUpDownIcon} alt="" />
                 </div>
