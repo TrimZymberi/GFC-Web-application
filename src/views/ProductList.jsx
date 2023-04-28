@@ -13,7 +13,7 @@ function ProductList() {
             <title>GFC | Products List</title>
             <div className="preferences">
                 <div className="preferences-img">
-                    <img src={AddIcon} alt="" />
+                   <link rel="stylesheet" href="./src/layouts/Dashboard/ProductRegister" /> <img src={AddIcon} alt="" />
                     <img src={AZIcon} alt="" />
                     <img src={ArrowUpDownIcon} alt="" />
                 </div>
