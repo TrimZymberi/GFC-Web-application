@@ -12,6 +12,8 @@ import Roles from "./views/roles";
 import Dashboard from "./layouts/Dashboard/Dashboard";
 import ProductRegister from "./layouts/Dashboard/ProductRegister";
 import CategoryRegister from "./layouts/Dashboard/CategoryRegister";
+import UserList from "./views/UserList";
+import ProductList from "./views/ProductList";
 
 
 const router = createBrowserRouter([
@@ -50,6 +52,18 @@ const router = createBrowserRouter([
             {
                 path: 'roles',
                 element: <Roles />
+            },
+            {
+                path: 'prodReg',
+                element: <ProductRegister />
+            },
+            {
+                path: 'catReg',
+                element: <CategoryRegister />
+            },
+            {
+                path: 'dash',
+                element: <Dashboard />
             },
             {
                 path: 'UserList',

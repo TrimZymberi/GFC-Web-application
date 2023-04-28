@@ -91,7 +91,7 @@ const [values,setValues]=useState({
 
        
           <button type="submit" className="btn btn-danger w-100  mt-2">
-            Sign Up
+            Register
           </button>
        
          
