@@ -11,9 +11,9 @@ export default function ItemCard(props) {
   return (
     <div
       className="card-group"
-      style={{ width: "20rem", height: "20rem", margin: "-1rem" }}
+      style={{ width: "15rem", height: "20rem", }}
     >
-      <div className="card  text-center" style={{ margin: "1.2rem" }}>
+      <div className="card " style={{ margin: "1.2rem" }}>
         <img src={props.img} className="//" style={{ width: "8rem" }} />
         <div className="card-body">
           <h5 className="card-title">{props.title}</h5>

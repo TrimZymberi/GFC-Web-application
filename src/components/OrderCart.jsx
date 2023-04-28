@@ -1,5 +1,7 @@
 import React from "react";
 import { useCart } from "react-use-cart";
+import { Image } from 'react-bootstrap';
+import '../styles/tab-style.css';
 
 export default function OrderCart() {
   const {
@@ -13,12 +15,19 @@ export default function OrderCart() {
     emptyCart,
   } = useCart();
 
-  if (isEmpty) return<h1 className="text-center ">Your Cart is Empty</h1>;
+  if (isEmpty) return(
+    <div>
+    <h1 className="text-center ">Your Order is Empty</h1>
+    <Image id="Bin" src="https://cdn-icons-png.flaticon.com/512/5499/5499405.png" alt="Example Image" fluid />
+    </div>
+    )
 
   if (isEmpty) return
-  
+    <div>
     <h1 className="text-center ">Your Order is Empty</h1>
-  
+    <Image src="../images/empty-cart.png" alt="Example Image" fluid />
+    </div>
+
   return (
     <section className="py-4 container">
       <div className="row justify-content-center">
