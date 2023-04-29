@@ -1,5 +1,6 @@
 import React from 'react'
 import '../styles/product-list-style.css'
+import NavbarDashboard from '../components/NavbarDashboard';
 
 import { Link } from 'react-router-dom';
 
@@ -13,9 +14,11 @@ function ProductList() {
     return (
         <div id="parent">
             <title>GFC | Products List</title>
+            <NavbarDashboard />
+            
             <div className="preferences">
                 <div className="preferences-img">
-                   <Link to="/prodReg"> <img src={AddIcon} alt="" /></Link>
+                    <Link to="/prodReg"> <img src={AddIcon} alt="" /></Link>
                     <img src={AZIcon} alt="" />
                     <img src={ArrowUpDownIcon} alt="" />
                 </div>

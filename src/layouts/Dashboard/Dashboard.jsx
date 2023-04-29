@@ -5,10 +5,12 @@ import '../../styles/dashboard-style.css'
 import StatisticsSummary from '../../components/StatisticsSummary';
 import StatisticsCharts from '../../components/StatisticsCharts';
 import QuickAdd from '../../components/QuickAdd';
+import NavbarDashboard from '../../components/NavbarDashboard';
 
 function Dashboard() {
     return (
         <div className='container'>
+            <NavbarDashboard />
             <StatisticsSummary />
             <StatisticsCharts />
             <QuickAdd />

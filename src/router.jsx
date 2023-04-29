@@ -61,21 +61,36 @@ const router = createBrowserRouter([
                 path: 'catReg',
                 element: <CategoryRegister />
             },
-            {
-                path: 'dash',
-                element: <Dashboard />
-            },
-            {
-                path: 'UserList',
-                element: <UserList />
-            },
-            {
-                path: 'ProductList',
-                element: <ProductList />
-            },
+            // {
+            //     path: 'dash',
+            //     element: <Dashboard />
+            // },
+            // {
+            //     path: 'UserList',
+            //     element: <UserList />
+            // },
+            // {
+            //     path: 'ProductList',
+            //     element: <ProductList />
+            // },
             
         ]
-    },
+        },
+        {
+            path: 'dash',
+            element: <Dashboard />
+        },
+        {
+            path: 'UserList',
+            element: <UserList />
+        },
+        {
+            path: 'ProductList',
+            element: <ProductList />
+        },
+
+
+
     {
         path: '/default',
         element: <DefaultLayout />,
