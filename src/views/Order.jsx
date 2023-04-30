@@ -9,11 +9,15 @@ import { CartProvider } from "react-use-cart";
 
 export default function Order() {
   return (
-    <div>
-      <h1>Order Page</h1>
+    
+    <div id='wrapper'>
       <CartProvider>
+        <div id='center'>
       <OrderCategories />
-      <OrderCart/>
+      </div >
+      <div id='right'>   
+         <OrderCart/>
+         </div>
       </CartProvider>
     </div>
 
