@@ -3,6 +3,7 @@ import '../styles/product-list-style.css'
 
 import EditIcon from '../images/NotePencil-d.svg'
 import DeleteIcon from '../images/X-f.svg'
+import CategoryListData from '../data/CategoryListData'
 
 
 export default function CategoryTable() {
@@ -21,20 +22,20 @@ export default function CategoryTable() {
                 CategoryListData.map(category => (
                     <tr className="table-row">
                         <td className="table-cell">
-                            <img className="category-image" src={category.imgpreview} alt="food-image" />
+                            <img className="product-image" src={category.imgpreview} alt="food-image" />
                         </td>
                         <td className="table-cell">
-                            <p className="category-id">{category.id}</p>
+                            <p className="product-id">{category.id}</p>
                         </td>
                         <td className="table-cell">
                             <h1 c
-                                lassName="category-header">{category.header}</h1>
+                                lassName="product-header">{category.header}</h1>
                         </td>
                         <td className="table-cell">
-                            <p className="category-paragraph">{category.description}</p>
+                            <p className="product-paragraph">{category.description}</p>
                         </td>
                         <td className="table-cell">
-                            <p htmlFor=" price" className="category-price">EUR {category.price}€</p>
+                            <p htmlFor=" price" className="product-price">EUR {category.price}€</p>
                         </td>
                         
                         <td className="table-cell">

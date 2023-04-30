@@ -10,7 +10,7 @@ const NavbarDashboard = () => {
     { to: '/dash', text: 'Dashboard' },
     { to: '/UserList', text: 'Users' },
     { to: '/ProductList', text: 'Products' },
-    { to: '/Category', text: 'Category' },
+    { to: '/CategoryList', text: 'Category' },
   ];
 
   return (
