@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import GuestLayout from './layouts/GuestLayout'
 import DefaultLayout from './layouts/DefaultLayout'
 import Login from './views/Login'
@@ -7,6 +7,13 @@ import Home from "./views/Home";
 import NotFound from "./layouts/NotFound";
 import AboutUs from "./views/AboutUs";
 import ContactUs from "./views/ContactUs";
+import Order from "./views/Order";
+import CategoryList from './views/CategoryList'
+import Dashboard from './layouts/Dashboard/Dashboard'
+import ProductList from './views/ProductList'
+import UserList from './views/UserList';
+import ProductRegister from "./layouts/Dashboard/ProductRegister";
+import CategoryRegister from "./layouts/Dashboard/CategoryRegister";
 
 const router = createBrowserRouter([
     {
@@ -14,37 +21,77 @@ const router = createBrowserRouter([
         element: <GuestLayout />,
         children: [
             {
-                path: 'login',
-                element: <Login />
+                path: '/',
+                element: <Navigate to='/home'/>
             },
             {
-                path: 'signup',
-                element: <Signup />
-            },
-            {
-                path: 'home',
+                path: '/home',
                 element: <Home />
             },
             {
-                path: 'aboutus',
+                path: '/login',
+                element: <Login />
+            },
+            {
+                path: '/signup',
+                element: <Signup />
+            },
+            {
+                path: '/aboutus',
                 element: <AboutUs />
             },
             {
-                path: 'contactus',
+                path: '/contactus',
                 element: <ContactUs />
             },
+            {
+                path: 'Order',
+                element: <Order />
+            },
         ]
-    },
+        },
+        {
+            path: 'prodReg',
+            element: <ProductRegister />
+        },
+        {
+            path: 'catReg',
+            element: <CategoryRegister />
+        },
+        
+        {
+            path: 'dash',
+            element: <Dashboard />
+        },
+        {
+            path: 'UserList',
+            element: <UserList />
+        },
+        {
+            path: 'ProductList',
+            element: <ProductList />
+        },
+        {
+            path: 'categorylist',
+            element: <CategoryList />
+        },
+
+
+
     {
         path: '/default',
         element: <DefaultLayout />,
         children: [
             {
+                path: '/default',
+                element: <Navigate to='home' />
+            },
+            {
                 path: 'home',
                 element: <Home />
             },
             {
-                path: 'aboutus',
+                path: 'default/about',
                 element: <AboutUs />
             }
         ]

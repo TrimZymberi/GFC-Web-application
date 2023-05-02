@@ -1,6 +1,5 @@
 import React from 'react';
 import ItemCard from "../components/ItemCard";
-import TABS_DATA from '../data/CategoryData';
 import { Container, Row, Tabs, Tab } from 'react-bootstrap';
 import '../styles/tab-style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -67,6 +66,8 @@ export default function ProductCategories() {
                     </Tabs>
                 </Row>
             </Container>
+            
+            
 
         </div>
     )

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
+import '../styles/tab-style.css';
 
 const Navbars = () => {
   const location = useLocation();
@@ -17,7 +18,7 @@ const Navbars = () => {
       <Navbar.Brand href="#">GFC</Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
-        <Nav className="ml-auto my-2 my-lg-2 gap-5 px-10" style={{ maxHeight: '100px' }} navbarScroll>
+        <Nav className="ml-auto my-2 my-lg-2 gap-15 px-10" style={{ maxHeight: '100px' }} navbarScroll>
           {navLinks.map((link) => (
             <Nav.Link as={NavLink} key={link.to} to={link.to} isActive={() => link.to === location.pathname}>
               {link.text}
