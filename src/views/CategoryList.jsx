@@ -18,7 +18,7 @@ function CategoryList() {
             
             <div className="preferences">
                 <div className="preferences-img">
-                    <Link to="/prodReg"> <img src={AddIcon} alt="" /></Link>
+                    <Link to="/catReg"> <img src={AddIcon} alt="" /></Link>
                     <img src={AZIcon} alt="" />
                     <img src={ArrowUpDownIcon} alt="" />
                 </div>
