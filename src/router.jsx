@@ -14,6 +14,7 @@ import ProductList from './views/ProductList'
 import UserList from './views/UserList';
 import ProductRegister from "./layouts/Dashboard/ProductRegister";
 import CategoryRegister from "./layouts/Dashboard/CategoryRegister";
+import EditCategory from "./layouts/Dashboard/EditCategory";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
         {
             path: 'catReg',
             element: <CategoryRegister />
+        },
+        {
+            path: '/categoryList/:id/catEdit',
+            element: <EditCategory/>
         },
         
         {
