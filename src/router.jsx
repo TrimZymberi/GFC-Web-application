@@ -79,7 +79,7 @@ const router = createBrowserRouter([
         {
             path: 'categorylist',
             element: <CategoryList />
-        },
+        }, 
 
 
 
