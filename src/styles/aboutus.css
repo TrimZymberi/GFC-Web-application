@@ -1,0 +1,61 @@
+*{
+    margin: auto;
+    box-sizing: border-box;
+ }
+ body{
+    background-color: rgb(250, 246, 241);
+ }
+ .section{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5rem;
+   
+ }
+ .heading{
+    font-size: 6.25rem;
+    padding-bottom: 1rem;
+    color: #6e0e0e;
+    line-height: .8 !important;
+    font-family: "calpsbold";
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    margin-top: 15px;
+ }
+ img{
+    width:500px;
+    height: 500px;
+ }
+ .section p{
+    font-family: "calpsregular";
+    line-height: 1.15;
+    color: #6e0e0e;
+    font-weight: 700;
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    margin-left: 25px;
+    margin-right: 25px;
+ }
+.contactus{
+    font-family: "calpsbold";
+    color: #6e0e0e;
+    margin-top: 15px;
+    font-size: 4rem;
+    text-align: left;
+}
+.paragraph{
+     font-family: "calpsregular";
+    color: #6e0e0e;
+    line-height: 1.15;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    padding: 25px;
+    font-size: 1.5rem;
+    margin-left: 1.5rem;
+}
+.btn1{
+    margin-bottom: 2rem;
+    margin-left: 2.5rem;
+}
