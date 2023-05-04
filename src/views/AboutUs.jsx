@@ -87,7 +87,7 @@ export default function AboutUs() {
       <h1 className="contactus">CONTACT US</h1>
       <p className="paragraph">Keni pyetje, sugjerime apo shqetësime? Ne jemi këtu për ju.</p>
       <Link to='/contactus'>
-        <button className="btn btn-outline-warning">Contact us</button>
+        <button className="btn btn1 btn-outline-warning">Contact us</button>
       </Link>
     </div>
   );

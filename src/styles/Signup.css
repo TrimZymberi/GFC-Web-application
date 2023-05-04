@@ -21,6 +21,7 @@
      border-radius: 15px;
      text-align: left;
      box-shadow: 15px 15px #dc3545;
+     border: solid rgb(147, 145, 145) 0.5px;
  }
  .form-control{
      box-shadow: 5px 5px #9c9999;
