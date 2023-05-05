@@ -81,8 +81,6 @@ const router = createBrowserRouter([
             element: <CategoryList />
         }, 
 
-
-
     {
         path: '/default',
         element: <DefaultLayout />,
