@@ -28,3 +28,6 @@ Route::resource('product_list',ProductListController::class);
 Route::get('/product_list/{id}', [ProductListController::class, 'show']);
 Route::put('/product_list/{product}',[ProductListController::class, 'update']);
 Route::delete('/product_list/{id}', [ProductListController::class, 'destroy']);
+
+});
+
