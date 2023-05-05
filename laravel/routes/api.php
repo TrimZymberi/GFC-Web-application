@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductListController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::resource('product_list',ProductListController::class);
+Route::get('/product_list/{id}', [ProductListController::class, 'show']);
+Route::put('/product_list/{product}',[ProductListController::class, 'update']);
+Route::delete('/product_list/{id}', [ProductListController::class, 'destroy']);

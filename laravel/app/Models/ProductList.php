@@ -10,7 +10,8 @@ class ProductList extends Model
     use HasFactory;
 
     protected $table = 'product_list';
+    public $timestamps = false;
 
+    protected $fillable = [ 'id', 'priview','productname','description','marketprice','retailprice','datecreated','createdby','category'];
 
-    protected $fillable = [ 'id', 'productname','description','marketprice','retailprice','datecreated','createdby','category'];
 }

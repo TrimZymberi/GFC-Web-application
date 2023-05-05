@@ -13,6 +13,7 @@ import Dashboard from './layouts/Dashboard/Dashboard'
 import ProductList from './views/ProductList'
 import UserList from './views/UserList';
 import ProductRegister from "./layouts/Dashboard/ProductRegister";
+import ProductEdit from "./layouts/Dashboard/EditProd";
 import CategoryRegister from "./layouts/Dashboard/CategoryRegister";
 
 const router = createBrowserRouter([
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
         {
             path: 'prodReg',
             element: <ProductRegister />
+        },
+        {
+            path: 'prodEdit/:id',
+            element: <ProductEdit />
         },
         {
             path: 'catReg',
