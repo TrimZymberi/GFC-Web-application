@@ -13,8 +13,8 @@ export default function ProductCategories() {
             <h1>Menu</h1>
             <Container className="py-4">
                 <Row className="justify-content-center">
-                    <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1 p-0" >
-                        <Tab eventKey="tab-1" title="Burgers & wraps" tabClassName='aa'>
+                    <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1 p-0 bg-light" >
+                        <Tab eventKey="tab-1" title="Burgers & wraps">
                             <section className="py-4 container">
                                 <div className="row justify-content-center">
                                     {ProductData.Burgerswraps.map((item, index) => {
