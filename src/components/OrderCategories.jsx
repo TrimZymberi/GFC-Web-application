@@ -4,12 +4,14 @@ import { Container, Row, Tabs, Tab } from 'react-bootstrap';
 import '../styles/tab-style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductData from '../data/ProductData'
+import '../styles/tab-style.css';
+
 
 
 export default function OrderCategories() {
     return (
 
-        <div>
+        <div id='screen'>
             <Container className="py-4">
                 <Row className="justify-content-center">
                     <Tabs justify variant="pills" defaultActiveKey="tab-1" className="mb-1"  style={{ width: "28rem" }} >
