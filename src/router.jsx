@@ -16,6 +16,8 @@ import ProductRegister from "./layouts/Dashboard/ProductRegister";
 import CategoryRegister from "./layouts/Dashboard/CategoryRegister";
 import EditCategory from "./layouts/Dashboard/EditCategory";
 import Orderlist from "./layouts/Dashboard/Orderlist"
+import OrderRegister from "./layouts/Dashboard/OrderRegister";
+
 
 const router = createBrowserRouter([
     {
@@ -84,6 +86,10 @@ const router = createBrowserRouter([
         {
             path: 'orderlist',
             element: <Orderlist />
+        },
+        {
+            path: 'OrderRegister',
+            element: <OrderRegister />
         },
 
 
