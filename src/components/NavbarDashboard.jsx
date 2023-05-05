@@ -11,6 +11,8 @@ const NavbarDashboard = () => {
     { to: '/UserList', text: 'Users' },
     { to: '/ProductList', text: 'Products' },
     { to: '/CategoryList', text: 'Category' },
+    { to: '/OrderList', text: 'OrderList' },
+
   ];
 
   return (

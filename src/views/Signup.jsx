@@ -1,33 +1,67 @@
-import React,{ useState }from "react";
+import React, { useState } from "react";
 import "../styles/Signup.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import validation from "../Validation/Validation";
+import { useNavigate } from "react-router-dom";
+import axiosClient from '../axios';
 
+export default function Signup() {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [city, setCity] = useState('');
+  const [address, setAddress] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [error, setError] = useState({ __html: '' });
 
-const Signup = () => {
+  const navigate = useNavigate();
 
-const [values,setValues]=useState({
-    username: " ",
-    email: " ",
-    password: "",
-    confirm_password: ""
-});
-    const[errors,setErrors]=useState({});
+  const signupValidation = (ev) => {
+    ev.preventDefault();
+    setError({ __html: '' });
 
-    const handleInput= event =>{
-        setValues({...values,[event.target.name]: [event.target.value]})
-    }
-
-    const handleValidation =(event)=>{
-        event.preventDefault();
-        setErrors(validation(values))
-    }
+    axiosClient
+      .post('/signup', {
+        name: username,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+        city,
+        address
+      })
+      .then(({}) => {
+        navigate('/');
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.errors) {
+          const errors = error.response.data.errors;
+          setError({
+            name: errors.name ? errors.name.join("<br>") : "",
+            email: errors.email ? errors.email.join("<br>") : "",
+            password: errors.password ? errors.password.join("<br>") : "",
+            password_confirmation: errors.password_confirmation ? errors.password_confirmation.join("<br>") : "",
+            city: errors.city ? errors.city.join("<br>") : "",
+            address: errors.address ? errors.address.join("<br>") : "",
+            other: errors.error ? errors.error.join("<br>") : "",
+          });
+        } else if (error.response && error.response.data && error.response.data.error) {
+          setError({
+            email: "",
+            password: "",
+            other: error.response.data.error,
+          });
+        } else {
+          setError({ other: "An error occurred. Please try again later."});
+        }
+      });
+  };
 
   return (
     <div className="wrapper  d-flex  align-items-center justify-content-center mb-5">
+      <title>GFC | Signup</title>
+
       <div className="signup ">
         <h2 className="mb-3 text-center">Sign up </h2>
-        <form onSubmit={handleValidation}>
+        <form onSubmit={signupValidation}>
           <div className="form-group  mb-2 ">
             <label htmlFor="text" className="form-label">
               Username
@@ -37,9 +71,9 @@ const [values,setValues]=useState({
               name="username"
               className="form-control"
               placeholder="Enter username"
-              onChange={handleInput}
-            ></input>
-            {errors.username && <p className="text-danger">{errors.username}</p>}
+              value={username}
+              onChange={ev => setUsername(ev.target.value)} />
+            {error.name && <p className="text-danger mt-2" dangerouslySetInnerHTML={{ __html: error.name }}></p>}
 
           </div>
           <div className="form-group mb-2 ">
@@ -51,9 +85,10 @@ const [values,setValues]=useState({
               name="email"
               className="form-control"
               placeholder="Enter email"
-              onChange={handleInput}
-            ></input>
-            {errors.email && <p className="text-danger">{errors.email}</p>}
+              value={email}
+              onChange={ev => setEmail(ev.target.value)}
+            />
+            {error.email && <p className="text-danger mt-2" dangerouslySetInnerHTML={{ __html: error.email }}></p>}
 
           </div>
           <div className="form-group  mb-2">
@@ -65,10 +100,8 @@ const [values,setValues]=useState({
               name="password"
               className="form-control"
               placeholder="Enter password"
-              onChange={handleInput}
-            ></input>
-            {errors.password && <p className="text-danger">{errors.password}</p>}
-
+              value={password} onChange={ev => setPassword(ev.target.value)}
+            />
           </div>
           <div className="form-group  mb-2">
             <label htmlFor="confirmPassword" className="form-label">
@@ -76,33 +109,56 @@ const [values,setValues]=useState({
             </label>
             <input
               type="password"
-              name="confirm_password"
+              name="confirm-password"
               className="form-control "
-              placeholder="Enter password"
-              onChange={handleInput}
-            ></input>
-            {errors.confirm_password && <p className="text-danger">{errors.confirm_password}</p>}
+              placeholder="Confirm password"
+              value={passwordConfirmation} onChange={ev => setPasswordConfirmation(ev.target.value)} />
+            {error.password && <p className="text-danger mt-2" dangerouslySetInnerHTML={{ __html: error.password}}></p>}
 
           </div>
-          <div className="form-group  mb-2">
+          <div className="form-group  mt-2">
+            <label htmlFor="address" className="form-label">
+              City
+            </label>
+            <select
+              id="disabledSelect"
+              class="form-select"
+              name="city"
+              value={city}
+              onChange={ev => setCity(ev.target.value)}>
+              <option disabled value="">Select your city</option>
+              <option value="Gjilan">Gjilan</option>
+              <option value="Prishtina">Prishtina</option>
+              <option value="Mitrovica">Mitrovica</option>
+              <option value="Peja">Peja</option>
+              <option value="Ferizaj">Ferizaj</option>
+            </select>
+          </div>
+            {error.city && <p className="text-danger mt-2" dangerouslySetInnerHTML={{ __html: error.city }}></p>}
+
+          <div className="form-group  mb-3">
             <label htmlFor="address" className="form-label">
               Address
             </label>
-            <select id="disabledSelect" class="form-select">
-              <option>Select your address</option>
-            </select>
-            <div className="invalid-feedback">Please select your address!</div>
+            <input
+              type="text"
+              name="address"
+              id="address"
+              className="form-control"
+              placeholder="Write your address here"
+              value={address}
+              onChange={ev => setAddress(ev.target.value)}
+            />
           </div>
 
-          <div className="form-group  mb-2">
-            <input type="checkbox" className="form-check-input"></input>
-            <label htmlFor="check" className="form-check-label">
-              I'm not a robot
-            </label>
-          </div>
+          {error.address && <p className="text-danger mt-2" dangerouslySetInnerHTML={{ __html: error.address }}></p>}
+
           <button type="submit" className="btn btn-danger w-100  mt-2">
             Sign Up
           </button>
+
+          {error.other && <p className="text-danger mt-2" dangerouslySetInnerHTML={{ __html: error.other }}></p>}
+
           <p className="text-center mt-2 mb-3">
             Already have an account?{" "}
             <a href="/login" className="text-danger">
@@ -120,5 +176,3 @@ const [values,setValues]=useState({
     </div>
   );
 };
-
-export default Signup;

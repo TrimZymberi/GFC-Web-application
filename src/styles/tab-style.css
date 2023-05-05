@@ -3,6 +3,8 @@ h1 {
     margin: 1em;
   }
 
+
+
 /*.nav-pills .nav-link{
     border-radius: 0;
     color: dc3545;
@@ -10,12 +12,10 @@ h1 {
     color:#a1a1a1 ;
 }*/
 
-/*.nav-pills .nav-item:not(:nth-last-child(1)) .nav-link{
-    border-right: 1px solid white;
-}*/
 
 
-.nav-pills .nav-link{
+
+.nav-pills .nav-link {
   color: #a1a1a1;
   background-color: white;
 }
@@ -25,14 +25,25 @@ h1 {
     border: 1px solid #dddddd ; 
 }
 
-/*.nav-pills .nav-item.show .nav-link, .nav-pills .nav-link.active {
-    color: #dc3545;
-    background-color: white;
-    border-top: #FFFFFF;
-    border-right: #FFFFFF;
-    border-left: #FFFFFF;
-    border-bottom: 3px solid #dc3545;
-}*/
+
+:root {
+  --bs-nav-pills-link-active-color: #c70000;
+  --bs-nav-pills-link-active-bg: #ffffff;
+}
+
+
+
+.nav-pills {
+  color: #a1a1a1;
+  background-color: white;
+  border-top: #FFFFFF;
+  border-right: #FFFFFF;
+  border-left: #FFFFFF;
+  border-bottom: 2px solid #d6cbcb;
+  
+
+}
+
 
 #wrapper{
   display: flex;
@@ -56,4 +67,11 @@ h1 {
 
 #Bin{
   margin-top: 55%;
+}
+
+@media only screen and (max-width: 600px) {
+  #screen {
+    width: 560px;
+    margin: 1rem;
+  }
 }
