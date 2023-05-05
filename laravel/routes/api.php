@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductListController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
  
 Route::middleware('auth:sanctum')->group(function() {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -29,5 +30,5 @@ Route::get('/product_list/{id}', [ProductListController::class, 'show']);
 Route::put('/product_list/{product}',[ProductListController::class, 'update']);
 Route::delete('/product_list/{id}', [ProductListController::class, 'destroy']);
 
-});
+
 
