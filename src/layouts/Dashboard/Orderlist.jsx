@@ -17,17 +17,17 @@ function ProductList() {
             <NavbarDashboard />
             
             <div className="preferences">
-                <div className="preferences-img">
-                    <Link to="/prodReg"> <img src={AddIcon} alt="" /></Link>
-                    <img src={AZIcon} alt=""  />
-                    <img src={ArrowUpDownIcon} alt="" />
+                <div className="preferences-img"  style={{ width: "5rem" , height: "5rem"}}>
+                    <Link to="/OrderRegister"> <img src={AddIcon} alt="" style={{ width: "3rem" , height: "2rem"}}/></Link>
+                    <img style={{ width: "5rem" , height: "2rem"}} src={AZIcon} alt=""  />
+                    <img style={{ width: "5rem" , height: "2rem"}} src={ArrowUpDownIcon} alt="" />
                 </div>
-                <div className="layout-search-inp" >
-                    <div className="search-input">
-                        <button className="search-bt" type="submit">
-                            <img src={SearchIcon} alt="" />
+                <div className="layout-search-inp"style={{ width: "14rem" , height: "2rem"}} >
+                    <div className="search-input" style={{ width: "14rem" , height: "3rem"}}>
+                        <button className="search-bt" type="submit" style={{ width: "5rem" , height: "2rem"}}>
+                            <img src={SearchIcon} alt="" style={{ width: "3rem" , height: "2rem"}}/>
                         </button>
-                        <input type="search" name="search" placeholder="Search product by name" />
+                        <input type="search" name="search" placeholder="Search Order" />
                     </div>
                 </div>
             </div>
