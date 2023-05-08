@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/Signup.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axiosClient from '../../axios';
+import Swal from 'sweetalert2';
 
 const PreviewEdit = () => {
     let { id } = useParams();
-    const history = useHistory();
 
     const [inputErrorList, setInputErrorList] = useState({});
     const [preview, setPreview] = useState({
@@ -16,7 +16,7 @@ const PreviewEdit = () => {
         user_id: '',
     });
     const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
     useEffect(() => {
         axiosClient
             .get(`/preview/${id}/edit`)
@@ -55,9 +55,14 @@ const PreviewEdit = () => {
 
         axiosClient
             .put(`preview/${id}/`, data)
-            .then((res) => {
-                alert(res.data.message);
-                history.push('previewlist');
+            .then((res) => {Swal.fire({
+                icon: "success",
+                text: res.data.message,
+            }).then(
+                ()=>{
+                   navigate('../previewlist')
+                }
+              );
             })
             .catch(function (error) {
                 if (error.response) {

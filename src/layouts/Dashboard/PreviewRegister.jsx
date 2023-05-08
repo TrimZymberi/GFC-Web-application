@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axiosClient from '../../axios';
 import { useStateContext } from "../../contexts/ContextProvider";
 import { useEffect } from "react";
+import Swal from 'sweetalert2';
 
 const PreviewRegister = () => {
     const { currentUser } = useStateContext();
@@ -43,9 +44,14 @@ const PreviewRegister = () => {
     
       axiosClient
         .post(`/preview`, formData)
-        .then((res) => {
-          alert(res.data.message);
-          navigate('../previewlist');
+        .then((res) => {Swal.fire({
+            icon: "success",
+            text: res.data.message,
+        }).then(
+            ()=>{
+               navigate('../previewlist')
+            }
+          );
         })
         .catch(function (error) {
           if (error.response) {

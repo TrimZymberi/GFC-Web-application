@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axiosClient from '../axios';
 import { Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'; // add this line
 
 export default function PreviewTable() {
     const [loading, setLoading] = useState(true);
@@ -43,26 +44,54 @@ export default function PreviewTable() {
         e.preventDefault();
         const thisClicked = e.currentTarget;
         thisClicked.innerText = 'Deleting...';
-
-        axiosClient
-            .delete(`preview/${id}/delete`)
-            .then((res) => {
-                alert(res.data.message);
-                thisClicked.closest('tr').remove();
-            })
-            .catch(function (error) {
+      
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            axiosClient
+              .delete(`preview/${id}/delete`)
+              .then((res) => {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Deleted',
+                  text: res.data.message,
+                }).then(() => {
+                  thisClicked.closest('tr').remove();
+                  window.location.reload();
+                });
+              })
+              .catch(function (error) {
                 if (error.response) {
-                    if (error.response.status === 404) {
-                        alert(error.response.data.message);
-                        thisClicked.innerText = 'Delete';
-                    }
-                    if (error.response.status === 500) {
-                        alert(error.response.data);
-                    }
+                  if (error.response.status === 404) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: error.response.data.message,
+                    });
+                    thisClicked.innerText = 'Delete';
+                  } else if (error.response.status === 500) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Oops...',
+                      text: error.response.data,
+                    });
+                    thisClicked.innerText = 'Delete';
+                  }
                 }
-            });
-    }
-
+              });
+          } else {
+            thisClicked.innerText = 'Delete';
+          }
+        });
+      };
+      
     if (loading) {
         return (
             <div className="text-center container mt-3 p-5">

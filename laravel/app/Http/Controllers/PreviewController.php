@@ -6,6 +6,7 @@ use App\Http\Requests\PreviewRequest;
 use App\Models\Preview;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class PreviewController extends Controller
@@ -177,11 +178,19 @@ class PreviewController extends Controller
         $perPage = $request->input('per_page', 10);
         $page = $request->input('page', 1);
 
-        $preview = Preview::paginate($perPage, ['*'], 'page', $page);
+        $previews = Preview::orderBy('created_at', 'desc')->get();
+
+        $paginator = new LengthAwarePaginator(
+            $previews->forPage($page, $perPage),
+            $previews->count(),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return response()->json([
             'status' => 'success',
-            'preview' => $preview
+            'previews' => $paginator
         ], 200);
     }
 

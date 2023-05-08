@@ -26,4 +26,4 @@ Route::get('preview/{id}', [PreviewController::class, 'show']);
 Route::delete('preview/{id}/delete', [PreviewController::class, 'destroy']);
 Route::get('preview/search', [PreviewController::class, 'search']);
 Route::get('/users/{id}/name', [PreviewController::class, 'getUserName']);
-
+Route::get('preview-paginate', [PreviewController::class, 'paginate']);
