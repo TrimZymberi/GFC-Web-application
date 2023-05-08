@@ -15,6 +15,9 @@ import UserList from './views/UserList';
 import ProductRegister from "./layouts/Dashboard/ProductRegister";
 import CategoryRegister from "./layouts/Dashboard/CategoryRegister";
 import EditCategory from "./layouts/Dashboard/EditCategory";
+import PreviewList from "./views/PreviewList";
+import PreviewRegister from "./layouts/Dashboard/PreviewRegister";
+import PreviewEdit from "./layouts/Dashboard/PreviewEdit";
 
 const router = createBrowserRouter([
     {
@@ -49,6 +52,18 @@ const router = createBrowserRouter([
                 path: 'Order',
                 element: <Order />
             },
+            {
+                path: 'previewlist',
+                element: <PreviewList />
+            },
+            {
+                path: 'previewregister',
+                element: <PreviewRegister />
+            },
+            {
+                path: 'categorylist/:id/categoryedit',
+                element: <PreviewEdit/>
+            },
         ]
         },
         {
@@ -60,8 +75,8 @@ const router = createBrowserRouter([
             element: <CategoryRegister />
         },
         {
-            path: '/categoryList/:id/catEdit',
-            element: <EditCategory/>
+            path: '/preview/:id/edit',
+            element: <PreviewEdit/>
         },
         
         {

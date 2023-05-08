@@ -188,6 +188,13 @@ html {
   border-radius: 20px;
 }
 
+.edit-btn {
+  text-decoration: none;
+  color: white;
+}.edit-bt:hover {
+  color: white;
+}
+
 .box-edit-bt:active,
 .edit-bt:active {
   scale: 102%;

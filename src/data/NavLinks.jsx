@@ -35,6 +35,7 @@ const NavLinks = {
         { to: 'ourlocations', text: 'Our Locations' },
         { to: 'userlist', text: 'User List' },
         { to: 'productlist', text: 'Product List' },
+        { to: 'previewlist', text: 'Preview List' },
         { to: '/admin', text: `manager` },
         { to: '/logout', text: 'Log out' },
     ]
