@@ -1,0 +1,21 @@
+#card-group{
+    margin: auto;
+}
+
+#Ordercaard{
+    width: 10rem;
+
+}
+
+
+#cardImgs{
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+#cardTitle{
+    width: max-content;
+    height: max-content;
+}

@@ -9,7 +9,7 @@ import NavbarDashboard from '../../components/NavbarDashboard';
 
 function Dashboard() {
     return (
-        <div className='container'>
+        <div className=''>
             <NavbarDashboard />
             <StatisticsSummary />
             <StatisticsCharts />

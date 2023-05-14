@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "react-use-cart";
+import '../styles/card-style.css';
+
 
 export default function ItemCard(props) {
   const location = useLocation();
@@ -9,18 +11,15 @@ export default function ItemCard(props) {
   const { addItem } = useCart();
 
   return (
-    <div
-      className="card-group"
-      style={{ width: "15rem", height: "20rem", }}
-    >
-      <div className="card " style={{ margin: "1.2rem" }}>
-        <img src={props.img} className="//" style={{ width: "8rem" }} />
-        <div className="card-body">
-          <h5 className="card-title">{props.title}</h5>
-          <h5 className="card-title text-danger">{props.price} €</h5>
-          <p className="card-text">{props.desc}</p>
+    <div className="col-11-md-6 col-lg-3 mx-0 mb-4" id="card-group">
+      <div className="card h-100" id="Ordercard">
+        <img src={props.img} className="card-img-top" id="cardImgs"/>
+        <div className="card-body" id="cardBody">
+          <h5 className="card-title" id="cardTitle">{props.title} </h5>
+          <h5 className="card-text text-danger" id="cardPrice">{props.price} €</h5>
           <button
-            className="btn btn-outline-danger "
+            className="btn btn-outline-danger"
+            id="cardButton" 
             onClick={ ()=>addItem(props.item)}
           >
             Add to Cart
