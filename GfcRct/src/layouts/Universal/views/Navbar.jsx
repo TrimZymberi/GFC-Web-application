@@ -3,6 +3,7 @@ import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 import axiosClient from '../../../axios';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import navLinksData from '../data/NavLinksData'
+import Logo from '../images/logo.png'
 
 export default function Navbar() {
     // ^ stored data collection & makes logout functional
@@ -41,7 +42,7 @@ export default function Navbar() {
         <nav className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-60">
             <div className="max-w-screen-l flex flex-wrap items-center justify-between mx-auto p-3 ">
                 <a href="#" className="flex items-center">
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Prese</span>
+                    <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><img src={Logo} alt="" style={{width:"60px", height:"60px"}} /></span>
                 </a>
                 <div className="flex md:order-2">
                     <button data-collapse-toggle="navbar-cta" type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">
