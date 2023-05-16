@@ -18,7 +18,9 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password'])
+            'password' => bcrypt($data['password']),
+            'city' => $data['city'],
+            'address' => $data['address']
         ]);
         $token = $user->createToken('main')->plainTextToken;
 
@@ -35,8 +37,8 @@ class AuthController extends Controller
         unset($credentials['remember']);
 
         if (!Auth::attempt($credentials, $remember)) {
-            return response([
-                'error' => 'The Provided credentials are not correct'
+            return response()->json([
+                'error' => 'User does not exist.'
             ], 422);
         }
         $user = Auth::user();
