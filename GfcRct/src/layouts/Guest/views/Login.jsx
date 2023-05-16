@@ -93,6 +93,7 @@ export default function Login() {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
                   placeholder="Enter email"
                   value={email}
+                  disabled
                 />
               </div>
               <div className="form-group mb-2">
@@ -106,22 +107,23 @@ export default function Login() {
                   name="password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
                   placeholder="Enter password"
+                  disabled
                 />
               </div>
-              <button type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white hover:opacity-90">
+              <button disabled type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
                 Login
               </button>
 
               <p className="text-center mt-2 mb-3">
                 Already have an account?{" "}
-                <a href="/login" className="text-red-500">
+                <a disabled href="/login" className="text-red-500">
                   Login
                 </a>
               </p>
               <p className="text-gray-500 text-center">
                 -- -- -- -- -- -- -- or -- -- -- -- -- -- --
               </p>
-              <button type="button" className="btn btnGuest w-full mt-2 p-2 rounded">
+              <button disabled type="button" className="btn btnGuest w-full mt-2 p-2 rounded">
                 CONTINUE AS GUEST
               </button>
             </form>
@@ -157,9 +159,6 @@ export default function Login() {
                 value={email}
                 onChange={(ev) => setEmail(ev.target.value)}
               />
-              {error.email && (
-                <p className="text-s mt-1 text-red-500" dangerouslySetInnerHTML={{ __html: error.email }}></p>
-              )}
             </div>
             <div className="form-group mt-2">
               <label
@@ -177,9 +176,18 @@ export default function Login() {
               />
             </div>
             {error.password && (
-              <p className="text-s mt-1 text-red-500" dangerouslySetInnerHTML={{ __html: error.password }}></p>
+              <div class="flex p-2 mt-4 text-sm text-red-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <span class="sr-only">Danger</span>
+                <div>
+                  <span class="font-medium">Ensure that these requirements are met:</span>
+                  <ul class="mt-1.5 ml-4 list-disc list-inside">
+                    <li dangerouslySetInnerHTML={{ __html: error.email }}></li>
+                    <li dangerouslySetInnerHTML={{ __html: error.password }}></li>
+                  </ul>
+                </div>
+              </div>
             )}
-
             <button type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white hover:opacity-90">
               Login
             </button>

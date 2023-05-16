@@ -25,10 +25,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('product', [ProductController::class, 'index']);
 Route::post('product', [ProductController::class, 'create']);
-Route::put('product/{id}', [ProductController::class, 'update']);
+Route::put('product/{id}/', [ProductController::class, 'update']);
 Route::get('product/{id}/edit', [ProductController::class, 'edit']);
 Route::get('product/{id}', [ProductController::class, 'display']);
-Route::delete('product/{id}', [ProductController::class, 'destroy']);
+Route::delete('product/{id}/delete', [ProductController::class, 'destroy']);
 Route::get('product/search', [ProductController::class, 'search']);
 Route::get('/category/{id}/name', [ProductController::class, 'getCatName']);
 

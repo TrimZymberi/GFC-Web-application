@@ -135,11 +135,10 @@ export default function Signup() {
                   value={address}
                 />
               </div>
-              <div className="bg-red-500 p-2 rounded mt-2">
-                <div className="form-group mb-2">
+                <div className="form-group mt-2">
                   <label
                     htmlFor="password"
-                    className="block mb-2 text-sm font-medium text-white dark:text-white">
+                    className="block mb-2 text-sm font-medium dark:text-white">
                     Password
                   </label>
                   <input
@@ -149,10 +148,10 @@ export default function Signup() {
                     placeholder="Enter password"
                   />
                 </div>
-                <div className="form-group mb-2">
+                <div className="form-group mt-2">
                   <label
                     htmlFor="confirmPassword"
-                    className="block mb-2 text-sm font-medium text-white dark:text-white">
+                    className="block mb-2 text-sm font-medium dark:text-white">
                     Confirm Password
                   </label>
                   <input
@@ -162,7 +161,7 @@ export default function Signup() {
                     placeholder="Confirm password"
                   />
                 </div>
-              </div>
+              
 
               <button type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white hover:opacity-90">
                 Sign Up
@@ -211,9 +210,6 @@ export default function Signup() {
                 value={username}
                 onChange={(ev) => setUsername(ev.target.value)}
               />
-              {error.name && (
-                <p className="text-s mt-1 text-red-500" dangerouslySetInnerHTML={{ __html: error.name }}></p>
-              )}
             </div>
             <div className="form-group mb-2">
               <label
@@ -229,9 +225,6 @@ export default function Signup() {
                 value={email}
                 onChange={(ev) => setEmail(ev.target.value)}
               />
-              {error.email && (
-                <p className="text-s mt-1 text-red-500" dangerouslySetInnerHTML={{ __html: error.email }}></p>
-              )}
             </div>
             <div className="form-group mt-2">
               <label
@@ -255,9 +248,7 @@ export default function Signup() {
                 <option value="Peja">Peja</option>
                 <option value="Ferizaj">Ferizaj</option>
               </select>
-              {error.city && (
-                <p className="text-s mt-1 text-red-500" dangerouslySetInnerHTML={{ __html: error.city }}></p>
-              )}
+              
             </div>
             <div className="form-group mt-2">
               <label
@@ -274,15 +265,11 @@ export default function Signup() {
                 value={address}
                 onChange={(ev) => setAddress(ev.target.value)}
               />
-              {error.address && (
-                <p className="text-s mt-1 text-red-500" dangerouslySetInnerHTML={{ __html: error.address }}></p>
-              )}
             </div>
-            <div className="bg-red-500 p-2 rounded mt-2">
-              <div className="form-group mb-2">
+              <div className="form-group mt-2">
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-white dark:text-white">
+                  className="block mb-2 text-sm font-medium dark:text-white">
                   Password
                 </label>
                 <input
@@ -294,10 +281,10 @@ export default function Signup() {
                   onChange={(ev) => setPassword(ev.target.value)}
                 />
               </div>
-              <div className="form-group mb-2">
+              <div className="form-group mt-2">
                 <label
                   htmlFor="confirmPassword"
-                  className="block mb-2 text-sm font-medium text-white dark:text-white">
+                  className="block mb-2 text-sm font-medium dark:text-white">
                   Confirm Password
                 </label>
                 <input
@@ -309,11 +296,23 @@ export default function Signup() {
                   onChange={(ev) => setPasswordConfirmation(ev.target.value)}
                 />
               </div>
-              {error.password && (
-                <p className="text-s mt-1 text-white" dangerouslySetInnerHTML={{ __html: error.password }}></p>
-              )}
-            </div>
-
+              
+            {error.password && (
+              <div className="flex p-2 mt-4 text-sm text-red-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <svg aria-hidden="true" className="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <span className="sr-only">Danger</span>
+                <div>
+                  <span className="font-medium">Ensure that these requirements are met:</span>
+                  <ul className="mt-1.5 ml-4 list-disc list-inside">
+                    <li dangerouslySetInnerHTML={{ __html: error.name }}></li>
+                    <li dangerouslySetInnerHTML={{ __html: error.email }}></li>
+                    <li dangerouslySetInnerHTML={{ __html: error.city }}></li>
+                    <li dangerouslySetInnerHTML={{ __html: error.address }}></li>
+                    <li dangerouslySetInnerHTML={{ __html: error.password }}></li>
+                  </ul>
+                </div>
+              </div>
+            )}
             <button type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white hover:opacity-90">
               Sign Up
             </button>
