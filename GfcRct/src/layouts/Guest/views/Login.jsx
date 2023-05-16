@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { useState } from "react";
@@ -9,7 +9,6 @@ export default function Login() {
   const { currentUser, setCurrentUser, setUserToken } = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState({ __html: "" });
   const [submitting, setSubmitting] = useState(false);
 
@@ -23,7 +22,6 @@ export default function Login() {
     const request = {
       email,
       password,
-      remember_token: rememberMe,
     };
 
     axiosClient
@@ -31,21 +29,21 @@ export default function Login() {
       .then(({ data }) => {
         setCurrentUser(data.user);
         setUserToken(data.token);
-        if (data.user.user_role === 'manager') {
+        if (data.user.role === 'manager') {
           Swal.fire(
             `Hello ${data.user.name}!`,
-            `Welcome back ${data.user.user_role}.`,
+            `Welcome back ${data.user.role}.`,
             'info'
           )
           navigate('/management');
-        } else if (data.user.user_role === 'employee' || data.user.user_role === 'driver') {
+        } else if (data.user.role === 'employee' || data.user.role === 'driver') {
           Swal.fire(
             `Hello ${data.user.name}!`,
-            `Welcome back ${data.user.user_role}.`,
+            `Welcome back ${data.user.role}.`,
             'info'
           )
           navigate('/workspace');
-        } else if (data.user.user_role === 'customer') {
+        } else if (data.user.role === 'customer') {
           navigate('/app');
         }
       })

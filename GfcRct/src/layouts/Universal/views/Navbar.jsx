@@ -25,13 +25,13 @@ export default function Navbar() {
 
     let filteredLinks;
     if (userToken) {
-        if (currentUser.user_role === 'customer') {
+        if (currentUser.role === 'customer') {
             filteredLinks = navLinksData.customerLinks;
-        } else if (currentUser.user_role === 'employee') {
+        } else if (currentUser.role === 'employee') {
             filteredLinks = navLinksData.employeeLinks;
-        } else if (currentUser.user_role === 'driver') {
+        } else if (currentUser.role === 'driver') {
             filteredLinks = navLinksData.driverLinks;
-        } else if (currentUser.user_role === 'manager') {
+        } else if (currentUser.role === 'manager') {
             filteredLinks = navLinksData.managerLinks;     
         }
     } else {
