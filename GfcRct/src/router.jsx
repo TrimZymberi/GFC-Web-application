@@ -16,6 +16,7 @@ import ProductList from "./layouts/Manager/views/ProductList";
 import ProductRegister from "./layouts/Manager/components/ProductRegister";
 import { useStateContext } from "./contexts/ContextProvider";
 import ProductEdit from "./layouts/Manager/components/ProductEdit";
+import Order from "./layouts/Universal/components/Order"
 
 const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: 'aboutus',
                 element: <AboutUs />
+            },
+            {
+                path: 'order',
+                element: <Order />
             }
         ]
     }, {

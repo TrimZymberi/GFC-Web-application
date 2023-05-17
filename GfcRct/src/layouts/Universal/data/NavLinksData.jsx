@@ -14,6 +14,7 @@ const navLinks = {
         { to: '/ourlocations', text: 'Our Locations' },
         { to: `/user`, text: `user` },
         { to: '/logout', text: 'Log out' },
+        { to: `/order`, text: `order` },
     ],
     employeeLinks: [
         { to: '/home', text: 'Home' },
