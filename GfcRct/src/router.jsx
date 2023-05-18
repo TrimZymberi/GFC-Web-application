@@ -17,6 +17,8 @@ import ProductRegister from "./layouts/Manager/components/ProductRegister";
 import { useStateContext } from "./contexts/ContextProvider";
 import ProductEdit from "./layouts/Manager/components/ProductEdit";
 import Order from "./layouts/Universal/components/Order"
+import OrderInvoice from "./layouts/Customer/views/OrderInvoice";
+import OrderHistory from "./layouts/Customer/views/OrderHistory";
 
 const router = createBrowserRouter([
     {
@@ -64,7 +66,15 @@ const router = createBrowserRouter([
             {
                 path: 'order',
                 element: <Order />
-            }
+            },
+            {
+                path: 'orderinvoice',
+                element: <OrderInvoice />
+            },
+            {
+                path: 'orderhistory',
+                element: <OrderHistory />
+            },
         ]
     }, {
         path: '/workspace',
