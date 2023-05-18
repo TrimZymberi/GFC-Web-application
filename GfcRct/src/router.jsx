@@ -19,8 +19,8 @@ import ProductEdit from "./layouts/Manager/components/ProductEdit";
 import Order from "./layouts/Universal/components/Order"
 import OrderInvoice from "./layouts/Customer/views/OrderInvoice";
 import OrderHistory from "./layouts/Customer/views/OrderHistory";
+import ManageOrder from "./layouts/Employee/views/ManageOrder";
 import OurLocations from "./layouts/Universal/views/OurLocations";
-
 
 const router = createBrowserRouter([
     {
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
             {
                 path: 'orderhistory',
                 element: <OrderHistory />
-            },
+            }
         ]
     }, {
         path: '/workspace',
@@ -97,7 +97,11 @@ const router = createBrowserRouter([
             {
                 path: 'aboutus',
                 element: <AboutUs />
-            }
+            },
+            {
+                path: 'manageorders',
+                element: <ManageOrder />
+            },
         ]
     },
     {

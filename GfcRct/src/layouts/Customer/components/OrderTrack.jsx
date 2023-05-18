@@ -42,6 +42,7 @@ function OrderTrack() {
                                 cancelButtonText: 'Cancel',
                                 confirmButtonColor: '#3085d6',
                                 cancelButtonColor: '#d33',
+                                showCloseButton: true,
                                 reverseButtons: true,
                                 preConfirm: () => {
                                     const commentInput = Swal.getPopup().querySelector('#comment').value;
@@ -73,6 +74,7 @@ function OrderTrack() {
                                 confirmButtonColor: '#d33',
                                 cancelButtonColor: '#3085d6',
                                 reverseButtons: true,
+                                showCloseButton: true,
                             })
                             .then((result) => {
                                 if (result.isConfirmed) {
@@ -124,8 +126,8 @@ function OrderTrack() {
                                         </dl>
                                     </div>
                                     <div className='flex justify-center'>
-                                        <div className="grid grid-cols-1 w-100 grid-rows-1 sm:gap-6 lg:gap-8">
-                                            <div className='flex justify-center'>
+                                        <div className="grid grid-cols-1 w-100 sm:block grid-rows-1 sm:gap-6 lg:gap-8">
+                                            <div className='flex justify-center '>
                                                 <img
                                                     src={FoodIcon}
                                                     alt="Walnut card tray with white powder  coated steel divider and 3 punchout holes."
