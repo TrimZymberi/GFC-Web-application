@@ -19,6 +19,8 @@ import ProductEdit from "./layouts/Manager/components/ProductEdit";
 import Order from "./layouts/Universal/components/Order"
 import OrderInvoice from "./layouts/Customer/views/OrderInvoice";
 import OrderHistory from "./layouts/Customer/views/OrderHistory";
+import OurLocations from "./layouts/Universal/views/OurLocations";
+
 
 const router = createBrowserRouter([
     {
@@ -44,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: 'signup',
                 element: <Signup />
+            },
+            {
+                path: 'ourlocations',
+                element: <OurLocations />
             }
         ]
     },
