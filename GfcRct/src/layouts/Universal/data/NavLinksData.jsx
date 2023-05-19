@@ -1,3 +1,4 @@
+import Logo from '../images/Logo.png'
 
 const navLinks = {
     guestLinks: [
@@ -7,6 +8,7 @@ const navLinks = {
         { to: '/login', text: 'Login' },
         { to: '/signup', text: 'Signup' },
         { to: '/guest', text: 'Guest' },
+
     ],
     customerLinks: [
         { to: '/home', text: 'Home' },
@@ -14,7 +16,9 @@ const navLinks = {
         { to: '/ourlocations', text: 'Our Locations' },
         { to: `/user`, text: `user` },
         { to: '/logout', text: 'Log out' },
-        { to: `/order`, text: `order` },
+        { to: 'order', text: 'Order' },
+
+
     ],
     employeeLinks: [
         { to: '/home', text: 'Home' },
