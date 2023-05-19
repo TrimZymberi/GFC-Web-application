@@ -10,8 +10,8 @@ export default function ManageOrder() {
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <div className="flex items-center justify-between p-4 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90 dark:bg-gray-800">
-                <div>
+            <div className="flex items-center justify-between p-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90 dark:bg-gray-800">
+                <div className='flex items-center'>
                     <button
                         id="dropdownActionButton"
                         data-dropdown-toggle="dropdownAction"
@@ -91,6 +91,7 @@ export default function ManageOrder() {
                         </div>
                     )}
                 </div>
+
                 <label for="table-search" className="sr-only">Search</label>
                 <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -100,7 +101,7 @@ export default function ManageOrder() {
                 </div>
             </div>
             <ManageOrderTable />
-            <nav className="flex items-center justify-between p-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90" aria-label="Table navigation">
+            <nav className="flex items-center justify-between p-1 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90" aria-label="Table navigation">
                 <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span className="font-semibold text-gray-900 dark:text-white">1000</span></span>
                 <ul className="inline-flex items-center -space-x-px">
                     <li>

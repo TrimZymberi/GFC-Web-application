@@ -171,8 +171,8 @@ export default function Signup() {
               </div>
 
 
-              <button type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white hover:opacity-90">
-                Sign Up
+              <button type="submit" className="btn btn-danger w-full mt-4 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white hover:opacity-90">
+                Signing up
               </button>
 
               <p className="text-center mt-2 mb-3">

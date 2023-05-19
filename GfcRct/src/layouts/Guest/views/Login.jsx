@@ -111,7 +111,7 @@ export default function Login() {
                 />
               </div>
               <button disabled type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
-                Login
+                Logging in
               </button>
 
               <p className="text-center mt-2 mb-3">
@@ -140,10 +140,10 @@ export default function Login() {
   return (
     <div className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20">
       <div className="flex items-center justify-center p-4">
-        <title>GFC | Signup</title>
+        <title>GFC | Login</title>
 
         <div className="signup m-10">
-          <h2 className="mb-3 text-center font-bold text-xl">Sign up</h2>
+          <h2 className="mb-3 text-center font-bold text-xl">Login</h2>
           <form onSubmit={onSubmit}>
             <div className="form-group mt-2">
               <label
@@ -188,7 +188,7 @@ export default function Login() {
                 </div>
               </div>
             )}
-            <button type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
+            <button type="submit" className="btn btn-danger w-full mt-4 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
               Login
             </button>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -57,6 +58,14 @@ class ProductController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'No product found'
+            ], 404);
+        }
+
+        $user = User::find($data['user_id']);
+        if (!$user) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No user found'
             ], 404);
         }
 
