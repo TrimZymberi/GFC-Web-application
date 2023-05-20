@@ -16,7 +16,13 @@ import ProductList from "./layouts/Manager/views/ProductList";
 import ProductRegister from "./layouts/Manager/components/ProductRegister";
 import { useStateContext } from "./contexts/ContextProvider";
 import ProductEdit from "./layouts/Manager/components/ProductEdit";
-import Order from "./layouts/Customer/Order";
+import Order from "./layouts/Customer/Order"
+import OrderInvoice from "./layouts/Customer/views/OrderInvoice";
+import OrderHistory from "./layouts/Customer/views/OrderHistory";
+import ManageOrder from "./layouts/Employee/views/ManageOrder";
+import OurLocations from "./layouts/Universal/views/OurLocations";
+import OrderList from "./layouts/Manager/views/OrderList"
+import OrderRegister from "./layouts/Manager/components/OrderRegister"
 
 const router = createBrowserRouter([
     {
@@ -42,6 +48,10 @@ const router = createBrowserRouter([
             {
                 path: 'signup',
                 element: <Signup />
+            },
+            {
+                path: 'ourlocations',
+                element: <OurLocations />
             }
         ]
     },
@@ -65,8 +75,14 @@ const router = createBrowserRouter([
                 path: 'order',
                 element: <Order />
             },
-    
-
+            {
+                path: 'orderinvoice',
+                element: <OrderInvoice />
+            },
+            {
+                path: 'orderhistory',
+                element: <OrderHistory />
+            }
         ]
     }, {
         path: '/workspace',
@@ -83,7 +99,11 @@ const router = createBrowserRouter([
             {
                 path: 'aboutus',
                 element: <AboutUs />
-            }
+            },
+            {
+                path: 'manageorders',
+                element: <ManageOrder />
+            },
         ]
     },
     {
@@ -139,6 +159,14 @@ const router = createBrowserRouter([
             {
                 path: 'productlist/productedit/:id',
                 element: <ProductEdit />
+            },
+            {
+                path: 'orderList',
+                element: <OrderList />
+            },
+            {
+                path: 'orderregister',
+                element: <OrderRegister />
             },
         ]
     }

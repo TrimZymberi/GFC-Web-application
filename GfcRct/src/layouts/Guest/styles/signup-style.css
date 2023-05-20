@@ -1,4 +1,4 @@
-+*{
+*{
     margin: auto;
     box-sizing: border-box;
     
@@ -28,8 +28,16 @@
  }.btnGuest{
     box-shadow: 5px 5px #9c9999;
     border: 1px solid black;
+    transition: 0.4s;
+}.btnGuest:hover {
+    box-shadow: 3px 5px #ae5f5f;
 }
 
 .btn-signup{
-    box-shadow: 2px 5px #dc3545;
+    box-shadow: 5px 6px #dc3545;
+    transition: 0.4s;
+}.btn-signup:hover {
+    box-shadow: 3px 5px #9a0010;
+}.btn-signup:focus {
+    scale: 101%;
 }

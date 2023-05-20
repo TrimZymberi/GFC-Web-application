@@ -11,31 +11,31 @@ const navLinks = {
 
     ],
     customerLinks: [
-        { to: '/home', text: 'Home' },
-        { to: '/aboutus', text: 'About' },
-        { to: '/ourlocations', text: 'Our Locations' },
-        { to: `/user`, text: `user` },
+        { to: '/app', text: 'Home' },
+        { to: 'aboutus', text: 'About' },
+        { to: 'ourlocations', text: 'Our Locations' },
+        { to: 'orderhistory', text: 'Order History' },
         { to: '/logout', text: 'Log out' },
         { to: 'order', text: 'Order' },
 
 
     ],
     employeeLinks: [
-        { to: '/home', text: 'Home' },
+        { to: '/workspace', text: 'Home' },
         { to: '/aboutus', text: 'About' },
         { to: '/ourlocations', text: 'Our Locations' },
         { to: `/user`, text: `employee` },
         { to: '/logout', text: 'Log out' },
     ],
     driverLinks: [
-        { to: '/home', text: 'Home' },
+        { to: '/workspace', text: 'Home' },
         { to: '/aboutus', text: 'About' },
         { to: '/ourlocations', text: 'Our Locations' },
         { to: `/user`, text: `driver` },
         { to: '/logout', text: 'Log out' },
     ],
     managerLinks: [
-        { to: 'dashboard', text: 'Dashboard' },
+        { to: '/management', text: 'Dashboard' },
         { to: 'ourlocations', text: 'Our Locations' },
         { to: 'userlist', text: 'User List' },
         { to: 'productlist', text: 'Product List' },

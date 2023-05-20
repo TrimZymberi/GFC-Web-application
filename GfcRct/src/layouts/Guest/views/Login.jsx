@@ -111,7 +111,7 @@ export default function Login() {
                 />
               </div>
               <button disabled type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
-                Login
+                Logging in
               </button>
 
               <p className="text-center mt-2 mb-3">
@@ -140,10 +140,10 @@ export default function Login() {
   return (
     <div className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20">
       <div className="flex items-center justify-center p-4">
-        <title>GFC | Signup</title>
+        <title>GFC | Login</title>
 
         <div className="signup m-10">
-          <h2 className="mb-3 text-center font-bold text-xl">Sign up</h2>
+          <h2 className="mb-3 text-center font-bold text-xl">Login</h2>
           <form onSubmit={onSubmit}>
             <div className="form-group mt-2">
               <label
@@ -182,23 +182,19 @@ export default function Login() {
                 <div>
                   <span class="font-medium">Ensure that these requirements are met:</span>
                   <ul class="mt-1.5 ml-4 list-disc list-inside">
-                    <li dangerouslySetInnerHTML={{ __html: error.email }}></li>
-                    <li dangerouslySetInnerHTML={{ __html: error.password }}></li>
+                    {error.email && <li dangerouslySetInnerHTML={{ __html: error.email }}></li>}
+                    {error.password && <li dangerouslySetInnerHTML={{ __html: error.password }}></li>}
                   </ul>
                 </div>
               </div>
             )}
-            <button type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white hover:opacity-90">
+            <button type="submit" className="btn btn-danger w-full mt-4 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
               Login
             </button>
 
-            {error.other && (
-              <p className="text-s rounded-l mt-1" dangerouslySetInnerHTML={{ __html: error.other }}></p>
-            )}
-
             <p className="text-center mt-2 mb-3">
               Don't have an account yet?{" "}
-              <Link to="/signup" className="text-red-500" >Sign up</Link>
+              <Link to="/signup" className="text-red-500 hover:text-red-700 underline" >Sign up</Link>
             </p>
             <p className="text-gray-500 text-center">
               -- -- -- -- -- -- -- or -- -- -- -- -- -- --

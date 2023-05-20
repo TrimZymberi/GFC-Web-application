@@ -41,7 +41,7 @@ export default function ProductRegister() {
   const handleInput = (event) => {
     event.persist();
     if (event.target.name === 'preview') {
-      setProduct({ ...product, preview: event.target.files[0] }); // Updated: Set the file object directly
+      setProduct({ ...product, preview: event.target.files[0] }); 
     } else if (event.target.name === 'category_id') {
       setProduct({ ...product, category_id: event.target.value });
     } else {
