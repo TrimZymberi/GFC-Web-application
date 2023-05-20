@@ -41,7 +41,9 @@ const navLinks = {
         { to: 'productlist', text: 'Product List' },
         { to: 'categorylist', text: 'Category List' },
         { to: '/admin', text: `manager` },
+        { to: 'orderList', text: 'Order List' },
         { to: '/logout', text: 'Log out' },
+
     ]
 }
 
