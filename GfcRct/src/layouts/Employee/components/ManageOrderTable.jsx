@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FoodIcon from '../../Universal/images/vakti1.png';
+import axiosClient from '../../../axios';
 
 export default function ManageOrderTable() {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [drivers, setDrivers] = useState([]);
+
+    useEffect(() => {
+        axiosClient.get('driverls').then((res) => {
+          if (Array.isArray(res.data.drivers)) {
+            setDrivers(res.data.drivers);
+          } else {
+            console.error('Invalid response format');
+          }
+        }).catch((error) => {
+          console.error('Failed to fetch drivers', error);
+        });
+      }, []);
 
     const openModal = (orderId) => {
         setModalVisible(true);
@@ -17,6 +31,7 @@ export default function ManageOrderTable() {
     const orders = [
         {
             id: 1,
+            status: 'delivering',
             user: {
                 name: "Arlind",
                 email: "arlindmaliqi28@gmail.com",
@@ -44,6 +59,7 @@ export default function ManageOrderTable() {
         },
         {
             id: 2,
+            status: 'pending',
             user: {
                 name: "John",
                 email: "john@example.com",
@@ -63,6 +79,7 @@ export default function ManageOrderTable() {
         },
         {
             id: 3,
+            status: 'delivering',
             user: {
                 name: "Jane",
                 email: "jane@example.com",
@@ -176,10 +193,14 @@ export default function ManageOrderTable() {
                                 <td className="px-6 py-4">
                                     <div className='flex justify-center'>
                                         <select name="status" className='rounded-xl h-8 text-xs text-gray-700 outline-none border-none bg-blue-100'>
-                                            <option value="pending" disabled selected>Assign to a driver</option>
-                                            <option value="canceled" >Trim</option>
-                                            <option value="delivered" >Rion</option>
-                                            <option value="delivering" >Florent</option>
+                                            <option value="" disabled selected>
+                                                Assign to a driver
+                                            </option>
+                                            {drivers.map((driver) => (
+                                                <option key={driver.id} value={driver.id}>
+                                                    {driver.name}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </td>
@@ -247,14 +268,6 @@ export default function ManageOrderTable() {
                                                         {product.price}EUR
                                                     </p>
                                                 </div>
-                                                <div className='grid grid-cols-2 items-center'>
-                                                    <h5 className="text-sm font-bold text-gray-800 dark:text-white">
-                                                        est.Time
-                                                    </h5>
-                                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                        {product.estTime}
-                                                    </p>
-                                                </div>
                                             </div>
                                         </div>
                                     ))}
@@ -302,10 +315,10 @@ export default function ManageOrderTable() {
                                         </div>
                                     </div>
                                 </div>
-                                    );
-                                }
-                                return null;
-                            })}
+                            );
+                        }
+                        return null;
+                    })}
                 </div>
             )}
         </div >

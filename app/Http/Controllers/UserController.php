@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 
@@ -93,5 +94,14 @@ class UserController extends Controller
     public function index()
     {
         // TODO: Implement index user logic
+    }
+
+    public function drivername()
+    {
+        $drivers = User::where('role', 'driver')->get('name');
+        return response()->json([
+            'status' => 200,
+            'drivers' => $drivers
+        ], 200);
     }
 }

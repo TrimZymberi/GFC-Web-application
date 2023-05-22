@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,14 +14,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('driver_id')->nullable();
-            $table->string('driver_name')->nullable();
+            $table->unsignedBigInteger('employee_id')->nullable();
             $table->string('status')->default('pending');
-            $table->string('address');
-            $table->string('city');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('set null');
+            $table->foreign('driver_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('employee_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

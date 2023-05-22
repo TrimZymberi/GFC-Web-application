@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,3 +42,5 @@ Route::delete('category/{id}/delete', [CategoryController::class, 'destroy']);
 Route::get('category/search', [CategoryController::class, 'search']);
 Route::get('/users/{id}/name', [CategoryController::class, 'getUserName']);
 Route::get('namecat', [CategoryController::class, 'categoryname']);
+
+Route::get('driverls', [UserController::class, 'drivername']);

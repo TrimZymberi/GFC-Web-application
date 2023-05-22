@@ -22,6 +22,13 @@ class AuthController extends Controller
             'city' => $data['city'],
             'address' => $data['address']
         ]);
+
+        if (!$user) {
+            return response()->json([
+                'error' => 'Failed to create user.'
+            ], 500);
+        }
+
         $token = $user->createToken('main')->plainTextToken;
 
         return response([
@@ -38,10 +45,17 @@ class AuthController extends Controller
 
         if (!Auth::attempt($credentials, $remember)) {
             return response()->json([
-                'error' => 'User does not exist.'
+                'error' => 'Invalid credentials.'
             ], 422);
         }
+
         $user = Auth::user();
+        if (!$user) {
+            return response()->json([
+                'error' => 'Failed to retrieve user.'
+            ], 500);
+        }
+
         $token = $user->createToken('main')->plainTextToken;
 
         return response([
@@ -54,6 +68,13 @@ class AuthController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not authenticated.'
+            ], 401);
+        }
+
         $user->currentAccessToken()->delete();
 
         return response([

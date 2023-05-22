@@ -58,7 +58,6 @@ export default function ProductTable() {
     const deleteProduct = (e, id) => {
         e.preventDefault();
         const thisClicked = e.currentTarget;
-        thisClicked.innerText = 'Deleting...';
 
         Swal.fire({
             title: 'Are you sure?',
@@ -69,7 +68,9 @@ export default function ProductTable() {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed)
+            {
+                thisClicked.innerText = 'Deleting...';
                 axiosClient
                     .delete(`product/${id}/delete`)
                     .then((res) => {
@@ -89,19 +90,16 @@ export default function ProductTable() {
                                     title: 'Oops...',
                                     text: error.response.data.message,
                                 });
-                                thisClicked.innerText = 'Delete';
                             } else if (error.response.status === 500) {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
                                     text: error.response.data,
                                 });
-                                thisClicked.innerText = 'Delete';
                             }
                         }
                     });
             } else {
-                thisClicked.innerText = `Delete`;
             }
         });
     };

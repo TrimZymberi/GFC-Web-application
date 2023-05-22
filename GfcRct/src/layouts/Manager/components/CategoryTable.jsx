@@ -47,7 +47,6 @@ export default function CategoryTable() {
     const deleteCategory = (e, id) => {
         e.preventDefault();
         const thisClicked = e.currentTarget;
-        thisClicked.innerText = 'Deleting...';
 
         Swal.fire({
             title: 'Are you sure?',
@@ -72,25 +71,23 @@ export default function CategoryTable() {
                     })
                     .catch(function (error) {
                         if (error.response) {
+                            thisClicked.innerText = 'Deleting...';
                             if (error.response.status === 404) {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
                                     text: error.response.data.message,
                                 });
-                                thisClicked.innerText = 'Delete';
                             } else if (error.response.status === 500) {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
                                     text: error.response.data,
                                 });
-                                thisClicked.innerText = 'Delete';
                             }
                         }
                     });
             } else {
-                thisClicked.innerText = `Delete`;
             }
         });
     };

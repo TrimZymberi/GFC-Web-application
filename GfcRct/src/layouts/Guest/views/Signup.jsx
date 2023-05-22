@@ -47,6 +47,7 @@ export default function Signup() {
           setError({
             name: errors.name ? errors.name.join("<br>") : "",
             email: errors.email ? errors.email.join("<br>") : "",
+            emailex: errors.email ? errors.email[0] : "",
             password: errors.password ? errors.password.join("<br>") : "",
             password_confirmation: errors.password_confirmation
               ? errors.password_confirmation.join("<br>")
@@ -319,7 +320,7 @@ export default function Signup() {
               />
             </div>
 
-            {error.password && (
+            {error.email && (
               <div class="flex p-2 mt-4 text-sm text-red-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
                 <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
                 <span class="sr-only">Danger</span>
@@ -331,17 +332,16 @@ export default function Signup() {
                     {error.password && <li dangerouslySetInnerHTML={{ __html: error.password }}></li>}
                     {error.city && <li dangerouslySetInnerHTML={{ __html: error.city }}></li>}
                     {error.address && <li dangerouslySetInnerHTML={{ __html: error.address }}></li>}
+                    {error.other && <li dangerouslySetInnerHTML={{ __html: error.other }}></li>}
                   </ul>
                 </div>
               </div>
             )}
+                  
+
             <button type="submit" className="btn btn-danger w-full mt-4 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
               Sign Up
             </button>
-
-            {error.other && (
-              <p className="text-s text-red-500 rounded-l mt-1" dangerouslySetInnerHTML={{ __html: error.other }}></p>
-            )}
 
             <p className="text-center mt-2 mb-3">
               Already have an account?{" "}
