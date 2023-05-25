@@ -104,6 +104,10 @@ const router = createBrowserRouter([
                 path: 'manageorders',
                 element: <ManageOrder />
             },
+            {
+                path: 'manageorders/orders/:id/items',
+                element: <ManageOrder />
+            },
         ]
     },
     {

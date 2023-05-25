@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -44,3 +45,6 @@ Route::get('/users/{id}/name', [CategoryController::class, 'getUserName']);
 Route::get('namecat', [CategoryController::class, 'categoryname']);
 
 Route::get('driverls', [UserController::class, 'drivername']);
+
+Route::get('/orders', [OrderController::class, 'getOrders']);
+Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
