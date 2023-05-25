@@ -46,5 +46,7 @@ Route::get('namecat', [CategoryController::class, 'categoryname']);
 
 Route::get('driverls', [UserController::class, 'drivername']);
 
-Route::get('/orders', [OrderController::class, 'getOrders']);
+Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders')->middleware('web');
+// Route::get('/orders/:page{id}', [OrderController::class, 'getOrders']);
 Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
+Route::put('/orders/{orderId}', [OrderController::class, 'editOrder']);

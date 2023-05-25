@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('driver_id')->nullable();
             $table->unsignedBigInteger('employee_id')->nullable();
+            $table->string('comment')->default('Customer left no comment for the order');
             $table->string('status')->default('pending');
             $table->timestamps();
 
