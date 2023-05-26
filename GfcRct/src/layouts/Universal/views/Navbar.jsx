@@ -1,15 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Navigate, useNavigate } from 'react-router-dom';
-import axiosClient from '../../../axios';
+import axiosClient from '../../../api/axios';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import navLinksData from '../data/NavLinksData';
 import Logo from '../images/logo.png';
+import NavbarSkeleton from './skeleton/Navbar_skeleton';
 
 export default function Navbar() {
   const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control menu visibility
-  const [activeLink, setActiveLink] = useState(''); // State to track the active link
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [activeLink, setActiveLink] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoadingUser(false);
+    }, 6000);
+
+    axiosClient
+      .get('/me')
+      .then(({ data }) => {
+        clearTimeout(timer);
+        setLoadingUser(false);
+        setCurrentUser(data);
+        console.log(data);
+      })
+      .catch(() => {
+        clearTimeout(timer);
+        setLoadingUser(false);
+      });
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  if (loadingUser) {
+    return (
+      <NavbarSkeleton />
+    )
+  }
 
   const logout = (ev) => {
     ev.preventDefault();
@@ -36,7 +67,6 @@ export default function Navbar() {
     filteredLinks = navLinksData.guestLinks;
   }
 
-  // Toggle menu visibility when the button is clicked
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };

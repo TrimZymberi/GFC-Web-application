@@ -1,9 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../Universal/views/Navbar'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Footer from '../Universal/views/Footer'
+import MOValidationSkeleton from './views/core/MOValidation_skeleton';
+import { useStateContext } from '../../contexts/ContextProvider';
+import axiosClient from '../../api/axios';
 
 export default function EmployeeLayout() {
+    const { setCurrentUser } = useStateContext();
+  const [validatingUser, setValidatingUser] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setValidatingUser(false);
+    }, 5000);
+
+    axiosClient
+      .get('/me')
+      .then(({ data }) => {
+        clearTimeout(timer);
+        setValidatingUser(false);
+        setCurrentUser(data);
+        if (data.role !== 'employee') {
+          navigate('../');
+        }
+      })
+      .catch(() => {
+        clearTimeout(timer);
+        setValidatingUser(false);
+      });
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [navigate, setCurrentUser]);
+
+  if (validatingUser) {
+    return <MOValidationSkeleton />;
+  }
     return (
         <div className="relative">
             <div

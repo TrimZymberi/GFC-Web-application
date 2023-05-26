@@ -5,6 +5,7 @@ import OfferSlider from '../components/OfferSlider'
 import { Link } from 'react-router-dom'
 
 export default function Home() {
+
     return (
         <div className='bg-white backdrop-filter backdrop-blur-lg bg-opacity-20'>
             <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">

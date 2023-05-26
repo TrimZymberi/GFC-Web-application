@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useStateContext } from '../../../contexts/ContextProvider';
-import axiosClient from '../../../axios';
+import axiosClient from '../../../api/axios';
 import Swal from 'sweetalert2';
-import MOTableSkeleton from '../skeleton/MOTable_skeleton';
-import MOLoadingModal from '../skeleton/MOLoadingModal_skeleton';
+import MOTableSkeleton from './core/MOTable_skeleton';
+import MOLoadingModal from './core/MOLoadingModal_skeleton';
 import FoodIcon from '../../Universal/images/vakti1.png';
-import Pagination from '../pagination/MOTable_pagination';
+import Pagination from './core/MOTable_pagination';
 
 export default function ManageOrderTable() {
     const { currentUser } = useStateContext();

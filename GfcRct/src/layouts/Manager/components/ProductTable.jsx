@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProductListData from '../data/ProductListData';
 import Swal from 'sweetalert2';
-import axiosClient from '../../../axios';
+import axiosClient from '../../../api/axios';
 import { Link } from 'react-router-dom';
 
 export default function ProductTable() {

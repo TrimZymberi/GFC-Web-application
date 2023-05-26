@@ -14,7 +14,6 @@ axiosClient.interceptors.response.use(response => {
 }, error => {
   if (error.response && error.response.status === 401) {
     localStorage.removeItem('TOKEN')
-    window.location.replace('/login') // Redirect to login page
     return Promise.reject(error)
   }
   return Promise.reject(error)

@@ -2,11 +2,11 @@ import React from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { useState } from "react";
-import axiosClient from "../../../axios";
+import axiosClient from "../../../api/axios";
 import Swal from 'sweetalert2'
 
 export default function Login() {
-  const { currentUser, setCurrentUser, setUserToken } = useStateContext();
+  const {setCurrentUser, setUserToken } = useStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ __html: "" });
@@ -24,9 +24,11 @@ export default function Login() {
       password,
     };
 
-    axiosClient
+     axiosClient
       .post("/login", request)
       .then(({ data }) => {
+        console.log(data.token);
+        console.log(data.token);
         setCurrentUser(data.user);
         setUserToken(data.token);
         if (data.user.role === 'manager') {

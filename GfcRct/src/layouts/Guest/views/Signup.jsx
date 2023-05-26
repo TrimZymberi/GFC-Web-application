@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../styles/signup-style.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axiosClient from "../../../axios";
+import axiosClient from "../../../api/axios";
 
 export default function Signup() {
   const [username, setUsername] = useState("");

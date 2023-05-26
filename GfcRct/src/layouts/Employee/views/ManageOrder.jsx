@@ -1,13 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import ManageOrderTable from '../components/ManageOrderTable';
+import ManageOrderSkeleton from './core/MOValidation_skeleton';
+import axiosClient from '../../../api/axios';
+import { useStateContext } from '../../../contexts/ContextProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function ManageOrder() {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { setCurrentUser } = useStateContext();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [validatingUser, setValidatingUser] = useState(true);
+  const navigate = useNavigate();
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setValidatingUser(false);
+    }, 6000);
+
+    axiosClient
+      .get('/me')
+      .then(({ data }) => {
+        clearTimeout(timer);
+        setValidatingUser(false);
+        setCurrentUser(data);
+        if (data.role !== 'employee') {
+          navigate('../');
+        }
+      })
+      .catch(() => {
+        clearTimeout(timer);
+        setValidatingUser(false);
+      });
+
+    return () => {
+      clearTimeout(timer);
     };
+  }, [navigate, setCurrentUser]);
 
+  if (validatingUser) {
+    return <ManageOrderSkeleton />;
+  }
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div className="flex items-center justify-between p-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90 dark:bg-gray-800">

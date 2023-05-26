@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axiosClient from '../../../axios';
+import axiosClient from '../../../../api/axios';
 
 export default function MOLoadingModal_skeleton() {
 

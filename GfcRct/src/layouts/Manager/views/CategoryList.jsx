@@ -1,8 +1,49 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CategoryTable from '../components/CategoryTable'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import ManagerValidationSkeleton from './core/ManagerValidation_skeleton';
+import { useStateContext } from '../../../contexts/ContextProvider';
+import axiosClient from '../../../api/axios';
 
 export default function CategoryList() {
+    const { setCurrentUser, userToken } = useStateContext();
+    const [validatingUser, setValidatingUser] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!userToken) {
+            navigate('../../');
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            setValidatingUser(false);
+        }, 6000);
+
+        axiosClient
+            .get('/me')
+            .then(({ data }) => {
+                clearTimeout(timer);
+                setValidatingUser(false);
+                setCurrentUser(data);
+                if (data.role !== 'manager') {
+                    navigate('../');
+                }
+            })
+            .catch(() => {
+                clearTimeout(timer);
+                setValidatingUser(false);
+            });
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [navigate, setCurrentUser]);
+
+    if (validatingUser) {
+        return <ManagerValidationSkeleton />;
+    }
+
     return (
         <div id="parent">
             <div className="flex justify-between p-1 bg-white">
