@@ -77,19 +77,19 @@ export default function Login() {
         <div className="flex items-center justify-center p-4 opacity-60">
           <title>GFC | Login</title>
 
-          <div className="signup m-10">
+          <div className="signup m-10 hover:cursor-wait">
             <h2 className="mb-3 text-center font-bold text-xl">Login</h2>
             <form>
-              <div className="form-group mb-2">
+              <div className="form-group mb-2 ">
                 <label
                   htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white hover:cursor-wait">
                   Email
                 </label>
                 <input
                   type="email"
                   name="email"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500 hover:cursor-wait"
                   placeholder="Enter email"
                   value={email}
                   disabled
@@ -98,31 +98,30 @@ export default function Login() {
               <div className="form-group mb-2">
                 <label
                   htmlFor="password"
-                  className="block mb-2 text-sm font-medium dark:text-white">
+                  className="block mb-2 text-sm font-medium dark:text-white hover:cursor-wait">
                   Password
                 </label>
                 <input
                   type="password"
                   name="password"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500 hover:cursor-wait"
                   placeholder="Enter password"
+                  value={password}
                   disabled
                 />
               </div>
-              <button disabled type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
+              <button disabled type="submit" className="btn btn-danger w-full mt-2 p-2 btn-signup rounded bg-red-500 text-white font-bold hover:cursor-wait">
                 Logging in
               </button>
 
               <p className="text-center mt-2 mb-3">
-                Already have an account?{" "}
-                <a disabled href="/login" className="text-red-500">
-                  Login
-                </a>
+                Don't have an account yet?{" "}
+                <Link to="/signup" className="text-red-500 hover:text-red-700 underline hover:cursor-wait" >Sign up</Link>
               </p>
               <p className="text-gray-500 text-center">
                 -- -- -- -- -- -- -- or -- -- -- -- -- -- --
               </p>
-              <button disabled type="button" className="btn btnGuest w-full mt-2 p-2 rounded">
+              <button disabled type="button" className="btn btnGuest w-full mt-2 p-2 rounded hover:cursor-wait">
                 CONTINUE AS GUEST
               </button>
             </form>
@@ -174,34 +173,45 @@ export default function Login() {
                 onChange={(ev) => setPassword(ev.target.value)}
               />
             </div>
-            {error.email && (
+            {error.email && error.password && (
               <div class="flex p-2 mt-4 text-sm text-red-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
                 <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
                 <span class="sr-only">Danger</span>
                 <div>
-                  <span class="font-medium">Ensure that these requirements are met:</span>
                   <ul class="mt-1.5 ml-4 list-disc list-inside">
+                    <span class="font-medium">Ensure that these requirements are met:</span>
                     {error.email && <li dangerouslySetInnerHTML={{ __html: error.email }}></li>}
                     {error.password && <li dangerouslySetInnerHTML={{ __html: error.password }}></li>}
+                  </ul>
+                </div>
+              </div>
+            )}
+            {error.other && (
+              <div class="flex p-2 mt-4 text-sm text-red-600 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <span class="sr-only">Danger</span>
+                <div>
+                  <ul class="mt-1.5 ml-4 list-disc list-inside">
+                    <span class="font-medium">Ensure that these requirements are met:</span>
                     {error.other && <li dangerouslySetInnerHTML={{ __html: error.other }}></li>}
                   </ul>
                 </div>
               </div>
             )}
-            <button type="submit" className="btn btn-danger w-full mt-4 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:ring-white">
+            <button type="submit" className="btn btn-danger w-full mt-4 p-2 btn-signup rounded bg-red-500 text-white font-bold focus:cursor-wait">
               Login
             </button>
 
             <p className="text-center mt-2 mb-3">
               Don't have an account yet?{" "}
-              <Link to="/signup" className="text-red-500 hover:text-red-700 underline" >Sign up</Link>
+              <Link to="/signup" className="text-red-500 hover:text-red-700 underline focus:cursor-wait" >Sign up</Link>
             </p>
             <p className="text-gray-500 text-center">
               -- -- -- -- -- -- -- or -- -- -- -- -- -- --
             </p>
-            <button type="button" className="btn btnGuest w-full mt-2 p-2 rounded">
+            <Link type="button" to='../' className="btn text-center btnGuest w-full mt-2 p-2 rounded focus:cursor-wait">
               CONTINUE AS GUEST
-            </button>
+            </Link>
           </form>
         </div>
       </div>

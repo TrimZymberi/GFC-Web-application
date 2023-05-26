@@ -23,6 +23,7 @@ const navLinks = {
     employeeLinks: [
         { to: '/workspace', text: 'Home' },
         { to: '/aboutus', text: 'About' },
+        { to: '/manageorders/page:', text: 'Manage Orders' },
         { to: '/ourlocations', text: 'Our Locations' },
         { to: `/user`, text: `employee` },
         { to: '/logout', text: 'Log out' },
