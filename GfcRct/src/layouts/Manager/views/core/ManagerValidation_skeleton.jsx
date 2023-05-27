@@ -7,9 +7,9 @@ const data = [
         "<p className='text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400'>Welcome to our food delivery management app, where we specialize in serving a plateful of dark humor alongside your managerial responsibilities. Brace yourself for the rollercoaster ride of juggling driver schedules, resolving customer complaints, and surviving the labyrinthine streets. Embrace the chaos, because managing food delivery is where order meets disorder!</p>",
     },
     {
-      header: "<h1 class='mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl'><span class='text-transparent bg-clip-text bg-gradient-to-r to-red-400 animate-pulse from-red-800'>Survive the Gauntlet</span> of Hangry Drivers.</h1>",
+      header: "<h1 class='mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl'><span class='text-transparent bg-clip-text bg-gradient-to-r to-red-400 animate-pulse from-red-800'>Survive the Gauntlet</span> of Hungry Drivers.</h1>",
       paragraph:
-        "<p class='text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400'>Welcome to our food delivery management app, where your survival skills will be put to the test against the most hangry drivers in town. Brace yourself for the relentless demands for more orders, complaints about wrong addresses, and the eternal struggle of finding available parking spaces. It's a battle out there, but with a sprinkle of dark humor, you'll come out as the ultimate manager!</p>"
+        "<p class='text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400'>Welcome to our food delivery management app, where your survival skills will be put to the test against the most hungry drivers in town. Brace yourself for the relentless demands for more orders, complaints about wrong addresses, and the eternal struggle of finding available parking spaces. It's a battle out there, but with a sprinkle of dark humor, you'll come out as the ultimate manager!</p>"
     },
     {
       header: "<h1 class='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>Enter the <span class='underline underline-offset-3 decoration-8 animate-pulse decoration-red-400 dark:decoration-red-600'>Twilight Zone</span> of Food Delivery Management</h1>",

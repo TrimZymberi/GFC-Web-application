@@ -20,7 +20,7 @@ function Dashboard() {
 
         const timer = setTimeout(() => {
             setValidatingUser(false);
-        }, 6000);
+        }, 10000);
 
         axiosClient
             .get('/me')
@@ -29,7 +29,7 @@ function Dashboard() {
                 setValidatingUser(false);
                 setCurrentUser(data);
                 if (data.role !== 'manager') {
-                    navigate('../');
+                    navigate('../../');
                 }
             })
             .catch(() => {

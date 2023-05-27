@@ -18,7 +18,7 @@ export default function CategoryList() {
 
         const timer = setTimeout(() => {
             setValidatingUser(false);
-        }, 6000);
+        }, 10000);
 
         axiosClient
             .get('/me')
@@ -27,7 +27,7 @@ export default function CategoryList() {
                 setValidatingUser(false);
                 setCurrentUser(data);
                 if (data.role !== 'manager') {
-                    navigate('../');
+                    navigate('../../');
                 }
             })
             .catch(() => {

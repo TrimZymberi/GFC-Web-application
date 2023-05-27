@@ -18,7 +18,7 @@ export default function ProductList() {
 
         const timer = setTimeout(() => {
             setValidatingUser(false);
-        }, 6000);
+        }, 10000);
 
         axiosClient
             .get('/me')
@@ -27,7 +27,7 @@ export default function ProductList() {
                 setValidatingUser(false);
                 setCurrentUser(data);
                 if (data.role !== 'manager') {
-                    navigate('../');
+                    navigate('../../');
                 }
             })
             .catch(() => {

@@ -7,38 +7,39 @@ import { useStateContext } from '../../contexts/ContextProvider';
 import axiosClient from '../../api/axios';
 
 export default function EmployeeLayout() {
-    const { setCurrentUser } = useStateContext();
-  const [validatingUser, setValidatingUser] = useState(true);
-  const navigate = useNavigate();
+  // ? More protected routes if needed
+  //   const { setCurrentUser } = useStateContext();
+  // const [validatingUser, setValidatingUser] = useState(true);
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setValidatingUser(false);
-    }, 5000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setValidatingUser(false);
+  //   }, 5000);
 
-    axiosClient
-      .get('/me')
-      .then(({ data }) => {
-        clearTimeout(timer);
-        setValidatingUser(false);
-        setCurrentUser(data);
-        if (data.role !== 'employee') {
-          navigate('../');
-        }
-      })
-      .catch(() => {
-        clearTimeout(timer);
-        setValidatingUser(false);
-      });
+  //   axiosClient
+  //     .get('/me')
+  //     .then(({ data }) => {
+  //       clearTimeout(timer);
+  //       setValidatingUser(false);
+  //       setCurrentUser(data);
+  //       if (data.role !== 'employee') {
+  //         navigate('../');
+  //       }
+  //     })
+  //     .catch(() => {
+  //       clearTimeout(timer);
+  //       setValidatingUser(false);
+  //     });
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [navigate, setCurrentUser]);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [navigate, setCurrentUser]);
 
-  if (validatingUser) {
-    return <MOValidationSkeleton />;
-  }
+  // if (validatingUser) {
+  //   return <MOValidationSkeleton />;
+  // }
     return (
         <div className="relative">
             <div

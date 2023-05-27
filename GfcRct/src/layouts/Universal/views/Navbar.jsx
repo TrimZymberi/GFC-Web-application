@@ -16,7 +16,7 @@ export default function Navbar() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoadingUser(false);
-    }, 6000);
+    }, 10000);
 
     axiosClient
       .get('/me')

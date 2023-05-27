@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import OrderTable from '../components/OrderTable'
 import { useStateContext } from '../../../contexts/ContextProvider';
@@ -18,7 +18,7 @@ export default function OrderList() {
 
       const timer = setTimeout(() => {
         setValidatingUser(false);
-      }, 6000);
+      }, 10000);
   
       axiosClient
         .get('/me')
@@ -27,7 +27,7 @@ export default function OrderList() {
           setValidatingUser(false);
           setCurrentUser(data);
           if (data.role !== 'manager') {
-            navigate('../');
+            navigate('../../');
           }
         })
         .catch(() => {

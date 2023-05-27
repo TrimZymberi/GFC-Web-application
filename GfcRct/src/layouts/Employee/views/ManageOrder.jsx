@@ -6,15 +6,20 @@ import { useStateContext } from '../../../contexts/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 
 export default function ManageOrder() {
-  const { setCurrentUser } = useStateContext();
+  const { setCurrentUser, userToken } = useStateContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [validatingUser, setValidatingUser] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!userToken) {
+        navigate('../../');
+        return;
+    }
+
     const timer = setTimeout(() => {
       setValidatingUser(false);
-    }, 6000);
+    }, 10000);
 
     axiosClient
       .get('/me')
@@ -23,7 +28,7 @@ export default function ManageOrder() {
         setValidatingUser(false);
         setCurrentUser(data);
         if (data.role !== 'employee') {
-          navigate('../');
+          navigate('../../');
         }
       })
       .catch(() => {
