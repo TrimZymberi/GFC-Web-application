@@ -6,24 +6,21 @@ export default function Footer() {
             <div className="mx-auto w-full max-w-screen-xl">
                 <div className="grid grid-cols-2 gap-8 px-4 py-6 lg:py-8 md:grid-cols-4">
                     <div>
-                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Company</h2>
+                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Usefull links</h2>
                         <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                            <li className="mb-4">
-                                <a href="#" className=" hover:underline">About</a>
+                        <li className="mb-4">
+                                <a href="/home" className="hover:underline">Home</a>
                             </li>
                             <li className="mb-4">
-                                <a href="#" className="hover:underline">Careers</a>
+                                <a href='/aboutus' className=" hover:underline">About</a>
                             </li>
                             <li className="mb-4">
-                                <a href="#" className="hover:underline">Brand Center</a>
-                            </li>
-                            <li className="mb-4">
-                                <a href="#" className="hover:underline">Blog</a>
+                                <a href="/ourlocations" className="hover:underline">Our Locations</a>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Help center</h2>
+                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Contact us</h2>
                         <ul className="text-gray-500 dark:text-gray-400 font-medium">
                             <li className="mb-4">
                                 <a href="#" className="hover:underline">Discord Server</a>
@@ -36,20 +33,6 @@ export default function Footer() {
                             </li>
                             <li className="mb-4">
                                 <a href="#" className="hover:underline">Contact Us</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
-                        <ul className="text-gray-500 dark:text-gray-400 font-medium">
-                            <li className="mb-4">
-                                <a href="#" className="hover:underline">Privacy Policy</a>
-                            </li>
-                            <li className="mb-4">
-                                <a href="#" className="hover:underline">Licensing</a>
-                            </li>
-                            <li className="mb-4">
-                                <a href="#" className="hover:underline">Terms &amp; Conditions</a>
                             </li>
                         </ul>
                     </div>
@@ -70,9 +53,25 @@ export default function Footer() {
                             </li>
                         </ul>
                     </div>
+                    <div>
+                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Contact us</h2>
+                        <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                        <li className="mb-4">
+                                Rruga Mulla Idrizi, Gjilan 60000
+                            </li>
+                            <li className="mb-4">
+                               info@gmail.com
+                            </li>
+                            <li className="mb-4">
+                                +383 44-265-568
+                            </li>
+                           
+                        </ul>
+                    </div>
+                    
                 </div>
                 <div className="bg-transparent px-4 py-6 md:flex md:items-center md:justify-between">
-                    <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">© 2023 <a href="https://flowbite.com/">Prese™</a>. All Rights Reserved.
+                    <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">© 2023 <a href="https://flowbite.com/">GFC™</a>. All Rights Reserved.
                     </span>
                     <div className="flex mt-4 space-x-6 sm:justify-center md:mt-0">
                         <a href="#" className="text-gray-400 hover:text-gray-900 dark:hover:text-white">

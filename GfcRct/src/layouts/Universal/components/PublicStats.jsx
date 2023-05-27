@@ -1,6 +1,6 @@
 const stats = [
     { id: 1, name: 'Orders every 24 hours', value: '#120' },
-    { id: 2, name: 'locations and growing', value: '60 nPrese' },
+    { id: 2, name: 'locations and growing', value: '60 nGFC' },
     { id: 3, name: 'New users annually', value: '4,500' },
   ]
   

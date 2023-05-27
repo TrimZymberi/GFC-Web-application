@@ -2,6 +2,7 @@ import React from 'react'
 import ProductDisplay from './ProductDisplay'
 import NewsLetter from '../components/NewsLetter'
 import OfferSlider from '../components/OfferSlider'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
     return (
@@ -32,7 +33,7 @@ export default function Home() {
                             Online Delivery
                         </a>
                         <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                            Learn more <span aria-hidden="true">→</span>
+                        <Link  to='/aboutus' >Learn more  <span aria-hidden="true">→</span></Link>
                         </a>
                     </div>
                 </div>
