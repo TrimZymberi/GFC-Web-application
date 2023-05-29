@@ -14,26 +14,15 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoadingUser(false);
-    }, 10000);
-
     axiosClient
       .get('/me')
       .then(({ data }) => {
-        clearTimeout(timer);
-        setLoadingUser(false);
         setCurrentUser(data);
-        console.log(data);
+        setLoadingUser(false);
       })
       .catch(() => {
-        clearTimeout(timer);
         setLoadingUser(false);
       });
-
-    return () => {
-      clearTimeout(timer);
-    };
   }, []);
 
   if (loadingUser) {

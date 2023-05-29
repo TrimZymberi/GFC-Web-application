@@ -17,28 +17,17 @@ export default function ManageOrder() {
         return;
     }
 
-    const timer = setTimeout(() => {
-      setValidatingUser(false);
-    }, 10000);
-
     axiosClient
       .get('/me')
       .then(({ data }) => {
-        clearTimeout(timer);
-        setValidatingUser(false);
-        setCurrentUser(data);
-        if (data.role !== 'employee') {
-          navigate('../../');
+          setCurrentUser(data);
+          if (data.role !== 'employee') {
+              navigate('../../');
         }
       })
       .catch(() => {
-        clearTimeout(timer);
         setValidatingUser(false);
       });
-
-    return () => {
-      clearTimeout(timer);
-    };
   }, [navigate, setCurrentUser]);
 
   if (validatingUser) {

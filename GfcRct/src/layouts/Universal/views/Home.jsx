@@ -1,10 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductDisplay from './ProductDisplay'
 import NewsLetter from '../components/NewsLetter'
 import OfferSlider from '../components/OfferSlider'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import HomeValidationSkeleton from './skeleton/HomeValidation_skeleton'
+import { useStateContext } from '../../../contexts/ContextProvider'
+import axiosClient from '../../../api/axios'
 
 export default function Home() {
+    const { setCurrentUser, userToken } = useStateContext();
+    const [validatingUser, setValidatingUser] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        axiosClient
+            .get('/me')
+            .then(({ data }) => {
+                setCurrentUser(data);
+                if (data.role === 'manager') {
+                    navigate('/management');
+                }
+                setValidatingUser(false);
+            })
+            .catch(() => {
+                setValidatingUser(false);
+            });
+    }, [navigate, setCurrentUser]);
+
+    if (validatingUser) {
+        return <HomeValidationSkeleton />;
+    }
 
     return (
         <div className='bg-white backdrop-filter backdrop-blur-lg bg-opacity-20'>
@@ -34,7 +59,7 @@ export default function Home() {
                             Online Delivery
                         </a>
                         <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        <Link  to='/aboutus' >Learn more  <span aria-hidden="true">→</span></Link>
+                            <Link to='/aboutus' >Learn more  <span aria-hidden="true">→</span></Link>
                         </a>
                     </div>
                 </div>

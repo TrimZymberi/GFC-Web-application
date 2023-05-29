@@ -16,28 +16,18 @@ export default function ProductList() {
             return;
         }
 
-        const timer = setTimeout(() => {
-            setValidatingUser(false);
-        }, 10000);
-
         axiosClient
             .get('/me')
             .then(({ data }) => {
-                clearTimeout(timer);
-                setValidatingUser(false);
                 setCurrentUser(data);
                 if (data.role !== 'manager') {
                     navigate('../../');
                 }
+                setValidatingUser(false);
             })
             .catch(() => {
-                clearTimeout(timer);
                 setValidatingUser(false);
             });
-
-        return () => {
-            clearTimeout(timer);
-        };
     }, [navigate, setCurrentUser, userToken]);
 
     if (validatingUser) {

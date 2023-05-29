@@ -27,8 +27,6 @@ export default function Login() {
      axiosClient
       .post("/login", request)
       .then(({ data }) => {
-        console.log(data.token);
-        console.log(data.token);
         setCurrentUser(data.user);
         setUserToken(data.token);
         if (data.user.role === 'manager') {
