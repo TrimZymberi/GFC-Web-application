@@ -49,12 +49,9 @@ const data = [
 export default function Chart() {
     return (
      <div>
-      <div>
-                        <h2>Earnings Overview</h2>
-                        <FaElipsisV color='gray' className='cursor-pointer'/>
-                    </div>
+    
         <LineChart
-          width={1150}
+          width={900}
           height={500}
           data={data}
           margin={{

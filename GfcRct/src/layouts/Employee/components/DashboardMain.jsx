@@ -1,6 +1,7 @@
 import React from "react";
 import { FaRegCalendarMinus, FaEllipsisV } from "react-icons/fa";
 import Chart from "./Chart";
+import PieComponent from "./PieComponent";
 
 export default function DashboardMain() {
     return (
@@ -60,8 +61,8 @@ export default function DashboardMain() {
                 </div>
             </div>
             <div className="flex mt-[22px] w-full gap-[30px]">
-                <div className="basisi-[70%]">
-                    <div>
+                <div className="basisi-[70%] bg-white shadow-md cursor-pointer rounded-[4px]">
+                    <div className="bg-[#F8F9FC] flex items-center justify-between py-[15px] border-b-[1px] border-[#EDEDED] mb-[20px]">
                         <h2>Earnings Overview</h2>
                         <FaEllipsisV color='gray' className='cursor-pointer'/>
                     </div>
@@ -69,8 +70,15 @@ export default function DashboardMain() {
                     <Chart />
                     </div>
                 </div>
-                <div className="basisi-[30%]">
-
+                <div className="basisi-[30%] border  bg-white shadow-md cursor-poiter rounded-[4px]">
+                    <div className="bg-[#F8F9FC] flex items-center  justify-between py-[15px] px-[20px] border-b-[3px] border-[#EDEDE]">
+                        <h2>Reveue Resoureses</h2>
+                        <FaEllipsisV color='gray' className='cursor-pointer'/>
+                    </div>
+                    <div >
+                            <PieComponent/>
+                            
+                    </div>
                 </div>
             </div>
         </div>
