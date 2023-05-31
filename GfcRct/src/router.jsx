@@ -23,6 +23,7 @@ import ManageOrder from "./layouts/Employee/views/ManageOrder";
 import OurLocations from "./layouts/Universal/views/OurLocations";
 import OrderList from "./layouts/Manager/views/OrderList"
 import OrderRegister from "./layouts/Manager/components/OrderRegister"
+import DriverDashboard from "./layouts/Employee/views/DriverDashboard";
 
 const router = createBrowserRouter([
     {
@@ -119,13 +120,10 @@ const router = createBrowserRouter([
                 element: <Navigate to="home" />
             },
             {
-                path: 'home',
-                element: <Home />
+                path: 'driver',
+                element: <DriverDashboard />
             },
-            {
-                path: 'aboutus',
-                element: <AboutUs />
-            },
+           
         ]
     },
     {

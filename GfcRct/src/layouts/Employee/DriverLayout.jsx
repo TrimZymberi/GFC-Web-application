@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../Universal/views/Navbar'
 import { Outlet } from 'react-router-dom'
 import Footer from '../Universal/views/Footer'
+import DriverDashboard from './views/DriverDashboard'
 
 export default function DriverLayout() {
     return (
@@ -17,6 +18,7 @@ export default function DriverLayout() {
             />
             <div className="relative z-10">
                 <Navbar />
+                
                 <Outlet />
                 <Footer />
             </div>
