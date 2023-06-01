@@ -5,6 +5,10 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 // import axiosClient from '../../api/axios';
 // import ManagerValidationSkeleton from './views/core/ManagerValidation_skeleton';
 
+
+
+
+
 export default function ManagerLayout() {
   // ? More protected routes if needed
   // const { setCurrentUser, userToken } = useStateContext();
@@ -40,6 +44,8 @@ export default function ManagerLayout() {
   //   return <ManagerValidationSkeleton />;
   // }
 
+
+
   return (
     <div className="relative">
       <div
@@ -57,6 +63,9 @@ export default function ManagerLayout() {
         <Outlet />
       </div>
     </div>
+
+
+
   );
 }
 // }
