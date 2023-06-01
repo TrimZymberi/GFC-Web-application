@@ -24,16 +24,12 @@ const ManagerPage = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title">Welcome to the Manager Page</h1>
-      <div className="section">
-        <h2 className="section-title">Total Delivery Orders</h2>
         <div className="section-content">
           {loading ? 'Loading...' : totalDelivery}
         </div>
-      </div>
-      {/* Other sections of the manager's page go here */}
-    </div>
+      
+      
+    
   );
 };
 

@@ -24,6 +24,7 @@ import OurLocations from "./layouts/Universal/views/OurLocations";
 import OrderList from "./layouts/Manager/views/OrderList"
 import OrderRegister from "./layouts/Manager/components/OrderRegister"
 import DriverDashboard from "./layouts/Employee/views/DriverDashboard";
+import ManagerPage from "./layouts/Manager/components/ManagerPage"
 
 const router = createBrowserRouter([
     {
@@ -165,6 +166,10 @@ const router = createBrowserRouter([
             {
                 path: 'orderList',
                 element: <OrderList />
+            },
+            {
+                path: 'managerPage',
+                element: <ManagerPage />
             },
             {
                 path: 'orderregister',
