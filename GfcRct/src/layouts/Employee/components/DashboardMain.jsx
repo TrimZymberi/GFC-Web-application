@@ -77,10 +77,10 @@ export default function DashboardMain() {
                     </div>
                     <div >
                             <PieComponent/>
-                            
                     </div>
                 </div>
             </div>
+           
         </div>
     );
 }

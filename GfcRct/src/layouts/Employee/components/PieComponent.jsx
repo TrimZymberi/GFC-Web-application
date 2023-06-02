@@ -44,7 +44,7 @@ export default function PieComponent() {
             ))}
           </Pie>
         </PieChart>
-        <div className='grid grid-cols-4'>
+        <div className='grid grid-cols-4 pl-[10px]'>
                 {
                     data.map((item,index)=>(
                         <p key={index} className='cursor-pointer font-bold '>{item.name}</p>
@@ -52,10 +52,10 @@ export default function PieComponent() {
                     ))
                 }
         </div>
-        <div className='grid grid-cols-4 mt-[15px]'>
+        <div className='grid grid-cols-4 mt-[15px] pl-[10px] ml-[10px]'>
                 {
                     COLORS.map((item,index)=>(
-                        <div className='h-[20px] w-[30px]' syle={{backgroundColor:item}} key={index}>
+                        <div className='h-[20px] w-[30px]' style={{backgroundColor:item}} key={index}>
                         </div>
                     ))
                 }
