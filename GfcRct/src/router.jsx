@@ -2,7 +2,6 @@ import {Navigate, createBrowserRouter } from "react-router-dom";
 import GuestLayout from "./layouts/Guest/GuestLayout"
 import CustomerLayout from "./layouts/Customer/CustomerLayout"
 import EmployeeLayout from "./layouts/Employee/EmployeeLayout"
-import DriverLayout from "./layouts/Employee/DriverLayout.jsx"
 import ManagerLayout from "./layouts/Manager/ManagerLayout"
 import GuestHome from "./layouts/Customer/views/Home";
 import CustomerHome from "./layouts/Customer/views/Home";
@@ -24,9 +23,10 @@ import ManageOrder from "./layouts/Employee/views/ManageOrder";
 import OurLocations from "./layouts/Universal/views/OurLocations";
 import OrderList from "./layouts/Manager/views/OrderList"
 import OrderRegister from "./layouts/Manager/components/OrderRegister"
-import DriverDashboard from "./layouts/Employee/views/DriverDashboard";
 import EmployeeDashboard from "./layouts/Employee/views/Dashboard";
 import ManagerPage from "./layouts/Manager/components/ManagerPage"
+import DriverDashboard from "./layouts/Driver/views/DriverDashboard";
+import DriverLayout from "./layouts/Driver/DriverLayout";
 
 const router = createBrowserRouter([
     {
@@ -120,10 +120,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/workdrive',
-                element: <Navigate to="home" />
+                element: <Navigate to="dashboard" />
             },
             {
-                path: 'driver',
+                path: 'dashboard',
                 element: <DriverDashboard />
             },
            
