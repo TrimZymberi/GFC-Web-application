@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import ProductDisplay from './ProductDisplay'
-import NewsLetter from '../components/NewsLetter'
-import OfferSlider from '../components/OfferSlider'
 import { Link, useNavigate } from 'react-router-dom'
-import HomeValidationSkeleton from './skeleton/HomeValidation_skeleton'
-import { useStateContext } from '../../../contexts/ContextProvider'
-import axiosClient from '../../../api/axios'
+import HomeValidationSkeleton from '../../Universal/views/skeleton/HomeValidation_skeleton'
+import { useStateContext } from '../../../contexts/ContextProvider';
+import axiosClient from '../../../api/axios';
+import ProductDisplay from '../../Universal/views/ProductDisplay';
+import OfferSlider from '../../Universal/components/OfferSlider';
+import NewsLetter from '../../Universal/components/NewsLetter';
 
 export default function Home() {
     const { setCurrentUser, userToken } = useStateContext();
@@ -19,8 +19,6 @@ export default function Home() {
                 setCurrentUser(data);
                 if (data.role === 'manager') {
                     navigate('../../management')
-                }else if (data.role === 'customer') {
-                    navigate('../../app')
                 }else if (data.role === 'driver') {
                     navigate('../../workdrive')
                 }else if (data.role === 'employee') {

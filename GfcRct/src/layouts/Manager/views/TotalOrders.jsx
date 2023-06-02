@@ -4,7 +4,7 @@ import ManagerPage from './ManagerPage';
 const App = () => {
   return (
     <div>
-      {/* Other components or content */}
+      Other components or content
       <ManagerPage />
     </div>
   );

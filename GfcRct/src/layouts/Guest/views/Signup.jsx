@@ -14,14 +14,28 @@ export default function Signup() {
   const [submitting, setSubmitting] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationType, setNotificationType] = useState("");
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     if (location.pathname === "/home") {
-      setShowAlert(true);
+      showNotificationWithMessage("You registered successfully. You can now login.", "success");
     }
   }, [location]);
+
+  const showNotificationWithMessage = (message, type) => {
+    setNotificationMessage(message);
+    setNotificationType(type);
+    setShowNotification(true);
+  };
+
+  const closeNotification = () => {
+    setShowNotification(false);
+  };
 
   const signupValidation = (ev) => {
     ev.preventDefault();
@@ -39,7 +53,7 @@ export default function Signup() {
       })
       .then(() => {
         navigate("/");
-        setShowAlert(true);
+        showNotificationWithMessage("You registered successfully. You can now login.", "success");
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.errors) {
@@ -207,13 +221,13 @@ export default function Signup() {
 
   return (
     <div className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20">
-      {showAlert && (
+      {showNotification && (
         <div id="alert-border-1" className="flex p-4 mb-4 text-blue-800 border-t-4 border-blue-300 bg-blue-50 dark:text-blue-400 dark:bg-gray-800 dark:border-blue-800" role="alert">
           <svg className="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path>
           </svg>
           <div className="ml-3 text-sm font-medium">
-            You registered successfully. You can now login <Link to="/login" className="font-semibold underline hover:no-underline">Login</Link>. Join if you want.
+          {notificationMessage} <Link to="/login" className="font-semibold underline hover:no-underline">Login</Link>. Join if you want.
           </div>
           <button type="button" className="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700" data-dismiss-target="#alert-border-1" aria-label="Close">
             <span className="sr-only">Dismiss</span>

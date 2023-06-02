@@ -18,7 +18,6 @@ export default function DriverLayout() {
             />
             <div className="relative z-10">
                 <Navbar />
-                
                 <Outlet />
                 <Footer />
             </div>

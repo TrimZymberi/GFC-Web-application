@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import ProductDisplaySkeleton from '../../components/core/ProductDisplayTab_skeleton'
 
 export default function HomeValidation_skeleton() {
     return (
@@ -54,6 +55,7 @@ export default function HomeValidation_skeleton() {
                     </div>
                 </div>
             </div>
+            <ProductDisplaySkeleton />
         </div>
     )
 }

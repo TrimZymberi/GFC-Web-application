@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../Universal/views/Navbar'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Footer from '../Universal/views/Footer'
-import MOValidationSkeleton from './views/core/MOValidation_skeleton';
-import { useStateContext } from '../../contexts/ContextProvider';
-import axiosClient from '../../api/axios';
 
 export default function EmployeeLayout() {
   // ? More protected routes if needed

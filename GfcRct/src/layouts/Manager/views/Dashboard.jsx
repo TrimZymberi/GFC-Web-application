@@ -22,8 +22,12 @@ function Dashboard() {
             .get('/me')
             .then(({ data }) => {
                 setCurrentUser(data);
-                if (data.role !== 'manager') {
-                    navigate('../../');
+                if (data.role === 'customer') {
+                    navigate('../../app')
+                }else if (data.role === 'driver') {
+                    navigate('../../workdrive')
+                }else if (data.role === 'employee') {
+                    navigate('../../workspace')
                 }
                 setValidatingUser(false);
             })

@@ -4,7 +4,8 @@ import CustomerLayout from "./layouts/Customer/CustomerLayout"
 import EmployeeLayout from "./layouts/Employee/EmployeeLayout"
 import DriverLayout from "./layouts/Employee/DriverLayout.jsx"
 import ManagerLayout from "./layouts/Manager/ManagerLayout"
-import Home from "./layouts/Universal/views/Home";
+import GuestHome from "./layouts/Customer/views/Home";
+import CustomerHome from "./layouts/Customer/views/Home";
 import AboutUs from "./layouts/Universal/views/AboutUs";
 import Login from "./layouts/Guest/views/Login";
 import Signup from "./layouts/Guest/views/Signup";
@@ -24,6 +25,7 @@ import OurLocations from "./layouts/Universal/views/OurLocations";
 import OrderList from "./layouts/Manager/views/OrderList"
 import OrderRegister from "./layouts/Manager/components/OrderRegister"
 import DriverDashboard from "./layouts/Employee/views/DriverDashboard";
+import EmployeeDashboard from "./layouts/Employee/views/Dashboard";
 import ManagerPage from "./layouts/Manager/components/ManagerPage"
 
 const router = createBrowserRouter([
@@ -37,7 +39,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'home',
-                element: <Home />
+                element: <GuestHome />
             },
             {
                 path: 'aboutus',
@@ -67,7 +69,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'home',
-                element: <Home />
+                element: <CustomerHome />
             },
             {
                 path: 'aboutus',
@@ -92,11 +94,11 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/workspace',
-                element: <Navigate to="home" />
+                element: <Navigate to="dashboard" />
             },
             {
-                path: 'home',
-                element: <Home />
+                path: 'dashboard',
+                element: <EmployeeDashboard />
             },
             {
                 path: 'aboutus',
