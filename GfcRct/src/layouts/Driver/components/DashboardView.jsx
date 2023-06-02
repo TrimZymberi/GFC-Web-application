@@ -1,7 +1,9 @@
 import React from 'react';
 import {FaSearch,FaRegBell,FaEnvelope} from 'react-icons/fa'
+import { useStateContext } from '../../../contexts/ContextProvider';
 
 export default function DashboardView() {
+    const{currentUser, }=useStateContext();
   return (
     <div className='flex items-center justify-between bg-[#F9F5F6]  h-[70px] shadow-lg px-[25px]'>
         <div className='flex items-center rounded-[5px]'>
@@ -17,7 +19,7 @@ export default function DashboardView() {
                 <FaEnvelope/>
             </div>
             <div className='flex items-center gap-[15px] relative'>
-                <p>Syarta Pajaziti</p>
+                <p>{currentUser.name}</p>
             </div>
         </div>
     </div>

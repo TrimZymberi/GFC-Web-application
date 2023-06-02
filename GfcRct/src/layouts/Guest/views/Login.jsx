@@ -30,19 +30,19 @@ export default function Login() {
         setCurrentUser(data.user);
         setUserToken(data.token);
         if (data.user.role === 'manager') {
-          Swal.fire(
-            `Hello ${data.user.name}!`,
-            `Welcome back ${data.user.role}.`,
-            'info'
-          )
           navigate('/management');
-        } else if (data.user.role === 'employee' || data.user.role === 'driver') {
           Swal.fire(
             `Hello ${data.user.name}!`,
             `Welcome back ${data.user.role}.`,
             'info'
           )
+        } else if (data.user.role === 'employee' || data.user.role === 'driver') {
           navigate('/workspace');
+          Swal.fire(
+            `Hello ${data.user.name}!`,
+            `Welcome back ${data.user.role}.`,
+            'info'
+          )
         } else if (data.user.role === 'customer') {
           navigate('/app');
         }

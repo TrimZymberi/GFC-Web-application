@@ -12,15 +12,17 @@ export default function ManageOrderTable() {
     const [modalVisible, setModalVisible] = useState(false);
     const [loadingModal, setLoadingModal] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [selectedOrderId, setSelectedOrderId] = useState(null);
-    const [drivers, setDrivers] = useState([]);
     const [orders, setOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(10);
+    const [totalPages, setTotalPages] = useState(0);
+
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [selectedOrderItems, setSelectedOrderItems] = useState([]);
+
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedDriverId, setSelectedDriverId] = useState('');
-    const [currentPage, setCurrentPage] = useState(2);
-    const [ordersPerPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const [drivers, setDrivers] = useState([]);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -29,7 +31,7 @@ export default function ManageOrderTable() {
 
         setCurrentPage(page);
 
-        axiosClient.get(`/orders?page=${page}&perPage=1`)
+        axiosClient.get(`/orders?page=${page}&perPage=10`)
             .then(response => {
                 setOrders(response.data.orders);
                 setLoading(false);
@@ -84,6 +86,17 @@ export default function ManageOrderTable() {
     const closeModal = () => {
         setLoadingModal(false);
         setModalVisible(false);
+    };
+
+    const calculateTotal = (order_items) => {
+        if (!Array.isArray(order_items) || order_items.length === 0) {
+            return 0;
+        }
+
+        return order_items.reduce(
+            (total, order_items) => total + order_items.product.quantity * order_items.product.retail_price,
+            0
+        );
     };
 
     if (loadingModal) {
@@ -196,7 +209,7 @@ export default function ManageOrderTable() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={7}>No orders found.</td>
+                                    <td colSpan={7} className='text-center p-4'><svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>No orders were found.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -231,16 +244,16 @@ export default function ManageOrderTable() {
             });
     };
 
-    const calculateTotal = (order_items) => {
-        if (!Array.isArray(order_items) || order_items.length === 0) {
-            return 0;
-        }
+    // const calculateTotal = (order_items) => {
+    //     if (!Array.isArray(order_items) || order_items.length === 0) {
+    //         return 0;
+    //     }
 
-        return order_items.reduce(
-            (total, order_items) => total + order_items.product.quantity * order_items.product.retail_price,
-            0
-        );
-    };
+    //     return order_items.reduce(
+    //         (total, order_items) => total + order_items.product.quantity * order_items.product.retail_price,
+    //         0
+    //     );
+    // };
 
     const getStatusOptions = (status) => {
         const allStatuses = ["pending", "delivering", "delivered", "canceled"];
@@ -251,7 +264,6 @@ export default function ManageOrderTable() {
             </option>
         ));
     };
-
 
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -363,7 +375,7 @@ export default function ManageOrderTable() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={7}>No orders found.</td>
+                                <td colSpan={7} className='text-center p-4'><svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>No orders were found.</td>
                             </tr>
                         )}
                     </tbody>

@@ -6,37 +6,42 @@ import { useStateContext } from '../../../contexts/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 
 export default function ManageOrder() {
-  const { setCurrentUser, userToken } = useStateContext();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [validatingUser, setValidatingUser] = useState(true);
-  const navigate = useNavigate();
+    const { setCurrentUser, userToken } = useStateContext();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [validatingUser, setValidatingUser] = useState(true);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!userToken) {
-        navigate('../../');
-        return;
+    useEffect(() => {
+        if (!userToken) {
+            navigate('../../');
+            return;
+        }
+
+        axiosClient
+            .get('/me')
+            .then(({ data }) => {
+                setCurrentUser(data);
+                if (data.role === 'manager') {
+                    navigate('../../management')
+                }else if (data.role === 'customer') {
+                    navigate('../../app')
+                }else if (data.role === 'driver') {
+                    navigate('../../workdrive')
+                }
+                setValidatingUser(false);
+            })
+            .catch(() => {
+                setValidatingUser(false);
+            });
+    }, [navigate, setCurrentUser]);
+
+    if (validatingUser) {
+        return <ManageOrderSkeleton />;
     }
 
-    axiosClient
-      .get('/me')
-      .then(({ data }) => {
-          setCurrentUser(data);
-          if (data.role !== 'employee') {
-              navigate('../../');
-        }
-      })
-      .catch(() => {
-        setValidatingUser(false);
-      });
-  }, [navigate, setCurrentUser]);
-
-  if (validatingUser) {
-    return <ManageOrderSkeleton />;
-  }
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div className="flex items-center justify-between p-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90 dark:bg-gray-800">
@@ -130,7 +135,6 @@ export default function ManageOrder() {
                 </div>
             </div>
             <ManageOrderTable />
-            {/* <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} /> */}
         </div>
     )
 }

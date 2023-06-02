@@ -225,7 +225,6 @@ export default function ProductTable() {
         const createdDate = new Date(item.created_at);
         const imageUrl = createBlobURL(item.preview);
         if (loadingData) {
-
             return (
                 <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap">

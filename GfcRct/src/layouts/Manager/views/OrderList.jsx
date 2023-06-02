@@ -6,32 +6,36 @@ import axiosClient from '../../../api/axios';
 import ManagerValidationSkeleton from './core/ManagerValidation_skeleton';
 
 export default function OrderList() {
-    const { setCurrentUser , userToken } = useStateContext();
+    const { setCurrentUser, userToken } = useStateContext();
     const [validatingUser, setValidatingUser] = useState(true);
     const navigate = useNavigate();
-  
+
     useEffect(() => {
         if (!userToken) {
             navigate('../../');
             return;
         }
 
-      axiosClient
-        .get('/me')
-        .then(({ data }) => {
-          setCurrentUser(data);
-          if (data.role !== 'manager') {
-            navigate('../../');
-          }
-          setValidatingUser(false);
-        })
-        .catch(() => {
-          setValidatingUser(false);
-        });
+        axiosClient
+            .get('/me')
+            .then(({ data }) => {
+                setCurrentUser(data);
+                if (data.role === 'customer') {
+                    navigate('../../app')
+                } else if (data.role === 'driver') {
+                    navigate('../../workdrive')
+                } else if (data.role === 'employee') {
+                    navigate('../../workspace')
+                }
+                setValidatingUser(false);
+            })
+            .catch(() => {
+                setValidatingUser(false);
+            });
     }, [navigate, setCurrentUser]);
-  
+
     if (validatingUser) {
-      return <ManagerValidationSkeleton />;
+        return <ManagerValidationSkeleton />;
     }
 
     return (
