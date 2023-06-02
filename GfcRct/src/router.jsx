@@ -25,6 +25,9 @@ import OrderList from "./layouts/Manager/views/OrderList"
 import OrderRegister from "./layouts/Manager/components/OrderRegister"
 import DriverDashboard from "./layouts/Employee/views/DriverDashboard";
 import ManagerPage from "./layouts/Manager/components/ManagerPage"
+import UserList from "./layouts/Manager/views/UserList";
+import UserEdit from "./layouts/Manager/components/UserEdit";
+import UserCreate from "./layouts/Manager/components/UserCreate";
 
 const router = createBrowserRouter([
     {
@@ -175,6 +178,18 @@ const router = createBrowserRouter([
                 path: 'orderregister',
                 element: <OrderRegister />
             },
+            {
+                path: 'userlist',
+                element: <UserList />
+            },
+            {
+                path: 'useredit',
+                element: <UserEdit />
+            },
+            {
+                path: 'usercreate',
+                element: <UserCreate />
+            }
         ]
     }
 ])
