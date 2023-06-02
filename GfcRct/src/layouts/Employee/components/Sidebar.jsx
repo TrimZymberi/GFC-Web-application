@@ -44,7 +44,7 @@ export default function SideBar() {
                     <div className="flex items-center gap-[10px]">
                         <FaRegChartBar color="white" />
                         <p className="text-[14px] leading-[20px] font-normal text-white">
-                            Opcomming orders
+                            Upcomming orders
                         </p>
                     </div>
                     <FaChevronRight color="white" />
