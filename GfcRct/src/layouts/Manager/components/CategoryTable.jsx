@@ -300,10 +300,10 @@ export default function CategoryTable() {
                             Created by
                         </th>
                         <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Edit Product
+                            Edit Category
                         </th>
                         <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Delete Product
+                            Delete Category
                         </th>
                     </tr>
                 </thead>

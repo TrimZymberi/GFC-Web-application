@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function QuickAdd() {
     return (
@@ -32,7 +33,7 @@ export default function QuickAdd() {
                         <p className='text-sm text-white'>You can add your Products here!</p>
                     </div>
                     <button type='button' className='btn-black rounded-md bg-yellow-100 font-bold py-2 px-4 m-2 hover:bg-white shadow-xl'>
-                        Product+
+                    <Link to="../productregister" className='text-black font-bold gap-1 rounded-3xl'>Product+</Link>
                     </button>
                 </div>
             </div>
@@ -43,7 +44,7 @@ export default function QuickAdd() {
                         <p className='text-sm text-white'>You can add your Categories here!</p>
                     </div>
                     <button type='button' className='btn-black rounded-md bg-red-100 font-bold py-2 px-4 hover:bg-white shadow-xl'>
-                        Category+
+                    <Link to="../categoryregister" className='text-black font-bold gap-1 rounded-3xl'> Category+</Link>
                     </button>
                 </div>
             </div>
