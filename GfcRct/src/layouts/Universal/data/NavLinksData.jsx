@@ -14,7 +14,7 @@ const navLinks = {
         { to: '/app', text: 'Home' },
         { to: 'aboutus', text: 'About' },
         { to: 'ourlocations', text: 'Our Locations' },
-        { to: 'orderhistory', text: 'Order History' },
+        { to: `orderhistory/orders?page=${pageNumber}`, text: 'Order History' },
         { to: 'order', text: 'Order' },
         { to: '/logout', text: 'Log out' },
     ],

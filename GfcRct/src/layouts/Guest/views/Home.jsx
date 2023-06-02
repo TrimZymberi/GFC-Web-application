@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import HomeValidationSkeleton from '../../Universal/views/skeleton/HomeValidation_skeleton'
+import HomeValidationSkeleton from '../../Universal/views/core/HomeValidation_skeleton'
 import { useStateContext } from '../../../contexts/ContextProvider';
 import axiosClient from '../../../api/axios';
 import ProductDisplay from '../../Universal/views/ProductDisplay';

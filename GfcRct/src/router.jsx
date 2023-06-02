@@ -84,7 +84,7 @@ const router = createBrowserRouter([
                 element: <OrderInvoice />
             },
             {
-                path: 'orderhistory',
+                path: 'orderhistory/:page',
                 element: <OrderHistory />
             }
         ]

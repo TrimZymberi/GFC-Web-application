@@ -4,7 +4,7 @@ import axiosClient from '../../../api/axios';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import navLinksData from '../data/NavLinksData';
 import Logo from '../images/logo.png';
-import NavbarSkeleton from './skeleton/Navbar_skeleton';
+import NavbarSkeleton from './core/Navbar_skeleton';
 
 export default function Navbar() {
   const { currentUser, userToken, setCurrentUser, setUserToken } = useStateContext();

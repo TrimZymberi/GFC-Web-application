@@ -10,11 +10,20 @@ class OrderController extends Controller
 {
     public function getOrders(Request $request)
     {
-        $perPage = $request->input('perPage', 1);
-        $orders = Order::with('user', 'orderItems.product', 'orderItems')->paginate($perPage);
-    
-        $currentPage = $request->input('page', 1); 
-    
+        $perPage = $request->input('perPage', 10);
+        $userId = $request->input('user_id');
+        $query = Order::with('user', 'orderItems.product', 'orderItems');
+
+        if ($userId) {
+            $query->whereHas('user', function ($q) use ($userId) {
+                $q->where('id', $userId);
+            });
+        }
+
+        $orders = $query->paginate($perPage);
+
+        $currentPage = $request->input('page', 1);
+
         return response()->json([
             'orders' => $orders->items(),
             'current_page' => $currentPage,
@@ -35,6 +44,31 @@ class OrderController extends Controller
         return response()->json(['order' => $order]);
     }
 
+    public function getOrdersbyID(Request $request)
+    {
+        $perPage = $request->input('perPage', 10);
+        $userId = $request->input('user_id');
+        $query = Order::with('user', 'orderItems.product', 'orderItems');
+
+        if ($userId) {
+            $query->whereHas('user', function ($q) use ($userId) {
+                $q->where('id', $userId);
+            });
+        }
+
+        $orders = $query->paginate($perPage);
+
+        $currentPage = $request->input('page', 1);
+
+        return response()->json([
+            'orders' => $orders->items(),
+            'current_page' => $currentPage,
+            'total' => $orders->total(),
+            'per_page' => $orders->perPage(),
+            'last_page' => $orders->lastPage(),
+        ]);
+    }
+
     // public function editOrder(Request $request, $orderId)
     // {
     //     $order = Order::find($orderId);
@@ -51,10 +85,10 @@ class OrderController extends Controller
     //     return response()->json(['message' => 'Order updated successfully']);
     // }
 
-    public function getOrdersI()
-    {
-        $orders = Order::with('user', 'orderItems.product', 'orderItems')->get();
+    // public function getOrdersI()
+    // {
+    //     $orders = Order::with('user', 'orderItems.product', 'orderItems')->get();
 
-        return response()->json(['orders' => $orders]);
-    }
+    //     return response()->json(['orders' => $orders]);
+    // }
 }

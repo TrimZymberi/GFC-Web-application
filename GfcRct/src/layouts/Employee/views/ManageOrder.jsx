@@ -135,7 +135,6 @@ export default function ManageOrder() {
                 </div>
             </div>
             <ManageOrderTable />
-            {/* <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} /> */}
         </div>
     )
 }
