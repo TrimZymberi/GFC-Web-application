@@ -77,7 +77,7 @@ export default function SideBar() {
                 <div className="flex items-center gap-[10px]">
                     <FaRegCalendarAlt color="white" />
                     <p className="text-[14px] leading-[20px] font-normal text-white">
-                        Tables
+                        Calendar
                     </p>
                 </div>
             </div>
