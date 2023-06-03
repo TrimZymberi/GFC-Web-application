@@ -25,6 +25,12 @@ import OrderList from "./layouts/Manager/views/OrderList"
 import OrderRegister from "./layouts/Manager/components/OrderRegister"
 import EmployeeDashboard from "./layouts/Employee/views/Dashboard";
 import ManagerPage from "./layouts/Manager/components/ManagerPage"
+import UserList from "./layouts/Manager/views/UserList"
+import UserEdit from "./layouts/Manager/components/UserEdit"
+import UserCreate from "./layouts/Manager/components/UserCreate"
+import DriverLayout from "./layouts/Driver/DriverLayout"
+import DriverDashboard from "./layouts/Driver/views/DriverDashboard"
+
 
 const router = createBrowserRouter([
     {
