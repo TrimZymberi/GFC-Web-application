@@ -25,18 +25,16 @@ export default function OrderHistoryTable() {
         const urlParams = new URLSearchParams(window.location.search);
         const pageParam = urlParams.get('page');
         const page = parseInt(pageParam) || 1;
-    
         setCurrentPage(page);
-    
+
         axiosClient
             .get(`/orders?page=${page}&perPage=10&user_id=${currentUser.id}`)
             .then(response => {
                 setOrders(response.data.orders);
-                setLoading(false);
-    
                 const totalOrders = response.data.total;
                 const totalPages = Math.ceil(totalOrders / ordersPerPage);
                 setTotalPages(totalPages);
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Failed to fetch orders', error);
@@ -75,12 +73,32 @@ export default function OrderHistoryTable() {
         setModalVisible(false);
     };
 
+    const calculateTotal = (items) => {
+        let total = 0;
+        const productQuantities = {};
+
+        for (let i = 0; i < items.order_items.length; i++) {
+            const item = items.order_items[i];
+            const productId = item.product_id;
+            const quantity = item.quantity;
+            if (productQuantities.hasOwnProperty(productId)) {
+                productQuantities[productId] += quantity;
+            } else {
+                productQuantities[productId] = quantity;
+            }
+            console.log(quantity)
+
+            total += quantity * item.product.retail_price;
+        }
+
+        return total;
+    };
 
     const getStatusText = (status) => {
         switch (status) {
             case 'cancelled':
                 return (
-                    <div className="flex items-center justify-center bg-red-200 rounded-full px-2 text-red-700">
+                    <div className="flex items-center justify-center bg-red-200 rounded-full p-1 px-5 text-red-700">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -98,7 +116,7 @@ export default function OrderHistoryTable() {
                 );
             case 'delivering':
                 return (
-                    <div className="flex items-center justify-center gap-1 bg-lime-200 rounded-full px-2 text-lime-700">
+                    <div className="flex items-center justify-center gap-1 bg-lime-200 rounded-full p-1 px-5 text-lime-700">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-6">
                             <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 116 0h3a.75.75 0 00.75-.75V15z" />
                             <path d="M8.25 19.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0zM15.75 6.75a.75.75 0 00-.75.75v11.25c0 .087.015.17.042.248a3 3 0 015.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 00-3.732-10.104 1.837 1.837 0 00-1.47-.725H15.75z" />
@@ -109,7 +127,7 @@ export default function OrderHistoryTable() {
                 );
             case 'delivered':
                 return (
-                    <div className="flex items-center justify-center bg-green-200 rounded-full px-2 text-green-700">
+                    <div className="flex items-center justify-center bg-green-200 p-1 px-5 rounded-full text-green-700">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -127,7 +145,7 @@ export default function OrderHistoryTable() {
                 );
             case 'pending':
                 return (
-                    <div className="flex items-center justify-center bg-yellow-200 rounded-full px-2 text-yellow-700">
+                    <div className="flex items-center justify-center bg-yellow-200 rounded-full p-1 px-5 text-yellow-700">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -148,57 +166,44 @@ export default function OrderHistoryTable() {
         }
     };
 
-    const calculateTotal = (order_items) => {
-        if (!Array.isArray(order_items) || order_items.length === 0) {
-            return 0;
-        }
 
-        return order_items.reduce(
-            (total, order_items) => total + order_items.product.quantity * order_items.product.retail_price,
-            0
-        );
-    };
-
-    if (loading) {
-        return (
-            <OHTLoadingSkeleton />
-        )
-    }
 
 
     if (loadingModal) {
         return (
-            <div className="relative overflow-x-auto sm:rounded-lg">
+            <div className="relative overflow-x-auto">
                 <div className='grid gap-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-40'>
                     <div className='m-10 grid sm:grid-cols-1 md-grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
                         {orders && orders.length > 0 ? (
                             orders.map((order) => (
-
                                 <div key={order.id} className="bg-white rounded-md shadow-xl backdrop-filter p-5 backdrop-blur-lg bg-opacity-95">
-
                                     <div className="orders-detail">
                                         <div className="grid gap-5 grid-cols-1">
-                                            <div className="grid grid-cols-2 justify-between sm:mt-3">
+                                            <div className="grid grid-cols-2 justify-between">
                                                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-1">
                                                     <p className="text-l font-bold text-gray-700">Order ID</p>
                                                     <p className="text-l font-bold text-gray-700">Date of Placement</p>
                                                     <p className="text-l font-bold text-gray-700">Order Total</p>
                                                 </div>
 
-                                                <div className="grid grid-cols-1 gap-2 sm:mt-3">
+                                                <div className="grid grid-cols-1 gap-2 mt-2">
                                                     <p className="text-xs font-bold text-gray-500">#{order.id}</p>
-                                                    <p className="text-xs font-bold text-gray-500">{order.created_at.toString()}</p>
+                                                    <p className="text-xs font-bold text-gray-500">{new Date(order.created_at).toLocaleString()}</p>
                                                     <p className="text-xs font-bold text-gray-500">55.97EUR</p>
                                                 </div>
                                             </div>
-                                            <div className="flex justify-start sm:justify-end items-center sm:items-end">
-                                                <button
-                                                    onClick={() => openModal(order.id)}
-                                                    type="button"
-                                                    className="focus:outline-none h-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                                                >
-                                                    View Order
-                                                </button>
+                                            <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 items-center justify-center">
+                                                <div>{getStatusText(order.status)}</div>
+
+                                                <div className='flex items-center justify-center'>
+                                                    <button
+                                                        onClick={() => openModal(order.id)}
+                                                        type="button"
+                                                        className=" focus:outline-none h-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm p-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                                    >
+                                                        View Order
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -206,15 +211,10 @@ export default function OrderHistoryTable() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={7}>You haven't made an order yet.</td>
+                                <td colSpan={7} className='font-bold text-center text-red-900'>You haven't made an order yet.</td>
                             </tr>
                         )}
                     </div>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        paginate={paginate}
-                    />
                 </div>
                 <OHTModalSkeleton />
                 <Pagination
@@ -227,54 +227,50 @@ export default function OrderHistoryTable() {
     }
 
     return (
-        <div className="relative overflow-auto sm:rounded-lg">
-            <div className='grid gap-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-40'>
-                <div className='m-10 grid sm:grid-cols-1 md-grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
+        <div className="relative overflow-auto">
+            <div className='grid bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-40'>
+                <div className='m-10 grid sm:grid-cols-2 md-grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
                     {orders && orders.length > 0 ? (
                         orders.map((order) => (
-
                             <div key={order.id} className="bg-white rounded-md shadow-xl backdrop-filter p-5 backdrop-blur-lg bg-opacity-95">
-
                                 <div className="orders-detail">
                                     <div className="grid gap-5 grid-cols-1">
-                                        <div className="grid grid-cols-2 justify-between sm:mt-3">
+                                        <div className="grid grid-cols-2 justify-between">
                                             <div className="grid grid-cols-1 gap-2 sm:grid-cols-1">
                                                 <p className="text-l font-bold text-gray-700">Order ID</p>
                                                 <p className="text-l font-bold text-gray-700">Date of Placement</p>
                                                 <p className="text-l font-bold text-gray-700">Order Total</p>
                                             </div>
 
-                                            <div className="grid grid-cols-1 gap-2 sm:mt-3">
+                                            <div className="grid grid-cols-1 gap-2 mt-2">
                                                 <p className="text-xs font-bold text-gray-500">#{order.id}</p>
-                                                <p className="text-xs font-bold text-gray-500">{order.created_at.toString()}</p>
+                                                <p className="text-xs font-bold text-gray-500">{new Date(order.created_at).toLocaleString()}</p>
                                                 <p className="text-xs font-bold text-gray-500">55.97EUR</p>
                                             </div>
                                         </div>
-                                        <div className="flex justify-start sm:justify-end items-center sm:items-end">
-                                            <button
-                                                onClick={() => openModal(order.id)}
-                                                type="button"
-                                                className="focus:outline-none h-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                                            >
-                                                View Order
-                                            </button>
+                                        <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 items-center justify-center">
+                                            <div>{getStatusText(order.status)}</div>
+
+                                            <div className='flex items-center justify-center'>
+                                                <button
+                                                    onClick={() => openModal(order.id)}
+                                                    type="button"
+                                                    className=" focus:outline-none h-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm p-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                                >
+                                                    View Order
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div >
                         ))
                     ) : (
-                        <tr>
-                            <td colSpan={7}>You haven't made an order yet.</td>
-                        </tr>
+                        <div colSpan={7} className='flex justify-center items-center font-bold text-center'>Hello {`${currentUser.name}`}, You haven't made an order yet.</div>
                     )}
                 </div>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    paginate={paginate}
-                />
             </div>
+
             {modalVisible && (
                 <div
                     id="drawer-swipe"
@@ -335,16 +331,17 @@ export default function OrderHistoryTable() {
                                     </div>
                                 </div>
                             ))}
-
                         {orders && orders.length > 0 ? (
                             orders
                                 .filter((item) => item.id === selectedOrderId)
                                 .map((item) => (
                                     <div key={item.id} className="grid grid-cols-2">
                                         <div className="grid grid-cols-1 border-y-2 gap-2 p-4 border-l-2 items-center">
-                                            <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
-                                                Total of order
-                                            </h5>
+                                            <div className="grid grid-cols-1 gap-2 items-center">
+                                                <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
+                                                    Total of order
+                                                </h5>
+                                            </div>
                                             <h3 className="font-bold text-gray-700">Comment / Request</h3>
                                             <h5 className="text-gray-500 bg-gray-100 border-gray-200 p-1 border-2">
                                                 This is a typical order for this restaurant. If you want
@@ -382,21 +379,34 @@ export default function OrderHistoryTable() {
                                                     Total
                                                 </h5>
                                                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                    {calculateTotal(item).toFixed(2)}EUR
+                                                    {calculateTotal(selectedOrderItems)}EUR
                                                 </p>
+                                            </div>
+                                            <div className="flex items-center justify-center active:scale-105">
+                                                <Link to={`../orderhistory/ordertrack/${item.id}`} className="flex p-1 bg-green-400 gap-1 text-black rounded-lg focus:outline-none focus:shadow-outline-blue" type="button">
+                                                    <p className='text-black'>Track your order</p>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-6">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                                    </svg>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
                                 ))
                         ) : (
                             <tr>
-                                <td colSpan={7}>You havent made an order yet.</td>
+                                <div colSpan={7} className='flex justify-center items-center font-bold text-center text-red-900'>Hello {`${currentUser.name}`}, You haven't made an order yet.</div>
                             </tr>
                         )}
                     </div>
                 </div>
             )}
-
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                paginate={paginate}
+            />
         </div>
     )
 }

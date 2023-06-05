@@ -9,7 +9,7 @@ export default function MOTable_pagination({ currentPage, setCurrentPage, totalP
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <nav className="flex items-center justify-between p-1 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90" aria-label="Table navigation">
+    <nav className="flex items-center justify-between p-1 bg-white shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90" aria-label="Table navigation">
       <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> of <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span></span>
       <ul className="inline-flex items-center -space-x-px">
         <li>

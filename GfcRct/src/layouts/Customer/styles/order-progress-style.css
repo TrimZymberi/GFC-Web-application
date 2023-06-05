@@ -198,71 +198,7 @@ underline {
     justify-content: space-between;
 }
 
-@media screen and (max-width: 520px) {
-    .product-p-paragraph {
-        margin-top: -1rem;
-        font-size: smaller;
-    }
-    .customer-p-details {
-        font-family: "Noto Sans", sans-serif;
-        font-weight: 400;
-        color: #7d748b;
-        text-align: end;
-    }
-    .customer-p-address {
-        font-family: "Noto Sans", sans-serif;
-        font-weight: 600;
-        text-align: end;
-    }
-    .product-p-image {
-        width: 100%;
-        height: auto;
-        align-items: center;
-        border-radius: 20px;
-    }
-    .order-p-tb {
-        border: 1px solid #dee2e6;
-        border-radius: 10px;
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-        background-color: white;
-    }
-    underline {
-        text-align: start;
-        text-decoration: underline;
-    }
-    .reference {
-        font-size: small;
-        font-weight: 600;
-    }
-    .edit-p-centre {
-        display: flex;
-        justify-content: center;
-    }
-    .edit-p-bt {
-        border: none;
-        background-color: transparent;
-        font-weight: 800;
-    }
-    .box-p-edit-bt {
-        display: flex;
-        background-color: transparent;
-        border: 2px solid #adb5bd;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        border-radius: 10px;
-        width: 60%;
-        height: 40px;
-    }
-    .box-p-edit-bt:hover {
-        cursor: pointer;
-    }
-    .box-p-edit-bt:active {
-        scale: 101%;
-    }
-    .box-p-edit-bt:hover {
-        cursor: pointer;
-    }
+@media screen and (max-width: 1024px) {
     /* ^PROGRESS dynamic bar*/
     .progress-box {
         width: 100%;
@@ -309,7 +245,7 @@ underline {
     .progress-item-delivered {
         font-weight: 500;
         flex-direction: row;
-        font-size: smaller;
+        font-size: small;
         justify-content: space-between;
         display: flex;
     }

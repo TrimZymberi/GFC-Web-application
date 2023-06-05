@@ -88,17 +88,6 @@ export default function ManageOrderTable() {
         setModalVisible(false);
     };
 
-    const calculateTotal = (order_items) => {
-        if (!Array.isArray(order_items) || order_items.length === 0) {
-            return 0;
-        }
-
-        return order_items.reduce(
-            (total, order_items) => total + order_items.product.quantity * order_items.product.retail_price,
-            0
-        );
-    };
-
     if (loadingModal) {
         return (
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -231,6 +220,27 @@ export default function ManageOrderTable() {
         )
     }
 
+    const calculateTotal = (items) => {
+        let total = 0;
+        const productQuantities = {};
+
+        for (let i = 0; i < items.order_items.length; i++) {
+            const item = items.order_items[i];
+            const productId = item.product_id;
+            const quantity = item.quantity;
+            if (productQuantities.hasOwnProperty(productId)) {
+                productQuantities[productId] += quantity;
+            } else {
+                productQuantities[productId] = quantity;
+            }
+            console.log(quantity)
+
+            total += quantity * item.product.retail_price;
+        }
+
+        return total;
+    };
+
     const handleStatusChange = (orderId, newStatus) => {
         axiosClient.put(`/orders/${orderId}`, { status: newStatus, driverId: selectedDriverId })
             .then((res) => {
@@ -243,17 +253,6 @@ export default function ManageOrderTable() {
                 console.error('Failed to update order status', error);
             });
     };
-
-    // const calculateTotal = (order_items) => {
-    //     if (!Array.isArray(order_items) || order_items.length === 0) {
-    //         return 0;
-    //     }
-
-    //     return order_items.reduce(
-    //         (total, order_items) => total + order_items.product.quantity * order_items.product.retail_price,
-    //         0
-    //     );
-    // };
 
     const getStatusOptions = (status) => {
         const allStatuses = ["pending", "delivering", "delivered", "canceled"];
@@ -489,7 +488,7 @@ export default function ManageOrderTable() {
                                                     Total
                                                 </h5>
                                                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                    {calculateTotal(item).toFixed(2)}EUR
+                                                    {calculateTotal(selectedOrderItems)}EUR
                                                 </p>
                                             </div>
                                         </div>

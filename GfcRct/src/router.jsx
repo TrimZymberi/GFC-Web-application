@@ -30,6 +30,7 @@ import UserEdit from "./layouts/Manager/components/UserEdit"
 import UserCreate from "./layouts/Manager/components/UserCreate"
 import DriverLayout from "./layouts/Driver/DriverLayout"
 import DriverDashboard from "./layouts/Driver/views/DriverDashboard"
+import OrderTrack from "./layouts/Customer/components/OrderTrack";
 
 
 const router = createBrowserRouter([
@@ -90,7 +91,11 @@ const router = createBrowserRouter([
             {
                 path: 'orderhistory/:page',
                 element: <OrderHistory />
-            }
+            },
+            {
+                path: 'orderhistory/ordertrack/:id',
+                element: <OrderTrack />
+            },
         ]
     }, {
         path: '/workspace',
