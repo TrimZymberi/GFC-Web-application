@@ -63,20 +63,49 @@ export default function DashboardE() {
             <div class="card">
                 <div class="container">
                     <img src="https://images.ctfassets.net/h7j9u4fil4a3/2MAr1IgaU4lkXasDbj7jIK/8555f814361829187eb1a694f369e04e/Bucket_ExtraCrispy_Laying.png?w=520&h=278&q=50&fm=png" alt="" />
-                    <p>image of the order </p>
+               
                     <h4><b>#order #number</b></h4> 
                     <p>Description of the order</p> 
+                    <p>the adress</p>
+                    <p>telephone number</p>
+                    <button className="bg-[#d61f1f] h-[35px] rounded-[10px] text-white flex items-center justify-center px-[30px] cursor-pointer">
+                    Send to driver
+                </button>
+                    
                 </div>
             </div>
 
             <div class="card">
                 <div class="container">
                     <img src="https://images.ctfassets.net/h7j9u4fil4a3/2MAr1IgaU4lkXasDbj7jIK/8555f814361829187eb1a694f369e04e/Bucket_ExtraCrispy_Laying.png?w=520&h=278&q=50&fm=png" alt="" />
-                    <p>image of the order </p>
+                    
                     <h4><b>#order #number</b></h4> 
                     <p>Description of the order</p> 
+                    <p>the adress</p>
+                    <p>telephone number</p>
+                    <button className="bg-[#d61f1f] h-[35px] rounded-[10px] text-white flex items-center justify-center px-[30px] cursor-pointer ">
+                   Send to driver
+                </button>
                 </div>
             </div>  
+
+
+            <div class="card">
+                <div class="container">
+                    <img src="https://images.ctfassets.net/h7j9u4fil4a3/2MAr1IgaU4lkXasDbj7jIK/8555f814361829187eb1a694f369e04e/Bucket_ExtraCrispy_Laying.png?w=520&h=278&q=50&fm=png" alt="" />
+                 
+                    <h4><b>#order #number</b></h4> 
+                    <p>Description of the order</p> 
+                    <p>the adress</p>
+                    <p>telephone number</p>
+                    <button className="bg-[#d61f1f] h-[35px] rounded-[10px] text-white flex items-center justify-center px-[30px] cursor-pointer">
+                  Send to driver
+                </button>
+                </div>
+            </div>  
+
+
+           
            
 
           
