@@ -4,11 +4,11 @@ import axiosClient from '../../../api/axios';
 import Swal from 'sweetalert2';
 import MOTableSkeleton from './core/MOTable_skeleton';
 import MOLoadingModal from './core/MOLoadingModal_skeleton';
-import FoodIcon from '../../Universal/images/vakti1.png';
 import Pagination from './core/MOTable_pagination';
 
 export default function ManageOrderTable() {
     const { currentUser } = useStateContext();
+
     const [modalVisible, setModalVisible] = useState(false);
     const [loadingModal, setLoadingModal] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -16,6 +16,7 @@ export default function ManageOrderTable() {
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
+    const [reloadTable, setReloadTable] = useState(false);
 
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [selectedOrderItems, setSelectedOrderItems] = useState([]);
@@ -43,7 +44,8 @@ export default function ManageOrderTable() {
             .catch(error => {
                 console.error('Failed to fetch orders', error);
             });
-    }, [loading]);
+            setReloadTable(false);
+    }, [reloadTable]);
 
     useEffect(() => {
         axiosClient.get('driverls').then((res) => {
@@ -56,6 +58,8 @@ export default function ManageOrderTable() {
             console.error('Failed to fetch drivers', error);
         });
     }, []);
+
+    // ^ FUNCTIONS
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -88,6 +92,104 @@ export default function ManageOrderTable() {
         setModalVisible(false);
     };
 
+    const calculateTotal = (items) => {
+        let total = 0;
+        const productQuantities = {};
+
+        for (let i = 0; i < items.order_items.length; i++) {
+            const item = items.order_items[i];
+            const productId = item.product_id;
+            const quantity = item.quantity;
+            if (productQuantities.hasOwnProperty(productId)) {
+                productQuantities[productId] += quantity;
+            } else {
+                productQuantities[productId] = quantity;
+            }
+            console.log(quantity)
+
+            total += quantity * item.product.retail_price;
+        }
+
+        return total;
+    };
+
+    const convertImageURL = (items) => {
+        let imageURL = null;
+        const productQuantities = {};
+
+        for (let i = 0; i < items.order_items.length; i++) {
+            const item = items.order_items[i];
+            const productId = item.product_id;
+            const imageURL_raw = item.product.preview;
+            if (productQuantities.hasOwnProperty(productId)) {
+                productQuantities[productId] = imageURL_raw;
+            } else {
+                productQuantities[productId] = imageURL_raw;
+            }
+            imageURL = imageURL_raw.replace('../GfcRct', '');
+            console.log(imageURL)
+        }
+
+        return imageURL;
+    };
+
+    const handleStatusChange = (orderId) => {
+
+        const employeeId = currentUser.id;
+        console.log(currentUser.id)
+        axiosClient
+            .put(`/orders/${orderId}`, { status: selectedStatus, driver_id: selectedDriverId, employee_id: employeeId })
+            .then((res) => {
+                Swal.fire({
+                    icon: "success",
+                    text: res.data.message,
+                });
+                setReloadTable(true);
+            })
+            .catch((error) => {
+                console.error("Failed to update order status", error);
+            });
+    };
+
+    const getStatusOptions = (status) => {
+        const allStatuses = ["pending", "delivering", "delivered", "canceled"];
+        const filteredStatuses = allStatuses.filter((s) => s !== status);
+        return filteredStatuses.map((s) => (
+            <option key={s} value={s} selected={s === status} disabled={s === status}>
+                {s.charAt(0).toUpperCase() + s.slice(1)}
+            </option>
+        ));
+    };
+
+    const getStatusTableColor = (status) => {
+        switch (status) {
+            case 'canceled':
+                return (
+                    <div className='bg-red-400 h-20' >
+                    </div>
+                );
+            case 'delivering':
+                return (
+                    <div className='bg-green-200 h-20' >
+                    </div>
+                );
+            case 'delivered':
+                return (
+                    <div className='bg-green-500 h-20' >
+                    </div>
+                );
+            case 'pending':
+                return (
+                    <div className='bg-yellow-200 h-20' >
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
+    // * LOADERS
+
     if (loadingModal) {
         return (
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -96,12 +198,9 @@ export default function ManageOrderTable() {
                 >
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs border-gray-150 uppercase bg-white">
-                            <tr>
+                            <tr className='bg-white'>
                                 <th scope="col" className="p-4">
-                                    <div className="flex items-center">
-                                        <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                        <label for="checkbox-all-search" className="sr-only">checkbox</label>
-                                    </div>
+
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Order
@@ -124,15 +223,12 @@ export default function ManageOrderTable() {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders && orders.length > 0 ? (
+                            {
                                 orders.map((order) => (
                                     <tr key={order.id} className="bg-white">
                                         <input type="hidden" name="employee_id" value={currentUser.id} />
-                                        <td className="w-4 p-4">
-                                            <div className="flex items-center">
-                                                <input id="checkbox-table-search-3" type="checkbox" className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                                <label for="checkbox-table-search-3" className="sr-only">checkbox</label>
-                                            </div>
+                                        <td>
+                                            {getStatusTableColor(order.status)}
                                         </td>
                                         <td scope="row" className="flex items-center justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <div class="text-center">
@@ -162,7 +258,7 @@ export default function ManageOrderTable() {
                                                 <select
                                                     name="status"
                                                     className="rounded-xl h-8 text-xs text-gray-700 border-none bg-gray-100 focus:outline-none"
-                                                    onSubmit={(e) => setSelectedStatus(order.id, e.target.value)}
+                                                    onChange={(e) => setSelectedStatus(e.target.value)}
                                                 >
                                                     <option value={order.status} disabled selected>{order.status.charAt(0).toUpperCase() + order.status.slice(1)}</option>
                                                 </select>
@@ -173,7 +269,7 @@ export default function ManageOrderTable() {
                                                 <select
                                                     name="status"
                                                     className='rounded-xl h-8 text-xs text-gray-700 outline-none border-none bg-blue-100'
-                                                    onSubmit={(e) => setSelectedDriverId(e.target.value)}>
+                                                    onChange={(e) => setSelectedDriverId(e.target.value)}>
                                                     <option value="" disabled selected>
                                                         Assign to a driver
                                                     </option>
@@ -192,15 +288,14 @@ export default function ManageOrderTable() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <button type='submit' className="font-medium bg-gray-50 p-3 rounded-md hover:bg-gray-200 text-gray-500 dark:text-red-500">Finish</button>
+                                            <button
+                                                type='submit'
+                                                className="font-medium bg-gray-50 p-3 rounded-md hover:bg-gray-200 text-gray-500 dark:text-red-500"
+                                            >Finish</button>
                                         </td>
                                     </tr>
                                 ))
-                            ) : (
-                                <tr>
-                                    <td colSpan={7} className='text-center p-4'><svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>No orders were found.</td>
-                                </tr>
-                            )}
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -220,50 +315,7 @@ export default function ManageOrderTable() {
         )
     }
 
-    const calculateTotal = (items) => {
-        let total = 0;
-        const productQuantities = {};
-
-        for (let i = 0; i < items.order_items.length; i++) {
-            const item = items.order_items[i];
-            const productId = item.product_id;
-            const quantity = item.quantity;
-            if (productQuantities.hasOwnProperty(productId)) {
-                productQuantities[productId] += quantity;
-            } else {
-                productQuantities[productId] = quantity;
-            }
-            console.log(quantity)
-
-            total += quantity * item.product.retail_price;
-        }
-
-        return total;
-    };
-
-    const handleStatusChange = (orderId, newStatus) => {
-        axiosClient.put(`/orders/${orderId}`, { status: newStatus, driverId: selectedDriverId })
-            .then((res) => {
-                Swal.fire({
-                    icon: "success",
-                    text: res.data.message,
-                })
-            })
-            .catch(error => {
-                console.error('Failed to update order status', error);
-            });
-    };
-
-    const getStatusOptions = (status) => {
-        const allStatuses = ["pending", "delivering", "delivered", "canceled"];
-        const filteredStatuses = allStatuses.filter((s) => s !== status);
-        return filteredStatuses.map((s) => (
-            <option key={s} value={s} selected={s === status} disabled={s === status}>
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-            </option>
-        ));
-    };
-
+    // & MAIN
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <div
@@ -271,12 +323,9 @@ export default function ManageOrderTable() {
             >
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs border-gray-150 uppercase bg-white">
-                        <tr>
+                        <tr className='bg-white'>
                             <th scope="col" className="p-4">
-                                <div className="flex items-center">
-                                    <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                    <label for="checkbox-all-search" className="sr-only">checkbox</label>
-                                </div>
+
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Order
@@ -301,13 +350,10 @@ export default function ManageOrderTable() {
                     <tbody>
                         {orders && orders.length > 0 ? (
                             orders.map((order) => (
-                                <tr key={order.id} className="bg-white">
+                                <tr key={order.id} className='bg-white'>
                                     <input type="hidden" name="employee_id" value={currentUser.id} />
-                                    <td className="w-4 p-4">
-                                        <div className="flex items-center">
-                                            <input id="checkbox-table-search-3" type="checkbox" className="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                                            <label for="checkbox-table-search-3" className="sr-only">checkbox</label>
-                                        </div>
+                                    <td>
+                                        {getStatusTableColor(order.status)}
                                     </td>
                                     <td scope="row" className="flex items-center justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="text-center">
@@ -337,7 +383,7 @@ export default function ManageOrderTable() {
                                             <select
                                                 name="status"
                                                 className="rounded-xl h-8 text-xs text-gray-700 border-none bg-gray-100 focus:outline-none"
-                                                onSubmit={(e) => setSelectedStatus(order.id, e.target.value)}
+                                                onChange={(e) => setSelectedStatus(e.target.value)}
                                             >
                                                 <option value={order.status} disabled selected>{order.status.charAt(0).toUpperCase() + order.status.slice(1)}</option>
                                                 {getStatusOptions(order.status)}
@@ -349,7 +395,7 @@ export default function ManageOrderTable() {
                                             <select
                                                 name="status"
                                                 className='rounded-xl h-8 text-xs text-gray-700 outline-none border-none bg-blue-100'
-                                                onSubmit={(e) => setSelectedDriverId(e.target.value)}>
+                                                onChange={(e) => setSelectedDriverId(e.target.value)}>
                                                 <option value="" disabled selected>
                                                     Assign to a driver
                                                 </option>
@@ -368,7 +414,10 @@ export default function ManageOrderTable() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <button type='submit' className="font-medium bg-gray-50 p-3 rounded-md hover:bg-gray-200 text-gray-500 dark:text-red-500">Finish</button>
+                                        <button
+                                            onClick={() => handleStatusChange(order.id)}
+                                            type='submit'
+                                            className="font-medium bg-gray-50 p-3 rounded-md hover:bg-gray-200 text-gray-500 dark:text-red-500">Finish</button>
                                     </td>
                                 </tr>
                             ))
@@ -382,7 +431,6 @@ export default function ManageOrderTable() {
             </div>
             {modalVisible && (
                 <div
-                    // onClick={() => openModal(orders.id)}
                     id="drawer-swipe"
                     className="fixed z-40 w-full overflow-y-auto max-h-screen bg-white border-t-2 border-gray-300 dark:border-gray-700 transition-transform bottom-0 top-90 left-0 right-0"
                     tabIndex="-1"
@@ -408,18 +456,18 @@ export default function ManageOrderTable() {
                         {
                             selectedOrderItems.order_items.map((item) => (
                                 <div key={item.id} className="grid grid-cols-2">
-                                    <div className="grid grid-cols-1 border-y-2 gap-2 p-4 border-l-2 items-center">
-                                        <img
-                                            src={FoodIcon}
-                                            alt="food icon"
-                                            className="w-24 h-24 mx-auto rounded-md"
-                                        />
-                                        <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
-                                            {item.product.name}
-                                        </h5>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                                            {item.product.description}
-                                        </p>
+                                    <div className="grid grid-cols-1 p-4 border-y-2 border-l-2 ">
+                                            <img
+                                                src={convertImageURL(selectedOrderItems)}
+                                                alt="food icon"
+                                                className="w-24 h-24 mx-auto rounded-md shadow-md"
+                                            />
+                                            <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
+                                                {item.product.name}
+                                            </h5>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                                {item.product.description}
+                                            </p>
                                     </div>
                                     <div className="grid grid-cols-1 gap-6 border-y-2 border-r-2 p-4">
                                         <div className="grid grid-cols-2 items-center">
@@ -442,7 +490,7 @@ export default function ManageOrderTable() {
                                 </div>
                             ))}
 
-                        {orders && orders.length > 0 ? (
+                        {
                             orders
                                 .filter((item) => item.id === selectedOrderId)
                                 .map((item) => (
@@ -453,9 +501,7 @@ export default function ManageOrderTable() {
                                             </h5>
                                             <h3 className="font-bold text-gray-700">Comment / Request</h3>
                                             <h5 className="text-gray-500 bg-gray-100 border-gray-200 p-1 border-2">
-                                                This is a typical order for this restaurant. If you want
-                                                something custom or have any specific requests, please let us
-                                                know in the comment section.
+                                                {selectedOrderItems.comment}
                                             </h5>
                                         </div>
                                         <div className="grid grid-cols-1 gap-6 border-y-2 border-r-2 p-4">
@@ -494,13 +540,8 @@ export default function ManageOrderTable() {
                                         </div>
                                     </div>
                                 ))
-                        ) : (
-                            <tr>
-                                <td colSpan={7}>No orders found.</td>
-                            </tr>
-                        )}
+                        }
                     </div>
-
                 </div>
             )}
             <Pagination

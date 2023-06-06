@@ -94,15 +94,18 @@ export default function OHTLoading_skeleton() {
                                         <p className="text-xs font-bold text-gray-500"><div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-20"></div></p>
                                     </div>
                                 </div>
-                                <div className="flex justify-between items-center">
+                                <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 items-center justify-center">
                                     <div>{getStatusText(`pending`)}</div>
-                                    <button
-                                        // onClick={() => openModal(order.id)}
-                                        type="button"
-                                        className="focus:outline-none h-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                                    >
-                                        View Order
-                                    </button>
+
+                                    <div className='flex items-center justify-center'>
+                                        <button
+                                            onClick={() => openModal(order.id)}
+                                            type="button"
+                                            className=" focus:outline-none h-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm p-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                        >
+                                            View Order
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

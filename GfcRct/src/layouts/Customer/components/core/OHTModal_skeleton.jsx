@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function MOLoadingModal_skeleton() {
 
@@ -173,6 +174,15 @@ export default function MOLoadingModal_skeleton() {
                             <p className="text-sm text-gray-500 dark:text-gray-400">
                                 <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-10"></div>
                             </p>
+                        </div>
+                        <div className="flex items-center justify-center active:scale-105">
+                            <Link to={`#`} className="flex p-1 animate-pulse bg-green-400 gap-1 text-white rounded-lg focus:outline-none focus:shadow-outline-blue" type="button">
+                                <p className='text-white'>Track your order</p>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                </svg>
+                            </Link>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import FoodIcon from '../../Universal/images/vakti1.png';
 import { Link } from 'react-router-dom';
 import Pagination from './core/OHT_pagination'
 import { useStateContext } from '../../../contexts/ContextProvider';
@@ -94,6 +93,26 @@ export default function OrderHistoryTable() {
         return total;
     };
 
+    const convertImageURL = (items) => {
+        let imageURL = null;
+        const productQuantities = {};
+
+        for (let i = 0; i < items.order_items.length; i++) {
+            const item = items.order_items[i];
+            const productId = item.product_id;
+            const imageURL_raw = item.product.preview;
+            if (productQuantities.hasOwnProperty(productId)) {
+                productQuantities[productId] = imageURL_raw;
+            } else {
+                productQuantities[productId] = imageURL_raw;
+            }
+            imageURL = imageURL_raw.replace('../GfcRct', '');
+            console.log(imageURL)
+        }
+
+        return imageURL;
+    };
+
     const getStatusText = (status) => {
         switch (status) {
             case 'cancelled':
@@ -167,6 +186,11 @@ export default function OrderHistoryTable() {
     };
 
 
+    if (loading) {
+        return (
+            <OHTLoadingSkeleton />
+        )
+    }
 
 
     if (loadingModal) {
@@ -174,7 +198,7 @@ export default function OrderHistoryTable() {
             <div className="relative overflow-x-auto">
                 <div className='grid gap-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-40'>
                     <div className='m-10 grid sm:grid-cols-1 md-grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2'>
-                        {orders && orders.length > 0 ? (
+                        {
                             orders.map((order) => (
                                 <div key={order.id} className="bg-white rounded-md shadow-xl backdrop-filter p-5 backdrop-blur-lg bg-opacity-95">
                                     <div className="orders-detail">
@@ -209,11 +233,7 @@ export default function OrderHistoryTable() {
                                     </div>
                                 </div >
                             ))
-                        ) : (
-                            <tr>
-                                <td colSpan={7} className='font-bold text-center text-red-900'>You haven't made an order yet.</td>
-                            </tr>
-                        )}
+                        }
                     </div>
                 </div>
                 <OHTModalSkeleton />
@@ -245,7 +265,7 @@ export default function OrderHistoryTable() {
                                             <div className="grid grid-cols-1 gap-2 mt-2">
                                                 <p className="text-xs font-bold text-gray-500">#{order.id}</p>
                                                 <p className="text-xs font-bold text-gray-500">{new Date(order.created_at).toLocaleString()}</p>
-                                                <p className="text-xs font-bold text-gray-500">55.97EUR</p>
+                                                <p className="text-xs font-bold text-gray-500">{calculateTotal(order)}EUR</p>
                                             </div>
                                         </div>
                                         <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 items-center justify-center">
@@ -300,7 +320,7 @@ export default function OrderHistoryTable() {
                                 <div key={item.id} className="grid grid-cols-2">
                                     <div className="grid grid-cols-1 border-y-2 gap-2 p-4 border-l-2 items-center">
                                         <img
-                                            src={FoodIcon}
+                                            src={convertImageURL(selectedOrderItems)}
                                             alt="food icon"
                                             className="w-24 h-24 mx-auto rounded-md"
                                         />
@@ -331,7 +351,7 @@ export default function OrderHistoryTable() {
                                     </div>
                                 </div>
                             ))}
-                        {orders && orders.length > 0 ? (
+                        {
                             orders
                                 .filter((item) => item.id === selectedOrderId)
                                 .map((item) => (
@@ -344,9 +364,7 @@ export default function OrderHistoryTable() {
                                             </div>
                                             <h3 className="font-bold text-gray-700">Comment / Request</h3>
                                             <h5 className="text-gray-500 bg-gray-100 border-gray-200 p-1 border-2">
-                                                This is a typical order for this restaurant. If you want
-                                                something custom or have any specific requests, please let us
-                                                know in the comment section.
+                                                {selectedOrderItems.comment}
                                             </h5>
                                         </div>
                                         <div className="grid grid-cols-1 gap-6 border-y-2 border-r-2 p-4">
@@ -383,8 +401,8 @@ export default function OrderHistoryTable() {
                                                 </p>
                                             </div>
                                             <div className="flex items-center justify-center active:scale-105">
-                                                <Link to={`../orderhistory/ordertrack/${item.id}`} className="flex p-1 bg-green-400 gap-1 text-black rounded-lg focus:outline-none focus:shadow-outline-blue" type="button">
-                                                    <p className='text-black'>Track your order</p>
+                                                <Link to={`../orderhistory/ordertrack/${item.id}`} className="flex p-1 bg-green-400 gap-1 text-white rounded-lg focus:outline-none focus:shadow-outline-blue" type="button">
+                                                    <p className='text-white'>Track your order</p>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-6">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
@@ -394,11 +412,7 @@ export default function OrderHistoryTable() {
                                         </div>
                                     </div>
                                 ))
-                        ) : (
-                            <tr>
-                                <div colSpan={7} className='flex justify-center items-center font-bold text-center text-red-900'>Hello {`${currentUser.name}`}, You haven't made an order yet.</div>
-                            </tr>
-                        )}
+                        }
                     </div>
                 </div>
             )}

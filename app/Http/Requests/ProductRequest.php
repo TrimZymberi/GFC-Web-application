@@ -42,6 +42,7 @@ class ProductRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'preview' => 'nullable|string',
             // 'preview.image' => 'Product image must be an image file.',
             // 'preview.mimes' => 'Product image must be a file of type: jpeg, png, jpg, gif.',
             // 'preview.max' => 'Product image may not be greater than 2mb.',

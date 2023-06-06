@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import FoodIcon from '../../Universal/images/o-t-1.jpg';
+// import FoodIcon from '../../Universal/images/o-t-1.jpg';
 import { useNavigate, useParams } from 'react-router-dom';
 import axiosClient from '../../../api/axios';
 

@@ -69,26 +69,29 @@ class OrderController extends Controller
         ]);
     }
 
-    // public function editOrder(Request $request, $orderId)
-    // {
-    //     $order = Order::find($orderId);
+    public function editOrder(Request $request, $orderId)
+    {
+        $order = Order::find($orderId);
 
-    //     if (!$order) {
-    //         return response()->json(['error' => 'Order not found'], 404);
-    //     }
+        if (!$order) {
+            return response()->json(['error' => 'Order not found'], 404);
+        }
 
-    //     $order->status = $request->input('status');
-    //     $order->employee_id = $request->input('employee_id');
-    //     $order->driver_id = $request->input('driver_id');
-    //     $order->save();
+        $order->status = $request->input('status');
+        $order->employee_id = $request->input('employee_id');
+        $order->driver_id = $request->input('driver_id');
+        $order->save();
+        $orderItems = $request->input('order_items');
+        if (!empty($orderItems)) {
+            foreach ($orderItems as $item) {
+                $orderItem = OrderItem::find($item['id']);
+                if ($orderItem) {
+                    $orderItem->quantity = $item['quantity'];
+                    $orderItem->save();
+                }
+            }
+        }
 
-    //     return response()->json(['message' => 'Order updated successfully']);
-    // }
-
-    // public function getOrdersI()
-    // {
-    //     $orders = Order::with('user', 'orderItems.product', 'orderItems')->get();
-
-    //     return response()->json(['orders' => $orders]);
-    // }
+        return response()->json(['message' => 'Order updated successfully']);
+    }
 }
