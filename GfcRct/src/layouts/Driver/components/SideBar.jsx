@@ -10,6 +10,7 @@ import {
     FaChevronLeft,
     FaBolt
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function SideBar() {
     return (
@@ -44,7 +45,7 @@ export default function SideBar() {
                     <div className="flex items-center gap-[10px]">
                         <FaRegChartBar color="white" />
                         <p className="text-[14px] leading-[20px] font-normal text-white">
-                            Opcomming orders
+                          <Link to='driverorder'>Opcomming orders</Link>  
                         </p>
                     </div>
                     <FaChevronRight color="white" />
