@@ -63,6 +63,8 @@ Route::delete('category/{id}/delete', [CategoryController::class, 'destroy']);
 Route::get('/search', [CategoryController::class, 'search']);
 Route::get('/users/{id}/name', [CategoryController::class, 'getUserName']);
 Route::get('namecat', [CategoryController::class, 'categoryname']);
+Route::get('/orders', [CategoryController::class, 'getCategories'])->name('categories')->middleware('web');
+
 
 Route::get('driverls', [UserController::class, 'drivername']);
 
