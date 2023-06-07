@@ -35,7 +35,7 @@ export default function SideBar() {
                     <div className="flex items-center gap-[10px] ">
                         <FaRegSun color="white" />
                         <p className="text-[14px] leading-[20px] font-normal text-white">
-                            Done Orders
+                          <Link to='doneoreder'> Done Orders</Link> 
                         </p>
                     </div>
                     <FaChevronRight color="white" />
