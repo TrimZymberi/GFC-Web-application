@@ -57,8 +57,19 @@ class ProductController extends Controller
     public function update(ProductRequest $request, int $id)
     {
         $data = $request->validated();
-
+        
         $product = Product::find($id);
+
+        if (isset($data['preview'])) {
+            $relativePath = $this->saveImage($data['preview']);
+            $data['preview'] = $relativePath;
+
+            // If there is an old preview, delete it
+            if ($product->preview) {
+                $absolutePath = public_path($product->preview);
+                File::delete($absolutePath);
+            }
+        }
 
         if (!$product) {
             return response()->json([
@@ -162,31 +173,6 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully',
         ], 200);
     }
-
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-
-        if (!$query) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Please provide a search query'
-            ], 400);
-        }
-
-        $products = Product::where('name', 'LIKE', '%' . $query . '%')
-            ->orWhere('description', 'LIKE', '%' . $query . '%')
-            ->orWhere('retail_price', 'LIKE', '%' . $query . '%')
-            ->orWhere('market_price', 'LIKE', '%' . $query . '%')
-            ->get();
-
-        return response()->json([
-            'status' => 'success',
-            'products' => $products
-        ], 200);
-    }
-
-
 
     public function index()
     {

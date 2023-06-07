@@ -39,7 +39,6 @@ export default function CategoryTable() {
     }, [reloadTable]);
 
     useEffect(() => {
-
         axiosClient.get('category').then(res => {
             if (Array.isArray(res.data.category)) {
                 setCategory(res.data.category);

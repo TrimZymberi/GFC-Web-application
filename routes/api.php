@@ -23,22 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::middleware('auth:sanctum')->group(function() {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 });
-
-
-// user
-Route::get('students', [UserController::class, 'index']);
-Route::post('students1', [UserController::class, 'store']);
-Route::get('students/{id}', [UserController::class, 'show']);
-Route::get('students/{id}/edit', [UserController::class, 'edit']);
-Route::put('students/{id}/edit', [UserController::class, 'update']);
-Route::delete('students/{id}/delete', [UserController::class, 'destroy']);
-
-
 
 Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -63,11 +51,9 @@ Route::get('/users/{id}/name', [CategoryController::class, 'getUserName']);
 Route::get('namecat', [CategoryController::class, 'categoryname']);
 Route::get('/orders', [CategoryController::class, 'getCategories'])->name('categories')->middleware('web');
 
-
 Route::get('driverls', [UserController::class, 'drivername']);
 
 Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders')->middleware('web');
-// Route::get('/orders/:page{id}', [OrderController::class, 'getOrders']);
 Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
 Route::put('/orders/{orderId}', [OrderController::class, 'editOrder']);
 Route::get('ordertrack/{id}', [OrderController::class, 'ordertrack']);

@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-// import FoodIcon from '../../Universal/images/o-t-1.jpg';
 import { useNavigate, useParams } from 'react-router-dom';
 import axiosClient from '../../../api/axios';
 
 function OrderTrack() {
     let { id } = useParams();
-    const navigate = useNavigate();
     const [order, setOrder] = useState({});
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axiosClient
-            .get(`ordertrack${id}`)
+            .get(`ordertrack/${id}`)
             .then((res) => {
                 setOrder(res.data.order);
                 setUser(res.data)
@@ -247,7 +245,7 @@ function OrderTrack() {
                                         <h2 className="text-l font-semibold text-gray-900 m-2 sm:text-2xl">Delivery Updates</h2>
                                         <h3 className='text-xs text-gray-700 mt-1 sm:text-xl m-3'>{order.driver} Contact Us(044 138 813)</h3>
                                     </div>
-                                    <div className="mt-4 sm:mt-0 sm:border-t sm:border-gray-200 pt-4">
+                                    <div className="mt-4 sm:mt-0 sm:border-gray-200 pt-4">
                                         <div className='flex justify-center'>
                                             <div className='rounded-md flex bg-transparent border-2 border-gray-400 items-center justify-center text-center rounded-10 w-20 h-10 sm:w-25 sm:h-10 hover:cursor-pointer active:scale-101'>
                                                 <button id="myButton" className='font-bold text-xl sm:w-50'>Edit</button>

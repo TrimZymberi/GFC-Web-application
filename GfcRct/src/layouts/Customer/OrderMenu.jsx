@@ -9,11 +9,7 @@ export default function OrderMenu() {
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     };
-
-       
-
   
-
 
     const renderProducts = (tabName) => {
         switch (tabName) {

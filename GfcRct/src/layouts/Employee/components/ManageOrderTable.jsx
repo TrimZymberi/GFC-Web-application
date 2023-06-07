@@ -109,6 +109,7 @@ export default function ManageOrderTable() {
 
             total += quantity * item.product.retail_price;
         }
+        total = total.toFixed(2);
 
         return total;
     };

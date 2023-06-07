@@ -168,31 +168,19 @@ class CategoryController extends Controller
         ], 200);
     }
 
-    // public function paginate(Request $request)
-    // {
-    //     $perPage = $request->input('per_page', 10);
-    //     $page = $request->input('page', 1);
-
-    //     $category = Category::paginate($perPage, ['*'], 'page', $page);
-
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'category' => $category
-    //     ], 200);
-    // }
-
     public function index()
     {
-        $category = Category::all();
-        if ($category->count() > 0) {
+        $categories = Category::with('products')->get();
+
+        if ($categories->count() > 0) {
             return response()->json([
                 'status' => 200,
-                'category' => $category
+                'categories' => $categories
             ], 200);
         } else {
             return response()->json([
                 'status' => 404,
-                'message' => 'no category records found'
+                'message' => 'No category records found'
             ], 404);
         }
     }
