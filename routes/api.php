@@ -6,9 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Api\UserController;
-// user crud
 use App\Http\Controllers\CategoryController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -70,3 +68,10 @@ Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders')->mi
 // Route::get('/orders/:page{id}', [OrderController::class, 'getOrders']);
 Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
 Route::put('/orders/{orderId}', [OrderController::class, 'editOrder']);
+
+Route::get('user', [UserController::class, 'index']);
+Route::post('user', [UserController::class, 'create']);
+Route::put('user/{id}/', [UserController::class, 'update']);
+Route::get('user/{id}/edit', [UserController::class, 'edit']);
+Route::get('user/{id}', [UserController::class, 'display']);
+Route::delete('user/{id}/delete', [UserController::class, 'destroy']);

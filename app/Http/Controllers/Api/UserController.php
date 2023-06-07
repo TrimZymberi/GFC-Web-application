@@ -1,162 +1,178 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
 
-use App\Models\Student;
+use App\Http\Requests\UserRequest;
+use App\Models\Product;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function index(){
-        $students = Student::all();
-        if($students->count()>0){
+    /**
+     * Create a new product.
+     *
+     * @param  \App\Http\Requests(UserRequest  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function create(UserRequest $request)
+    {
+        $data = $request->validated();
 
-            return response() -> json([
-                'status'=> 200,
-                'students' => $students
-    
-            ], 200);
-        }else{
-            return response() -> json([
-                'status'=> 404,
-                'message' => 'No records found'
-    
-            ], 404);
-        }
-         
-        
-    }
-
-    public function store(Request $request){
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:191',
-            'course' => 'required|string|max:191',
-            'email' => 'required|email|max:191',
-            'phone' => 'required|digits:10',
+        /** @var \App\Models\User $user */
+        $user = User::create([
+            'preview' => $data['preview'],
+            'name' => $data['name'],
+            'address' => $data['address'],
+            'city' => $data['city'],
+            'password' => bcrypt($data['password']),
         ]);
 
-        if($validator->fails()){
-
-            return response()->json([
-                'status' => 422,
-                'errors' => $validator->messages()
-            ], 422);
-        }else{
-
-            $student = Student::create([
-                'name' => $request->name,
-                'course' => $request->course,
-                'email' => $request->email,
-                'phone' => $request->phone,
-            ]);
-
-            if($student){
-
-                return response()->json([
-                    'status' => 200,
-                    'message' => "Student created Successfully"
-                ], 200);
-            }else{
-
-                return response()->json([
-                    'status' => 500,
-                    'message' => "Something went wrong"
-                ], 500);
-            }
-        }
+        return response([
+            'status' => 'success',
+            'message' => 'User created successfully',
+            'user' => $user,
+        ]);
     }
+    
+    /**
+     * Update an existing product.
+     *
+     * @param  \App\Http\Requests(UserRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UserRequest $request, int $id)
+    {
+        $data = $request->validated();
 
-    public function show($id){
-        $student = Student::find($id);
-        if($student){
+        $user = User::find($id);
 
+        if (!$user) {
             return response()->json([
-                'status' => 200,
-                'student' => $student
-            ], 200);
-        }else{
-            return response()->json([
-                'status' => 404,
-                'message' => "!No student found"
+                'status' => 'error',
+                'message' => 'No user found'
             ], 404);
         }
-    }
 
-
-    public function edit($id){
-        $student = Student::find($id);
-        if($student){
-
+        $user = User::find($data['user_id']);
+        if (!$user) {
             return response()->json([
-                'status' => 200,
-                'student' => $student
-            ], 200);
-        }else{
-            return response()->json([
-                'status' => 404,
-                'message' => "!No student found"
+                'status' => 'error',
+                'message' => 'No user found'
             ], 404);
         }
-    }
 
-    public function update(Request $request, int $id){
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:191',
-            'course' => 'required|string|max:191',
-            'email' => 'required|email|max:191',
-            'phone' => 'required|digits:10',
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'address' => $data['address'],
+            'city' => $data['city'],
+            'password' => bcrypt($data['password']),
         ]);
 
-        if($validator->fails()){
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User updated successfully',
+            'user' => $user
+        ]);
+    }
 
+    /**
+     * Retrieve a specific product for editing.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
             return response()->json([
-                'status' => 422,
-                'errors' => $validator->messages()
-            ], 422);
-        }else{
+                'status' => 'error',
+                'message' => 'No user found'
+            ], 404);
+        }
 
-            $student = Student::find($id);
-            if($student){
+        return response()->json([
+            'status' => 'success',
+            'user' => $user
+        ]);
+    }
 
-                $student->update([
-                    'name' => $request->name,
-                    'course' => $request->course,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                ]);
-                return response()->json([
-                    'status' => 200,
-                    'message' => "Student updated Successfully"
-                ], 200);
-            }else{
+    /**
+     * Retrieve a specific product for display.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function display($id)
+    {
+        $product = Product::find($id);
 
-                return response()->json([
-                    'status' => 404,
-                    'message' => "No student found!"
-                ], 404);
-            }
+        if (!$product) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No product found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'product' => $product
+        ]);
+    }
+
+    /**
+     * Delete a specific product.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No user found'
+            ], 404);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'User deleted successfully',
+        ], 200);
+    }
+
+    public function index()
+    {
+        $user = User::all();
+        if ($user->count() > 0) {
+            return response()->json([
+                'status' => 200,
+                'user' => $user
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'no records found'
+            ], 404);
         }
     }
 
-
-    public function destroy($id){
-        $student = Student::find($id);
-        if($student){
-            
-            $student->delete();
-            return response()->json([
-                'status' => 200,
-                'message' => "Student deleted succesfully"
-            ], 200);
-
-        }else{
-            return response()->json([
-                'status' => 404,
-                'message' => "No student found!"
-            ], 404);
-        }
+    public function drivername()
+    {
+        $drivers = User::where('role', 'driver')->get('name');
+        return response()->json([
+            'status' => 200,
+            'drivers' => $drivers
+        ], 200);
     }
 }
-

@@ -1,109 +1,103 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import UserTable from "../components/UserTable";
+import { Link, useNavigate } from "react-router-dom";
+import ManagerValidationSkeleton from "./core/ManagerValidation_skeleton";
+import { useStateContext } from "../../../contexts/ContextProvider";
+import axiosClient from "../../../api/axios";
 
-
-function UserList() {
-
-    
-    const [students, setStudents]  = useState([]);
+export default function UserList() {
+    const { setCurrentUser, userToken } = useStateContext();
+    const [validatingUser, setValidatingUser] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        
-        axios.get(`http://localhost:8000/api/students`).then(res => {
-            console.log(res);
-            setStudents(res.data.students);
-           
-        });
+        if (!userToken) {
+            navigate("../../");
+            return;
+        }
 
-        
-    }, [])
+        axiosClient
+            .get("/me")
+            .then(({ data }) => {
+                setCurrentUser(data);
+                if (data.role === 'customer') {
+                    navigate('../../app')
+                }else if (data.role === 'driver') {
+                    navigate('../../workdrive')
+                }else if (data.role === 'employee') {
+                    navigate('../../workspace')
+                }
+                setValidatingUser(false);
+            })
+            .catch(() => {
+                setValidatingUser(false);
+            });
+    }, [navigate, setCurrentUser]);
 
-    const deleteStudent = (e, id) => {
-      e.preventDefault();
-
-      const thisClicked = e.currentTarget;
-      thisClicked.innerText = "Deleteing...";
-
-      axios.delete(`http://localhost:8000/api/students/${id}/delete`)
-      .then(res => {
-
-          alert(res.data.message);
-          thisClicked.closest("tr").remove();
-      })
-      .catch(function (error) {
-
-          if(error.response){
-              
-             
-              if(error.response.status === 404){
-                  alert(error.response.data.message)
-                  thisClicked.innerText = "Delete";
-              }
-              if(error.response.status === 500){
-                  alert(error.response.data)
-                  
-              }
-          }
-      });
+    if (validatingUser) {
+        return <ManagerValidationSkeleton />;
     }
 
-    
+    // const handleSearch = () => {
+    //     fetch(`/search?query=${query}`)
+    //         .then((response) => response.json())
+    //         .then((data) => setResults(data));
+    // };
 
-    var studentDetails = "";
-    studentDetails = students.map( (item, index) => {
-        return(
-            <tr key={index}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.course}</td>
-                <td>{item.phone}</td>
-                <td>{item.email}</td>
-
-                <td>
-                    <Link to={`/students/${item.id}/edit`} className="btn btn-success">Edit</Link>
-                </td>
-                <td>
-                  
-                    <button type="button" onClick={(e) => deleteStudent(e, item.id)} className="btn btn-danger">Delete</button>
-                </td>
-            </tr>
-        )
-
-    });
-
-  return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="card">
-          <div className="card-header">
-            <h4>
-              Students List
-              <Link to="/students/create" className="btn btn-primary float-end">Add Student</Link>
-            </h4>
-          </div>
-          <div className="card-body">
-            <table className="table tabel-striped">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Course</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {studentDetails}
-              </tbody>
-            </table>
-          </div>
+    return (
+        <div id="parent">
+            <div className="flex justify-between p-1 bg-white">
+                <div className="p-2">
+                    <Link
+                        to="../userregister"
+                        className="text-black font-bold gap-1 rounded-3xl"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6 hover:scale-110"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 4.5v15m7.5-7.5h-15"
+                            />
+                        </svg>
+                    </Link>
+                </div>
+                <div className="bg-gray w-100">
+                    <button
+                        // onClick={handleSearch}
+                        className="flex gap-2 m-1 bg-gray-200 rounded-xl"
+                        type="submit"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 p-1 m-1 h-6 "
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                            />
+                        </svg>
+                        <input
+                            type="text"
+                            className="border-none rounded-xl focus:outline-none bg-gray-200 py-1"
+                            name="search"
+                            placeholder="Search category"
+                        />
+                    </button>
+                </div>
+            </div>
+            <UserTable />
         </div>
-      </div>
-    </div>
-  );
+    );
 }
-
-export default UserList;

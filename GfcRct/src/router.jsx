@@ -195,7 +195,7 @@ const router = createBrowserRouter([
                 element: <UserEdit />
             },
             {
-                path: 'usercreate',
+                path: 'userregister',
                 element: <UserCreate />
             }
         ]

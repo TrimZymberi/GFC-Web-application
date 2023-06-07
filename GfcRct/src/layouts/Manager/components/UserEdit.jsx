@@ -11,13 +11,13 @@ function UserEdit(){
 
     const [loading, setLoading] = useState(true)
     const [inputErrorList, setInputErrorList] = useState({})
-    const [student, setStudent] =  useState({})
+    const [user, setUser] =  useState({})
 
     useEffect(() => {
         
-        axios.get(`http://localhost:8000/api/students/${id}/edit`).then(res => {
+        axios.get(`http://localhost:8000/api/users/${id}/edit`).then(res => {
             console.log(res);
-            setStudent(res.data.student);
+            setUser(res.data.user);
             setLoading(false);
         })
         .catch(function (error) {
@@ -40,21 +40,21 @@ function UserEdit(){
 
 const handleInput = (e) => {
     e.persist();
-    setStudent({...student, [e.target.name]: e.target.value});
+    setUser({...user, [e.target.name]: e.target.value});
 }
 
-    const updateStudent = (e) => {
+    const updateUser = (e) => {
         e.preventDefault();
 
         setLoading(true);
         const data = {
-            name: student.name,
-            email: student.email,
-            phone: student.phone,
-            course: student.course,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            course: user.course,
         }
 
-        axios.put(`http://localhost:8000/api/students/${id}/edit`, data)
+        axios.put(`http://localhost:8000/api/users/${id}/edit`, data)
         .then(res => {
 
             alert(res.data.message);
@@ -86,10 +86,10 @@ const handleInput = (e) => {
         )
     }
 
-    if(Object.keys(student).length === 0){
+    if(Object.keys(user).length === 0){
         return(
             <div className="container">
-                <h4>No Such Student Id found</h4>
+                <h4>No Such User Id found</h4>
             </div>
         )
     }
@@ -102,39 +102,39 @@ const handleInput = (e) => {
         <div className="card">
           <div className="card-header">
             <h4>
-              Edit Students 
-              <Link to="/students" className="btn btn-danger float-end">
+              Edit Users 
+              <Link to="/users" className="btn btn-danger float-end">
                 Back
                 </Link>
             </h4>
           </div>
           <div className="card-body">
-            <form onSubmit={updateStudent}>
+            <form onSubmit={updateUser}>
                 <div className="mb-3">
                     <label>Name</label>
-                    <input type="text" name="name" value={student.name} onChange={handleInput} className="form-control" />
+                    <input type="text" name="name" value={user.name} onChange={handleInput} className="form-control" />
                     <span className="text-danger">{inputErrorList.name}</span>
                 </div>
                 <div className="mb-3">
                     <label>Email</label>
-                    <input type="text" name="email" value={student.email} onChange={handleInput} className="form-control" />
+                    <input type="text" name="email" value={user.email} onChange={handleInput} className="form-control" />
                     <span className="text-danger">{inputErrorList.email}</span>
 
                 </div>
                 <div className="mb-3">
                     <label>Phone</label>
-                    <input type="text" name="phone" value={student.phone} onChange={handleInput} className="form-control" />
+                    <input type="text" name="phone" value={user.phone} onChange={handleInput} className="form-control" />
                     <span className="text-danger">{inputErrorList.phone}</span>
 
                 </div>
                 <div className="mb-3">
                     <label>Course</label>
-                    <input type="text" name="course" value={student.course} onChange={handleInput} className="form-control" />
+                    <input type="text" name="course" value={user.course} onChange={handleInput} className="form-control" />
                     <span className="text-danger">{inputErrorList.course}</span>
 
                 </div>
                 <div className="mb-3">
-                    <button type="submit" className="btn btn-primary">Update Student</button>
+                    <button type="submit" className="btn btn-primary">Update User</button>
                 </div>
             </form>
           </div>
