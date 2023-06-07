@@ -34,6 +34,7 @@ import OrderTrack from "./layouts/Customer/components/OrderTrack";
 import DriverOrder from "./layouts/Driver/components/DriverOrder";
 import DriverManageOrder from "./layouts/Driver/views/DriverManageOrder";
 import DoneOrders from "./layouts/Driver/components/DoneOrders";
+import Calendar from "./layouts/Driver/components/Calendar";
 
 
 const router = createBrowserRouter([
@@ -145,6 +146,10 @@ const router = createBrowserRouter([
             {
                 path: 'dashboard/doneoreder',
                 element: <DoneOrders />
+            },
+            {
+                path: 'dashboard/calendar',
+                element: <Calendar />
             },
 
            

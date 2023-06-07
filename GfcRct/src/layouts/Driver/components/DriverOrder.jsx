@@ -7,23 +7,23 @@ import MOLoadingModal from './core/MOLoadingModal_skeleton';
 import Pagination from './core/MOTable_pagination';
 
 export default function DriverOrder() {
-    const { currentUser } = useStateContext();
+    // const { currentUser } = useStateContext();
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [loadingModal, setLoadingModal] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [orders, setOrders] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [ordersPerPage] = useState(10);
-    const [totalPages, setTotalPages] = useState(0);
-    const [reloadTable, setReloadTable] = useState(false);
+    // const [modalVisible, setModalVisible] = useState(false);
+    // const [loadingModal, setLoadingModal] = useState(false);
+    // const [loading, setLoading] = useState(true);
+    // const [orders, setOrders] = useState([]);
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const [ordersPerPage] = useState(10);
+    // const [totalPages, setTotalPages] = useState(0);
+    // const [reloadTable, setReloadTable] = useState(false);
 
-    const [selectedOrderId, setSelectedOrderId] = useState(null);
-    const [selectedOrderItems, setSelectedOrderItems] = useState([]);
+    // const [selectedOrderId, setSelectedOrderId] = useState(null);
+    // const [selectedOrderItems, setSelectedOrderItems] = useState([]);
 
-    const [selectedStatus, setSelectedStatus] = useState('');
-    const [selectedDriverId, setSelectedDriverId] = useState('');
-    const [drivers, setDrivers] = useState([]);
+    // const [selectedStatus, setSelectedStatus] = useState('');
+    // const [selectedDriverId, setSelectedDriverId] = useState('');
+    // const [drivers, setDrivers] = useState([]);
 
 
     // ^ FUNCTIONS
