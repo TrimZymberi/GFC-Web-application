@@ -2,14 +2,44 @@ import React, { useEffect, useState } from 'react';
 import axiosClient from '../../../api/axios';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import CategoryTableSelekton from './core/CategoryTable_selekton';
+import MOTable_pagination from '../../Employee/components/core/MOTable_pagination';
 
 export default function CategoryTable() {
     const [loading, setLoading] = useState(true);
     const [loadingName, setLoadingName] = useState(false);
     const [category, setCategory] = useState([]);
     const [users, setUsers] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [categorysPerPage] = useState(10);
+    const [reloadTable, setReloadTable] = useState(false);
+
 
     useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageParam = urlParams.get('page');
+        const page = parseInt(pageParam) || 1;
+
+        setCurrentPage(page);
+
+        axiosClient.get(`/categories?page=${page}&perPage=10`)
+            .then(response => {
+                setOrders(response.data.orders);
+                setLoading(false);
+
+                const totalCategories = response.data.total;
+                const totalPages = Math.ceil(totalCategories / categorysPerPage);
+                setTotalPages(totalPages);
+            })
+            .catch(error => {
+                console.error('Failed to fetch orders', error);
+            });
+            setReloadTable(false);
+    }, [reloadTable]);
+
+    useEffect(() => {
+
         axiosClient.get('category').then(res => {
             if (Array.isArray(res.data.category)) {
                 setCategory(res.data.category);
@@ -17,7 +47,7 @@ export default function CategoryTable() {
                 setCategory([]);
             }
             setLoading(false);
-
+           
             const promises = res.data.category.map(item => {
                 setLoadingName(true);
                 return axiosClient.get(`users/${item.user_id}/name`).then(res => ({
@@ -43,6 +73,18 @@ export default function CategoryTable() {
             setLoadingName(false);
         });
     }, []);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        axiosClient.get(`/categoryes?page=${pageNumber}&perPage=${categorysPerPage}`)
+            .then(response => {
+                setOrders(response.data.current_page);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Failed to fetch orders', error);
+            });
+    };
 
     const deleteCategory = (e, id) => {
         e.preventDefault();
@@ -94,107 +136,7 @@ export default function CategoryTable() {
 
     if (loading) {
         return (
-            <div role="status" className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-95 max-w p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-            </div>
+        <CategoryTableSelekton/>
         )
     }
 
@@ -311,6 +253,11 @@ export default function CategoryTable() {
                     {categoryDetails}
                 </tbody>
             </table >
+            <MOTable_pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                paginate={paginate}
+            />
         </div >
     );
 

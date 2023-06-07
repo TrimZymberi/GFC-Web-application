@@ -58,9 +58,11 @@ Route::put('category/{id}/', [CategoryController::class, 'update']);
 Route::get('category/{id}/edit', [CategoryController::class, 'edit']);
 Route::get('category/{id}', [CategoryController::class, 'show']);
 Route::delete('category/{id}/delete', [CategoryController::class, 'destroy']);
-Route::get('category/search', [CategoryController::class, 'search']);
+Route::get('/search', [CategoryController::class, 'search']);
 Route::get('/users/{id}/name', [CategoryController::class, 'getUserName']);
 Route::get('namecat', [CategoryController::class, 'categoryname']);
+Route::get('/orders', [CategoryController::class, 'getCategories'])->name('categories')->middleware('web');
+
 
 Route::get('driverls', [UserController::class, 'drivername']);
 
@@ -68,6 +70,7 @@ Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders')->mi
 // Route::get('/orders/:page{id}', [OrderController::class, 'getOrders']);
 Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
 Route::put('/orders/{orderId}', [OrderController::class, 'editOrder']);
+Route::get('ordertrack/{id}', [OrderController::class, 'ordertrack']);
 
 Route::get('user', [UserController::class, 'index']);
 Route::post('user', [UserController::class, 'create']);

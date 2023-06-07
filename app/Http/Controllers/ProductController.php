@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Dotenv\Util\Str;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Mime\Part\File;
 
 class ProductController extends Controller
 {
@@ -21,7 +23,11 @@ class ProductController extends Controller
     {
         $data = $request->validated();
 
-        // Retrieve the category ID based on the name
+        if (isset($data['preview'])) {
+            $relativePath = $this->saveImage($data['preview']);
+            $data['preview'] = $relativePath;
+        }
+
         $category = Category::where('name', $data['category_id'])->first();
 
         /** @var \App\Models\Product $product */
@@ -221,4 +227,37 @@ class ProductController extends Controller
         ]);
     }
 
+    private function saveImage($image)
+    {
+        if (preg_match('/^data:image\/(\w+);base64,/', $image, $type)) {
+            $image = substr($image, strpos($image, ',') + 1);
+            $type = strtolower($type[1]); // jpg, png, gif
+
+            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                throw new \Exception('Invalid image type. Only JPG, JPEG, GIF, and PNG are supported.');
+            }
+
+            $image = str_replace(' ', '+', $image);
+            $image = base64_decode($image);
+
+            if ($image === false) {
+                throw new \Exception('Failed to decode base64 image data.');
+            }
+        } else {
+            throw new \Exception('The provided URL does not match the expected format for an image data URL.');
+        }
+
+        $dir = '../GfcRct/src/Universal/images/';
+        $file = \Illuminate\Support\Str::random() . '.' . $type;
+        $absolutePath = public_path($dir);
+        $relativePath = $dir . $file;
+
+        if (!\Illuminate\Support\Facades\File::exists($absolutePath)) {
+            \Illuminate\Support\Facades\File::makeDirectory($absolutePath, 0755, true);
+        }
+
+        file_put_contents($relativePath, $image);
+
+        return $relativePath;
+    }
 }

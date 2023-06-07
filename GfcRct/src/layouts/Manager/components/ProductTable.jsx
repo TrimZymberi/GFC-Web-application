@@ -3,6 +3,7 @@ import ProductListData from '../data/ProductListData';
 import Swal from 'sweetalert2';
 import axiosClient from '../../../api/axios';
 import { Link } from 'react-router-dom';
+import ProductTable_skeleton from './core/ProductTable_skeleton';
 
 export default function ProductTable() {
     const [loading, setLoading] = useState(true);
@@ -13,7 +14,6 @@ export default function ProductTable() {
 
     useEffect(() => {
         axiosClient.get('product').then(res => {
-            console.log(res.data);
             if (Array.isArray(res.data.product)) {
                 setProduct(res.data.product);
             } else {
@@ -68,9 +68,7 @@ export default function ProductTable() {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
-            if (result.isConfirmed)
-            {
-                thisClicked.innerText = 'Deleting...';
+            if (result.isConfirmed) {
                 axiosClient
                     .delete(`product/${id}/delete`)
                     .then((res) => {
@@ -84,6 +82,7 @@ export default function ProductTable() {
                     })
                     .catch(function (error) {
                         if (error.response) {
+                            thisClicked.innerText = 'Deleting...';
                             if (error.response.status === 404) {
                                 Swal.fire({
                                     icon: 'error',
@@ -106,124 +105,14 @@ export default function ProductTable() {
 
     if (loading) {
         return (
-            <div role="status" className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-95 max-w p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-            </div>
+           <ProductTable_skeleton />
         )
     }
-
-    const handleImageError = (e) => {
-        console.error('Image loading error', e);
-        // You can show a fallback image or handle the error gracefully
-    };
-
-    const createBlobURL = (file) => {
-        const blob = new Blob([file], { type: 'application/octet-stream' });
-        return URL.createObjectURL(blob);
-    };
 
     let ProductDetails = '';
     ProductDetails = (product.map((item, index) => {
         const createdDate = new Date(item.created_at);
-        const imageUrl = createBlobURL(item.preview);
+        const imageURL = item.preview.replace('GfcRct', '');
         if (loadingData) {
             return (
                 <tr key={index}>
@@ -233,7 +122,7 @@ export default function ProductTable() {
                     <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                             <div className="flex-shrink-0 h-10 w-10">
-                                <img src={imageUrl} alt="food-image" onError={handleImageError} />
+                                <img src={imageURL} alt="food-image" />
                             </div>
                         </div>
                     </td>
@@ -244,7 +133,7 @@ export default function ProductTable() {
                         <div className="text-sm text-gray-500">{item.description}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">EUR {item.retail_price}€</div>
+                        <div className="text-sm text-gray-500">EUR {item.retail_price}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">EUR {item.market_price}</div>
@@ -294,7 +183,7 @@ export default function ProductTable() {
                 <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                            <img className="h-10 w-10 object-contain" src={imageUrl} alt="food-image" />
+                            <img className="h-10 w-10 object-contain" src={imageURL} alt="food-image" />
                         </div>
                     </div>
                 </td>
@@ -305,7 +194,7 @@ export default function ProductTable() {
                     <div className="text-sm text-gray-500">{item.description}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">EUR {item.retail_price}€</div>
+                    <div className="text-sm text-gray-500">EUR {item.retail_price}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-500">EUR {item.market_price}</div>

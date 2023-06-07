@@ -10,6 +10,7 @@ import {
     FaChevronLeft,
     FaBolt
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function SideBar() {
     return (
@@ -23,7 +24,9 @@ export default function SideBar() {
                 <FaTachometerAlt color="white" />
                 <p className="text-white text-[14px] leading-[24px] font-bold">
                     {" "}
+                    <Link to='/workdrive/dashboard'>
                     Dashboard
+                    </Link>
                 </p>
             </div>
             <div className="pt-[15px] border-b-[1px] border-[#EDEDED]/[0.3]">
@@ -34,7 +37,7 @@ export default function SideBar() {
                     <div className="flex items-center gap-[10px] ">
                         <FaRegSun color="white" />
                         <p className="text-[14px] leading-[20px] font-normal text-white">
-                            Done Orders
+                          <Link to='doneoreder'> Done Orders</Link> 
                         </p>
                     </div>
                     <FaChevronRight color="white" />
@@ -44,7 +47,7 @@ export default function SideBar() {
                     <div className="flex items-center gap-[10px]">
                         <FaRegChartBar color="white" />
                         <p className="text-[14px] leading-[20px] font-normal text-white">
-                            Opcomming orders
+                          <Link to='driverorder'>Opcomming orders</Link>  
                         </p>
                     </div>
                     <FaChevronRight color="white" />
@@ -77,7 +80,7 @@ export default function SideBar() {
                 <div className="flex items-center gap-[10px]">
                     <FaRegCalendarAlt color="white" />
                     <p className="text-[14px] leading-[20px] font-normal text-white">
-                        Calendar
+                        <Link to='calendar'>Calendar</Link>
                     </p>
                 </div>
             </div>
