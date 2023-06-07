@@ -70,3 +70,4 @@ Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders')->mi
 // Route::get('/orders/:page{id}', [OrderController::class, 'getOrders']);
 Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
 Route::put('/orders/{orderId}', [OrderController::class, 'editOrder']);
+Route::get('ordertrack/{id}', [OrderController::class, 'ordertrack']);

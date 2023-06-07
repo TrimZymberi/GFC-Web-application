@@ -94,4 +94,22 @@ class OrderController extends Controller
 
         return response()->json(['message' => 'Order updated successfully']);
     }
+
+    public function ordertrack($id)
+{
+    $order = Order::with('user', 'orderItems.product', 'orderItems')->find($id);
+
+    if (!$order) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No order found'
+        ], 404);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'order' => $order
+    ]);
+}
+    
 }
