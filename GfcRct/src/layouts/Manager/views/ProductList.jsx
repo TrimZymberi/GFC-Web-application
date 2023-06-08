@@ -40,6 +40,7 @@ export default function ProductList() {
     
     return (
         <div id="parent">
+            <title>GFC | Product List</title>
             <div className="flex justify-between p-1 bg-white">
                 <div className="p-2">
                     <Link to="../productregister" className='text-black font-bold gap-1 rounded-3xl'>

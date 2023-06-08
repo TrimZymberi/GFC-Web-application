@@ -42,6 +42,7 @@ function Dashboard() {
 
     return (
         <div className='bg-white backdrop-filter backdrop-blur-lg bg-opacity-20 py-20 px-16'>
+            <title>GFC | Dashboard List</title>
             <StatisticsSummary />
             <StatisticsCharts />
             <QuickAdd />
