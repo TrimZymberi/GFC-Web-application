@@ -1,5 +1,5 @@
 import React from "react";
-import OrderMenu from "./OrderMenu";
+import OrderMenu from "../components/OrderMenu";
 import {CartProvider} from "react-use-cart";
 
 export default function Order() {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosClient from '../../../api/axios';
-import ProductCard from './ProductCard';
-import ProductDisplaySkeleton from './core/ProductDisplayTab_skeleton';
+import Ordercard from './Ordercard';
+import ProductDisplaySkeleton from '../../Universal/components/core/ProductDisplayTab_skeleton';
 export default function CategoryTab() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,7 +30,7 @@ export default function CategoryTab() {
             return selectedCategory.products.map((item, index) => {
                 const imageURL = item.preview.replace('GfcRct', '');
                 return (
-                    <ProductCard
+                    <Ordercard
                         preview={imageURL}
                         name={item.name}
                         description={item.description}

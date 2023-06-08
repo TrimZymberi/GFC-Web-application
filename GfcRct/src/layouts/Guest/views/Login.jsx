@@ -44,14 +44,12 @@ export default function Login() {
             'info'
           )
         } else if (data.user.role === 'customer') {
-          navigate('../workdrive');
+          navigate('../app');
           Swal.fire(
             `Hello ${data.user.name}!`,
             `Welcome back ${data.user.role}.`,
             'info'
           )
-        } else {
-          navigate('../app');
         }
       })
       .catch((error) => {

@@ -14,9 +14,8 @@ import CategoryRegister from "./layouts/Manager/components/CategoryRegister";
 import CategoryEdit from "./layouts/Manager/components/CategoryEdit";
 import ProductList from "./layouts/Manager/views/ProductList";
 import ProductRegister from "./layouts/Manager/components/ProductRegister";
-import { useStateContext } from "./contexts/ContextProvider";
 import ProductEdit from "./layouts/Manager/components/ProductEdit";
-import Order from "./layouts/Customer/Order"
+import Order from "./layouts/Customer/views/Order"
 import OrderInvoice from "./layouts/Customer/views/OrderInvoice";
 import OrderHistory from "./layouts/Customer/views/OrderHistory";
 import ManageOrder from "./layouts/Employee/views/ManageOrder";
