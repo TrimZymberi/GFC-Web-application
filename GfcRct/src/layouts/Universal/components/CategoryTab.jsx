@@ -4,16 +4,16 @@ import ProductCard from './ProductCard';
 import ProductDisplaySkeleton from './core/ProductDisplayTab_skeleton';
 
 export default function CategoryTab() {
-    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedTab, setSelectedTab] = useState('');
-
+    
     useEffect(() => {
         axiosClient
             .get('category')
             .then(response => {
-                setCategories(response.data.categories);
-                setSelectedTab(response.data.categories[0]?.name);
+                setCategories(response.data.category);
+                setSelectedTab(response.data.category[0]?.name);
                 setLoading(false);
             })
             .catch(error => {
@@ -21,16 +21,8 @@ export default function CategoryTab() {
             });
     }, []);
 
-    const handleTabClick = (tabName) => {
-        setSelectedTab(tabName);
-    };
-
-    if (loading) {
-        return <ProductDisplaySkeleton />;
-    }
-
     const renderProducts = (tabName) => {
-        const selectedCategory = categories.find(category => category.name === tabName);
+        const selectedCategory = category.find(category => category.name === tabName);
         if (selectedCategory) {
             return selectedCategory.products.map((item, index) => {
                 const imageURL = item.preview.replace('GfcRct', '');
@@ -49,6 +41,13 @@ export default function CategoryTab() {
         return null;
     };
 
+    const handleTabClick = (tabName) => {
+        setSelectedTab(tabName);
+    };
+
+    if (loading) {
+        return <ProductDisplaySkeleton />;
+    }
 
     return (
         <div>
@@ -59,7 +58,7 @@ export default function CategoryTab() {
                     data-tabs-toggle="#myTabContent"
                     role="tablist"
                 >
-                    {categories.map(category => (
+                    {category.map(category => (
                         <li className="mr-2" role="presentation" key={category.id}>
                             <button
                                 className={`inline-block p-4 border-b-2 rounded-t-lg ${selectedTab === category.name ? 'border-black' : 'border-transparent'
