@@ -50,6 +50,13 @@ export default function Login() {
             `Welcome back ${data.user.role}.`,
             'info'
           )
+        }else if (data.user.role === 'driver') {
+          navigate('../workdrive');
+          Swal.fire(
+            `Hello ${data.user.name}!`,
+            `Welcome back ${data.user.role}.`,
+            'info'
+          )
         }
       })
       .catch((error) => {
