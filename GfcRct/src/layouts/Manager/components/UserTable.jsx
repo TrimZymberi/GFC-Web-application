@@ -20,7 +20,6 @@ export default function UserTable() {
         }).catch(error => {
             console.error(error);
             setLoading(false);
-            // setLoadingData(false);
         });
     }, []);
 
@@ -313,4 +312,3 @@ export default function UserTable() {
     );
 
 }
-

@@ -208,7 +208,7 @@ const router = createBrowserRouter([
                 element: <UserList />
             },
             {
-                path: 'useredit',
+                path: 'userlist/useredit/:id',
                 element: <UserEdit />
             },
             {

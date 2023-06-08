@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Product;
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -23,10 +24,11 @@ class UserController extends Controller
 
         /** @var \App\Models\User $user */
         $user = User::create([
-            'preview' => $data['preview'],
             'name' => $data['name'],
+            'email' => $data['email'],
             'address' => $data['address'],
             'city' => $data['city'],
+            'role' => $data['role'],
             'password' => bcrypt($data['password']),
         ]);
 
@@ -36,15 +38,14 @@ class UserController extends Controller
             'user' => $user,
         ]);
     }
-    
+
     /**
      * Update an existing product.
      *
-     * @param  \App\Http\Requests(UserRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, int $id)
+    public function update(UpdateUserRequest $request, int $id)
     {
         $data = $request->validated();
 
@@ -57,19 +58,12 @@ class UserController extends Controller
             ], 404);
         }
 
-        $user = User::find($data['user_id']);
-        if (!$user) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No user found'
-            ], 404);
-        }
-
         $user->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'address' => $data['address'],
             'city' => $data['city'],
+            'role' => $data['role'],
             'password' => bcrypt($data['password']),
         ]);
 
