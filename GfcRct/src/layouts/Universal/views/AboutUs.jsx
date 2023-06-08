@@ -16,6 +16,7 @@ import PublicStats from '../components/PublicStats';
 export default function AboutUs() {
     return (
         <div className='parent'>
+            <title>GFC | About Us</title>
             <div className="flex flex-wrap justify-center gap-10 py-14 px-14 bg-white backdrop-filter backdrop-blur-lg bg-opacity-20">
             <PublicStats />
                 <div className="bg-white rounded shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-95">

@@ -108,7 +108,8 @@ export default function ProductRegister() {
 
   if (submitting) {
     return (
-      <div><section className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20 p-20">
+      <div><title>GFC | Product Register</title>
+        <section className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20 p-20">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 opacity-80">
           <a href="#" className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
             Administrator Tools

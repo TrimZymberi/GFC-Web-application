@@ -368,7 +368,8 @@ const UserEdit = () => {
     }
 
     return (
-        <div><section className="bg-white p-40 backdrop-filter backdrop-blur-lg bg-opacity-20">
+        <div><title>GFC | User Edit</title>
+            <section className="bg-white p-40 backdrop-filter backdrop-blur-lg bg-opacity-20">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <a href="#" className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
                     Administrator Tools

@@ -5,6 +5,7 @@ import {CartProvider} from "react-use-cart";
 export default function Order() {
     return(
         <div class=' bg-white backdrop-filter '>
+            <title>GFC | Order</title>
             <CartProvider>
             <OrderMenu/>
             </CartProvider>

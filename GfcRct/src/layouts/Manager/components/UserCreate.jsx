@@ -65,7 +65,8 @@ export default function UserCreate() {
 
   if (submitting) {
     return (
-      <div><section className="bg-white p-40 backdrop-filter backdrop-blur-lg bg-opacity-20">
+      <div><title>GFC | Category Edit</title>
+      <section className="bg-white p-40 backdrop-filter backdrop-blur-lg bg-opacity-20">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 opacity-80">
           <a href="#" className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
             Administrator Tools
@@ -199,7 +200,7 @@ export default function UserCreate() {
   }
 
   return (
-    <div><section className="bg-white p-40 backdrop-filter backdrop-blur-lg bg-opacity-20">
+    <div><title>GFC | User Register</title><section className="bg-white p-40 backdrop-filter backdrop-blur-lg bg-opacity-20">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="#" className="flex items-center mb-6 text-4xl font-semibold text-gray-900 dark:text-white">
           Administrator Tools

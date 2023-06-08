@@ -44,6 +44,7 @@ export default function ManageOrder() {
     };
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <title>GFC | Manage Order</title>
             <div className="flex items-center justify-between p-2 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90 dark:bg-gray-800">
                 <div className='flex items-center'>
                     <button

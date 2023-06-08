@@ -53,6 +53,7 @@ export default function EmployeeDashboard() {
 
     return (
         <div className="flex ">
+            <title>GFC | Dashboard</title>
             <div className="basis-[12%] h-[100%] ">
                 <SideBar />
             </div>
