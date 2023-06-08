@@ -1,5 +1,3 @@
-import Logo from '../images/Logo.png';
-
 let pageNumber = 1;
 
 const navLinks = {
