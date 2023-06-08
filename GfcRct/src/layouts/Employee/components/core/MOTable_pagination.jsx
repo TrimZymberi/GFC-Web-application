@@ -10,7 +10,7 @@ export default function MOTable_pagination({ currentPage, setCurrentPage, totalP
 
   return (
     <nav className="flex items-center justify-between p-1 bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90" aria-label="Table navigation">
-      <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> of <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span></span>
+    <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{currentPage}</span> of <span className="font-semibold text-gray-900 dark:text-white">{totalPages}</span></span>
       <ul className="inline-flex items-center -space-x-px">
         <li>
           <Link
@@ -45,6 +45,7 @@ export default function MOTable_pagination({ currentPage, setCurrentPage, totalP
             to={`?page=${currentPage + 1}`}
             disabled={currentPage === totalPages}
             onClick={() => handlePageChange(currentPage + 1)}
+                                                    value={''}
             className={`block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             <span className="sr-only">Next</span>

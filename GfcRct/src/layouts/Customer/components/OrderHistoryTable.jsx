@@ -85,34 +85,18 @@ export default function OrderHistoryTable() {
             } else {
                 productQuantities[productId] = quantity;
             }
-            console.log(quantity)
 
             total += quantity * item.product.retail_price;
         }
 
         total = total.toFixed(2);
-        
+
         return total;
     };
 
-    const convertImageURL = (items) => {
-        let imageURL = null;
-        const productQuantities = {};
-
-        for (let i = 0; i < items.order_items.length; i++) {
-            const item = items.order_items[i];
-            const productId = item.product_id;
-            const imageURL_raw = item.product.preview;
-            if (productQuantities.hasOwnProperty(productId)) {
-                productQuantities[productId] = imageURL_raw;
-            } else {
-                productQuantities[productId] = imageURL_raw;
-            }
-            imageURL = imageURL_raw.replace('../GfcRct', '');
-            console.log(imageURL)
-        }
-
-        return imageURL;
+    let convertImageURL = (items) => {
+        const imageURL = items.replace('../GfcRct', '');
+        return imageURL
     };
 
     const getStatusText = (status) => {
@@ -215,7 +199,7 @@ export default function OrderHistoryTable() {
                                                 <div className="grid grid-cols-1 gap-2 mt-2">
                                                     <p className="text-xs font-bold text-gray-500">#{order.id}</p>
                                                     <p className="text-xs font-bold text-gray-500">{new Date(order.created_at).toLocaleString()}</p>
-                                                    <p className="text-xs font-bold text-gray-500">55.97EUR</p>
+                                                    <p className="text-xs font-bold text-gray-500">{calculateTotal(order)}EUR</p>
                                                 </div>
                                             </div>
                                             <div className="grid xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 items-center justify-center">
@@ -322,7 +306,7 @@ export default function OrderHistoryTable() {
                                 <div key={item.id} className="grid grid-cols-2">
                                     <div className="grid grid-cols-1 border-y-2 gap-2 p-4 border-l-2 items-center">
                                         <img
-                                            src={convertImageURL(selectedOrderItems)}
+                                            src={convertImageURL(item.product.preview)}
                                             alt="food icon"
                                             className="w-24 h-24 mx-auto rounded-md"
                                         />

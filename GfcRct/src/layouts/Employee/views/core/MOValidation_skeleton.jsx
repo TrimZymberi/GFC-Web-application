@@ -17,14 +17,14 @@ const data = [
             "<p class='text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400'>Step into a dimension where time slows down, addresses become unfindable, and orders mysteriously vanish. Our food delivery service is a thrilling adventure filled with unexpected twists and turns. But fear not, for our dark humor will guide you through this enigmatic journey.</p>"
     },
     {
-        header: "<h1 class='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>Unlock the Secrets of <span class='text-red-600 animate-pulse dark:text-red-500'>Food Delivery Mayhem</span> CRM.</h1>",
+        header: "<h1 className='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>Unlock the Secrets of <span class='text-red-600 animate-pulse dark:text-red-500'>Food Delivery Mayhem</span> CRM.</h1>",
         paragraph:
             "<p class='text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400'>Unravel the mysteries of food delivery chaos with us. As you navigate through the labyrinthine streets, battle traffic, and encounter unique customer requests, our dark humor will be your guiding light. Prepare to unlock the secrets of the culinary universe!</p>"
     },
     {
         header: "<h1 className='mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white'>Dive into the <mark class='animate-pulse px-2 text-white bg-red-600 rounded dark:bg-red-500'>Abyss of Delivery</mark> Insanity</h1>",
         paragraph:
-            "<p className='Join us on a rollercoaster ride into the depths of food delivery insanity. As you plunge into the abyss of long shifts, wrong addresses, and quirky customer interactions, our dark humor will be your lifeline. Embrace the madness and come out with stories to tell!</p>",
+            "<p className='text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400'>Join us on a rollercoaster ride into the depths of food delivery insanity. As you plunge into the abyss of long shifts, wrong addresses, and quirky customer interactions, our dark humor will be your lifeline. Embrace the madness and come out with stories to tell!</p>",
     },
 ];
 
@@ -40,6 +40,7 @@ export default function MOValidation_skeleton() {
 
     return (
         <div className='flex justify-center items-center bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-90'>
+            <title>GFC | Authenticating</title>
             <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
                 <div className="text-center">
                     <div className="mt-10  gap-x-6">

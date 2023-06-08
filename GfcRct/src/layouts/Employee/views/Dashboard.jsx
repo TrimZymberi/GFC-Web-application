@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SideBar from "../components/Sidebar";
-import DashboardView from "../components/DasgboardView";
+import DashboardView from "../components/DashboardView";
 import DashboardMain from "../components/DashboardMain";
 import axiosClient from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
@@ -59,10 +59,8 @@ export default function EmployeeDashboard() {
             </div>
             <div className="basis-[88%] border">
                 <DashboardView />
-
                 <DashboardMain />
             </div>
-
             <div></div>
         </div>
     );
