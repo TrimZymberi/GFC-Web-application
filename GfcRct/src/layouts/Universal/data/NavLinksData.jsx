@@ -31,7 +31,7 @@ const navLinks = {
         { to: '/management', text: 'Dashboard' },
         { to: 'userlist', text: 'User List' },
         { to: 'productlist', text: 'Product List' },
-        { to: 'categorylist', text: 'Category List' },
+        { to: `categorylist/category?page=${pageNumber}`, text: 'Category List' },
         { to: 'orderList', text: 'Order List' },
         { to: '/logout', text: 'Log out' },
     ]

@@ -35,6 +35,8 @@ import DriverOrder from "./layouts/Driver/components/DriverOrder";
 import DriverManageOrder from "./layouts/Driver/views/DriverManageOrder";
 import DoneOrders from "./layouts/Driver/components/DoneOrders";
 import Calendar from "./layouts/Driver/components/Calendar";
+import Checkout1 from "./layouts/Customer/components/Checkout1";
+import Checkout from "./layouts/Customer/components/Checkout";
 
 
 const router = createBrowserRouter([
@@ -99,6 +101,14 @@ const router = createBrowserRouter([
             {
                 path: 'orderhistory/ordertrack/:id',
                 element: <OrderTrack />
+            },
+            {
+                path: 'checkout',
+                element: <Checkout />
+            },
+            {
+                path: 'checkout1',
+                element: <Checkout1 />
             },
         ]
     }, {
@@ -168,7 +178,7 @@ const router = createBrowserRouter([
                 element: <Dashboard />
             },
             {
-                path: 'categorylist',
+                path: 'categorylist/:page',
                 element: <CategoryList />
             },
             {
