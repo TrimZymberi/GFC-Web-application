@@ -35,8 +35,8 @@ import DriverOrder from "./layouts/Driver/components/DriverOrder";
 import DriverManageOrder from "./layouts/Driver/views/DriverManageOrder";
 import DoneOrders from "./layouts/Driver/components/DoneOrders";
 import Calendar from "./layouts/Driver/components/Calendar";
-import Checkout1 from "./layouts/Customer/components/Checkout1";
-import Checkout from "./layouts/Customer/components/Checkout";
+import Checkout from "./layouts/Customer/components/Chechout";
+
 
 
 const router = createBrowserRouter([
@@ -106,10 +106,7 @@ const router = createBrowserRouter([
                 path: 'checkout',
                 element: <Checkout />
             },
-            {
-                path: 'checkout1',
-                element: <Checkout1 />
-            },
+           
         ]
     }, {
         path: '/workspace',
