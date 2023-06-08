@@ -168,31 +168,19 @@ class CategoryController extends Controller
         ], 200);
     }
 
-    // public function paginate(Request $request)
-    // {
-    //     $perPage = $request->input('per_page', 10);
-    //     $page = $request->input('page', 1);
-
-    //     $category = Category::paginate($perPage, ['*'], 'page', $page);
-
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'category' => $category
-    //     ], 200);
-    // }
-
     public function index()
     {
-        $category = Category::all();
-        if ($category->count() > 0) {
+        $categories = Category::with('products')->get();
+
+        if ($categories->count() > 0) {
             return response()->json([
                 'status' => 200,
-                'category' => $category
+                'categories' => $categories
             ], 200);
         } else {
             return response()->json([
                 'status' => 404,
-                'message' => 'no category records found'
+                'message' => 'No category records found'
             ], 404);
         }
     }
@@ -233,46 +221,13 @@ class CategoryController extends Controller
     public function getCategories(Request $request)
     {
         $perPage = $request->input('perPage', 10);
-        $userId = $request->input('user_id');
-        $query = Category::with('user', 'category');
 
-        if ($userId) {
-            $query->whereHas('user', function ($q) use ($userId) {
-                $q->where('id', $userId);
-            });
-        }
-
-        $categories = $query->paginate($perPage);
+        $categories = Category::paginate($perPage);
 
         $currentPage = $request->input('page', 1);
 
         return response()->json([
             'categories' => $categories->items(),
-            'current_page' => $currentPage,
-            'total' => $categories->total(),
-            'per_page' => $categories->perPage(),
-            'last_page' => $categories->lastPage(),
-        ]);
-    }
-
-    public function geCategoriesbyID(Request $request)
-    {
-        $perPage = $request->input('perPage', 10);
-        $userId = $request->input('user_id');
-        $query = Order::with('user', 'category');
-
-        if ($userId) {
-            $query->whereHas('user', function ($q) use ($userId) {
-                $q->where('id', $userId);
-            });
-        }
-
-        $categories = $query->paginate($perPage);
-
-        $currentPage = $request->input('page', 1);
-
-        return response()->json([
-            'orders' => $categories->items(),
             'current_page' => $currentPage,
             'total' => $categories->total(),
             'per_page' => $categories->perPage(),

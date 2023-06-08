@@ -1,51 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Universal/views/Navbar';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-// import { useStateContext } from '../../contexts/ContextProvider';
-// import axiosClient from '../../api/axios';
-// import ManagerValidationSkeleton from './views/core/ManagerValidation_skeleton';
-
-
-
-
 
 export default function ManagerLayout() {
-  // ? More protected routes if needed
-  // const { setCurrentUser, userToken } = useStateContext();
-  // const [validatingUser, setValidatingUser] = useState(true);
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setValidatingUser(false);
-  //   }, 5000);
-
-  //   axiosClient
-  //     .get('/me')
-  //     .then(({ data }) => {
-  //       clearTimeout(timer);
-  //       setValidatingUser(false);
-  //       setCurrentUser(data);
-  //       if (data.role !== 'manager') {
-  //         navigate('../');
-  //       }
-  //     })
-  //     .catch(() => {
-  //       clearTimeout(timer);
-  //       setValidatingUser(false);
-  //     });
-
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, [navigate, setCurrentUser]);
-
-  // if (validatingUser) {
-  //   return <ManagerValidationSkeleton />;
-  // }
-
-
-
   return (
     <div className="relative">
       <div
@@ -68,4 +25,3 @@ export default function ManagerLayout() {
 
   );
 }
-// }

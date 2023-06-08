@@ -1,132 +1,80 @@
-import React, { useState } from 'react';
-import ProductData from '../data/ProductData';
+import React, { useEffect, useState } from 'react';
+import axiosClient from '../../../api/axios';
 import ProductCard from './ProductCard';
+import ProductDisplaySkeleton from './core/ProductDisplayTab_skeleton';
 
 export default function CategoryTab() {
-    const [selectedTab, setSelectedTab] = useState('Burgerswraps');
+    const [category, setCategory] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedTab, setSelectedTab] = useState('');
+    
+    useEffect(() => {
+        axiosClient
+            .get('category')
+            .then(response => {
+                setCategories(response.data.category);
+                setSelectedTab(response.data.category[0]?.name);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+            });
+    }, []);
+
+    const renderProducts = (tabName) => {
+        const selectedCategory = category.find(category => category.name === tabName);
+        if (selectedCategory) {
+            return selectedCategory.products.map((item, index) => {
+                const imageURL = item.preview.replace('GfcRct', '');
+                return (
+                    <ProductCard
+                        preview={imageURL}
+                        name={item.name}
+                        description={item.description}
+                        retail_price={item.retail_price}
+                        item={item}
+                        key={index}
+                    />
+                );
+            });
+        }
+        return null;
+    };
 
     const handleTabClick = (tabName) => {
         setSelectedTab(tabName);
     };
 
-    const renderProducts = (tabName) => {
-        switch (tabName) {
-            case 'Burgerswraps':
-                return ProductData.Burgerswraps.map((item, index) => (
-                    <ProductCard
-                        img={item.img}
-                        title={item.title}
-                        desc={item.desc}
-                        price={item.price}
-                        item={item}
-                        key={index}
-                    />
-                ));
-            case 'BucketsPieces':
-                return ProductData.BucketsPieces.map((item, index) => (
-                    <ProductCard
-                        img={item.img}
-                        title={item.title}
-                        desc={item.desc}
-                        price={item.price}
-                        item={item}
-                        key={index}
-                    />
-                ));
-            case 'SnacksSides':
-                return ProductData.SnacksSides.map((item, index) => (
-                    <ProductCard
-                        img={item.img}
-                        title={item.title}
-                        desc={item.desc}
-                        price={item.price}
-                        item={item}
-                        key={index}
-                    />
-                ));
-            case 'BeveragesDesserts':
-                return ProductData.BeveragesDesserts.map((item, index) => (
-                    <ProductCard
-                        img={item.img}
-                        title={item.title}
-                        desc={item.desc}
-                        price={item.price}
-                        item={item}
-                        key={index}
-                    />
-                ));
-            default:
-                return null;
-        }
-    };
+    if (loading) {
+        return <ProductDisplaySkeleton />;
+    }
 
     return (
         <div>
-            <div className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-100 ">
+            <div className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-100">
                 <ul
                     className="flex flex-wrap -mb-px text-sm font-medium text-center justify-center"
                     id="myTab"
                     data-tabs-toggle="#myTabContent"
                     role="tablist"
                 >
-                    <li className="mr-2" role="presentation">
-                        <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${selectedTab === 'Burgerswraps' ? 'border-black' : 'border-transparent'
-                                }`}
-                            id="profile-tab"
-                            data-tabs-target="#profile"
-                            type="button"
-                            role="tab"
-                            aria-controls="profile"
-                            aria-selected={selectedTab === 'Burgerswraps'}
-                            onClick={() => handleTabClick('Burgerswraps')}
-                        >
-                            Burgers & Wraps
-                        </button>
-                    </li>
-                    <li className="mr-2" role="presentation">
-                        <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${selectedTab === 'BucketsPieces' ? 'border-black' : 'border-transparent'
-                                }`}
-                            id="dashboard-tab"
-                            data-tabs-target="#dashboard"
-                            type="button"
-                            role="tab"
-                            aria-controls="dashboard"
-                            aria-selected={selectedTab === 'BucketsPieces'}
-                            onClick={() => setSelectedTab('BucketsPieces')}
-                        >
-                            Buckets & Pieces
-                        </button>
-                    </li>
-                    <li className="mr-2" role="presentation">
-                        <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${selectedTab === 'SnacksSides' ? 'border-black' : 'border-transparent'}`}
-                            id="settings-tab"
-                            data-tabs-target="#settings"
-                            type="button"
-                            role="tab"
-                            aria-controls="settings"
-                            aria-selected={selectedTab === 'SnacksSides'}
-                            onClick={() => setSelectedTab('SnacksSides')}
-                        >
-                            Snacks & Sides
-                        </button>
-                    </li>
-                    <li role="presentation">
-                        <button
-                            className={`inline-block p-4 border-b-2 rounded-t-lg ${selectedTab === 'BeveragesDesserts' ? 'border-black' : 'border-transparent'}`}
-                            id="contacts-tab"
-                            data-tabs-target="#contacts"
-                            type="button"
-                            role="tab"
-                            aria-controls="contacts"
-                            aria-selected={selectedTab === 'BeveragesDesserts'}
-                            onClick={() => setSelectedTab('BeveragesDesserts')}
-                        >
-                            Beverages & Desserts
-                        </button>
-                    </li>
+                    {category.map(category => (
+                        <li className="mr-2" role="presentation" key={category.id}>
+                            <button
+                                className={`inline-block p-4 border-b-2 rounded-t-lg ${selectedTab === category.name ? 'border-black' : 'border-transparent'
+                                    }`}
+                                id={`${category.name}-tab`}
+                                data-tabs-target={`#${category.name}`}
+                                type="button"
+                                role="tab"
+                                aria-controls={category.name}
+                                aria-selected={selectedTab === category.name}
+                                onClick={() => handleTabClick(category.name)}
+                            >
+                                {category.name}
+                            </button>
+                        </li>
+                    ))}
                 </ul>
             </div>
             <div className="mt-5">
@@ -135,5 +83,5 @@ export default function CategoryTab() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

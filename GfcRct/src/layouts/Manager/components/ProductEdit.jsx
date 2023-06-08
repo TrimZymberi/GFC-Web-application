@@ -15,6 +15,7 @@ const ProductEdit = () => {
     const [inputErrorList, setInputErrorList] = useState({});
     const [product, setProduct] = useState({
         preview: '',
+        preview_url: '',
         name: '',
         description: '',
         category_id: '',
@@ -67,34 +68,30 @@ const ProductEdit = () => {
         event.persist();
         console.log('Input name:', event.target.name);
         console.log('Input value:', event.target.value);
-      
+
         if (event.target.name === 'preview') {
-            console.log('Preview file:', event.target.files[0]);
-            setProduct({ ...product, preview: event.target.files[0] });
+            onImageChoose(event);
         } else if (event.target.name === 'category_id') {
-          console.log('Category ID:', event.target.value);
-          setProduct({ ...product, category_id: event.target.value });
+            console.log('Category ID:', event.target.value);
+            setProduct({ ...product, category_id: event.target.value });
         } else {
-          console.log('Other input value:', event.target.value);
-          setProduct({ ...product, [event.target.name]: event.target.value });
+            console.log('Other input value:', event.target.value);
+            setProduct({ ...product, [event.target.name]: event.target.value });
         }
-      };
+    };
 
     const updateProduct = (event) => {
         event.preventDefault();
         setSubmitting(true);
 
-        const formData = new FormData();
-        formData.append('preview', product.preview);
-        formData.append('name', product.name);
-        formData.append('description', product.description);
-        formData.append('category_id', product.category_id);
-        formData.append('retail_price', product.retail_price);
-        formData.append('market_price', product.market_price);
-        formData.append('user_id', product.user_id);
+        const payload = { ...product };
+        if (payload.preview) {
+            payload.preview = payload.preview_url;
+        }
+        delete payload.preview_url;
 
         axiosClient
-            .put(`/product/${id}`, formData)
+            .put(`/product/${id}`, payload)
             .then((res) => {
                 Swal.fire({
                     icon: "success",
@@ -124,6 +121,20 @@ const ProductEdit = () => {
 
     };
 
+    const onImageChoose = (event) => {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            setProduct({
+                ...product,
+                preview: file,
+                preview_url: reader.result,
+            });
+        };
+        reader.readAsDataURL(file);
+    };
+
     if (Object.keys(product).length === 0) {
         return (
             <div className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20">
@@ -148,7 +159,7 @@ const ProductEdit = () => {
                             <form className="space-y-4 md:space-y-6">
                                 <div>
                                     <label htmlFor="preview" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product preview</label>
-                                    <input type="file" name="preview" id="preview" className="bg-gray-50 border border-gray-300 text-gray-500 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="" />
+                                    <input type="file"  name="preview" id="preview" className="bg-gray-50 border border-gray-300 text-gray-500 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="" />
                                 </div>
                                 <div>
                                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product name</label>
@@ -218,7 +229,7 @@ const ProductEdit = () => {
                             <form className="space-y-4 md:space-y-6">
                                 <div>
                                     <label htmlFor="preview" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product preview</label>
-                                    <input type="file" name="preview" id="preview" className="bg-gray-50 border border-gray-300 text-gray-500 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="" />
+                                    <input type="file" onChange={onImageChoose} name="preview" id="preview" className="bg-gray-50 border border-gray-300 text-gray-500 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="" />
                                 </div>
                                 <div>
                                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product name</label>
@@ -273,6 +284,8 @@ const ProductEdit = () => {
         );
     }
 
+    const imageURL = product.preview.replace('GfcRct', '');
+
     return (
         <div><section className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20 p-20">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -288,7 +301,7 @@ const ProductEdit = () => {
                             <input type="hidden" name="user_id" value={currentUser ? currentUser.id : ''} />
                             <div>
                                 <label htmlFor="preview" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product preview</label>
-                                <input type="file" onChange={handleInput} name="preview" id="preview" className="bg-gray-50 border border-gray-300 text-gray-500 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="" />
+                                <input type="file" onChange={onImageChoose} name="preview" id="preview" className="bg-gray-50 border border-gray-300 text-gray-500 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-4.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500" required="" />
                             </div>
                             <div>
                                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">

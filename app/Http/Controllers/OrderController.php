@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -32,6 +33,7 @@ class OrderController extends Controller
             'last_page' => $orders->lastPage(),
         ]);
     }
+
 
     public function getOrderItems($orderId)
     {
@@ -77,11 +79,20 @@ class OrderController extends Controller
             return response()->json(['error' => 'Order not found'], 404);
         }
 
+        $driverName = $request->input('driver_id');
+        $driver = User::where('name', $driverName)->first();
+
+        if (!$driver) {
+            return response()->json(['error' => 'Driver not found'], 404);
+        }
+
         $order->status = $request->input('status');
         $order->employee_id = $request->input('employee_id');
-        $order->driver_id = $request->input('driver_id');
+        $order->driver_id = $driver->id; // Assign the driver's id to the order's driver_id field
+
         $order->save();
         $orderItems = $request->input('order_items');
+
         if (!empty($orderItems)) {
             foreach ($orderItems as $item) {
                 $orderItem = OrderItem::find($item['id']);
@@ -95,21 +106,20 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order updated successfully']);
     }
 
+
+
     public function ordertrack($id)
-{
-    $order = Order::with('user', 'orderItems.product', 'orderItems')->find($id);
-
-    if (!$order) {
+    {
+        $order = Order::with('user', 'orderItems.product', 'orderItems')->find($id);
+        if (!$order) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No order found'
+            ], 404);
+        }
         return response()->json([
-            'status' => 'error',
-            'message' => 'No order found'
-        ], 404);
+            'status' => 'success',
+            'order' => $order
+        ]);
     }
-
-    return response()->json([
-        'status' => 'success',
-        'order' => $order
-    ]);
-}
-    
 }

@@ -32,32 +32,37 @@ export default function ManageOrderTable() {
 
         setCurrentPage(page);
 
-        axiosClient.get(`/orders?page=${page}&perPage=10`)
-            .then(response => {
-                setOrders(response.data.orders);
-                setLoading(false);
+        const fetchOrders = () => {
+            return axiosClient.get(`/orders?page=${page}&perPage=10`)
+                .then(response => {
+                    setOrders(response.data.orders);
+                    setLoading(false);
 
-                const totalOrders = response.data.total;
-                const totalPages = Math.ceil(totalOrders / ordersPerPage);
-                setTotalPages(totalPages);
-            })
-            .catch(error => {
-                console.error('Failed to fetch orders', error);
+                    const totalOrders = response.data.total;
+                    const totalPages = Math.ceil(totalOrders / ordersPerPage);
+                    setTotalPages(totalPages);
+                })
+                .catch(error => {
+                    console.error('Failed to fetch orders', error);
+                });
+        };
+
+        const fetchDrivers = () => {
+            return axiosClient.get('driverls').then((res) => {
+                if (Array.isArray(res.data.drivers)) {
+                    setDrivers(res.data.drivers);
+                } else {
+                    console.error('Invalid response format');
+                }
+            }).catch((error) => {
+                console.error('Failed to fetch drivers', error);
             });
-            setReloadTable(false);
-    }, [reloadTable]);
+        };
 
-    useEffect(() => {
-        axiosClient.get('driverls').then((res) => {
-            if (Array.isArray(res.data.drivers)) {
-                setDrivers(res.data.drivers);
-            } else {
-                console.error('Invalid response format');
-            }
-        }).catch((error) => {
-            console.error('Failed to fetch drivers', error);
+        Promise.all([fetchOrders(), fetchDrivers()]).then(() => {
+            setReloadTable(false);
         });
-    }, []);
+    }, [reloadTable]);
 
     // ^ FUNCTIONS
 
@@ -94,21 +99,13 @@ export default function ManageOrderTable() {
 
     const calculateTotal = (items) => {
         let total = 0;
-        const productQuantities = {};
 
-        for (let i = 0; i < items.order_items.length; i++) {
-            const item = items.order_items[i];
-            const productId = item.product_id;
-            const quantity = item.quantity;
-            if (productQuantities.hasOwnProperty(productId)) {
-                productQuantities[productId] += quantity;
-            } else {
-                productQuantities[productId] = quantity;
-            }
-            console.log(quantity)
-
-            total += quantity * item.product.retail_price;
+        for (const item of items.order_items) {
+            const { quantity, product } = item;
+            total += quantity * product.retail_price;
         }
+
+        total = total.toFixed(2);
 
         return total;
     };
@@ -136,7 +133,6 @@ export default function ManageOrderTable() {
     const handleStatusChange = (orderId) => {
 
         const employeeId = currentUser.id;
-        console.log(currentUser.id)
         axiosClient
             .put(`/orders/${orderId}`, { status: selectedStatus, driver_id: selectedDriverId, employee_id: employeeId })
             .then((res) => {
@@ -149,6 +145,22 @@ export default function ManageOrderTable() {
             .catch((error) => {
                 console.error("Failed to update order status", error);
             });
+    };
+
+    const getDriverOptions = (driverId) => {
+        const allDrivers = drivers;
+        const assignedDriver = allDrivers.find(driver => driver.id === driverId);
+        if (assignedDriver) {
+            return (
+                <option key={assignedDriver.id} value={assignedDriver.id} selected>
+                    {assignedDriver.name}
+                </option>
+            );
+        } else {
+            return (
+                <option key="assign" value="">Assign to a driver</option>
+            );
+        }
     };
 
     const getStatusOptions = (status) => {
@@ -261,18 +273,19 @@ export default function ManageOrderTable() {
                                                     onChange={(e) => setSelectedStatus(e.target.value)}
                                                 >
                                                     <option value={order.status} disabled selected>{order.status.charAt(0).toUpperCase() + order.status.slice(1)}</option>
+                                                    {getStatusOptions(order.status)}
                                                 </select>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className='flex justify-center'>
                                                 <select
-                                                    name="status"
+                                                    name='driver'
                                                     className='rounded-xl h-8 text-xs text-gray-700 outline-none border-none bg-blue-100'
-                                                    onChange={(e) => setSelectedDriverId(e.target.value)}>
-                                                    <option value="" disabled selected>
-                                                        Assign to a driver
-                                                    </option>
+                                                    value={selectedDriverId}
+                                                    onChange={(e) => setSelectedDriverId(e.target.value)}
+                                                >
+                                                    {getDriverOptions(selectedDriverId)}
                                                     {drivers.map((driver) => (
                                                         <option key={driver.id} value={driver.id}>
                                                             {driver.name}
@@ -393,12 +406,12 @@ export default function ManageOrderTable() {
                                     <td className="px-6 py-4">
                                         <div className='flex justify-center'>
                                             <select
-                                                name="status"
+                                                name='driver'
                                                 className='rounded-xl h-8 text-xs text-gray-700 outline-none border-none bg-blue-100'
-                                                onChange={(e) => setSelectedDriverId(e.target.value)}>
-                                                <option value="" disabled selected>
-                                                    Assign to a driver
-                                                </option>
+                                                value={selectedDriverId}
+                                                onChange={(e) => setSelectedDriverId(e.target.value)}
+                                            >
+                                                {getDriverOptions(selectedDriverId)}
                                                 {drivers.map((driver) => (
                                                     <option key={driver.id} value={driver.id}>
                                                         {driver.name}
@@ -457,17 +470,17 @@ export default function ManageOrderTable() {
                             selectedOrderItems.order_items.map((item) => (
                                 <div key={item.id} className="grid grid-cols-2">
                                     <div className="grid grid-cols-1 p-4 border-y-2 border-l-2 ">
-                                            <img
-                                                src={convertImageURL(selectedOrderItems)}
-                                                alt="food icon"
-                                                className="w-24 h-24 mx-auto rounded-md shadow-md"
-                                            />
-                                            <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
-                                                {item.product.name}
-                                            </h5>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                                                {item.product.description}
-                                            </p>
+                                        <img
+                                            src={convertImageURL(selectedOrderItems)}
+                                            alt="food icon"
+                                            className="w-24 h-24 mx-auto rounded-md"
+                                        />
+                                        <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
+                                            {item.product.name}
+                                        </h5>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                            {item.product.description}
+                                        </p>
                                     </div>
                                     <div className="grid grid-cols-1 gap-6 border-y-2 border-r-2 p-4">
                                         <div className="grid grid-cols-2 items-center">
