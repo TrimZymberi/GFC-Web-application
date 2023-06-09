@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 });
@@ -38,6 +38,8 @@ Route::get('product/{id}/edit', [ProductController::class, 'edit']);
 Route::get('product/{id}', [ProductController::class, 'display']);
 Route::delete('product/{id}/delete', [ProductController::class, 'destroy']);
 Route::get('product/search', [ProductController::class, 'search']);
+Route::get('/products', [ProductController::class, 'paginateProducts'])->name('products')->middleware('web');
+Route::get('/products/count', [ProductController::class, 'count']);
 Route::get('/category/{id}/name', [ProductController::class, 'getCatName']);
 
 Route::get('category', [CategoryController::class, 'index']);
@@ -57,6 +59,10 @@ Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders')->mi
 Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
 Route::put('/orders/{orderId}', [OrderController::class, 'editOrder']);
 Route::get('ordertrack/{id}', [OrderController::class, 'ordertrack']);
+Route::get('/orders/latest', [OrderController::class, 'getLatestOrder']);
+Route::get('/orders/deliveredcount', [OrderController::class, 'count']);
+Route::get('orders/calculate-totals', [OrderController::class, 'calculateOrderTotals']);
+
 
 Route::get('user', [UserController::class, 'index']);
 Route::post('user', [UserController::class, 'create']);
@@ -64,3 +70,4 @@ Route::put('user/{id}/', [UserController::class, 'update']);
 Route::get('user/{id}/edit', [UserController::class, 'edit']);
 Route::get('user/{id}', [UserController::class, 'display']);
 Route::delete('user/{id}/delete', [UserController::class, 'destroy']);
+Route::get('/users/count', [UserController::class, 'count']);

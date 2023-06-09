@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../Universal/views/Navbar';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import Footer from '../Universal/views/Footer';
 
 export default function ManagerLayout() {
   return (
@@ -18,10 +19,8 @@ export default function ManagerLayout() {
       <div className="relative z-10">
         <Navbar />
         <Outlet />
+        <Footer />
       </div>
     </div>
-
-
-
   );
 }

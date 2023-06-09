@@ -284,8 +284,6 @@ const ProductEdit = () => {
         );
     }
 
-    const imageURL = product.preview.replace('GfcRct', '');
-
     return (
         <div><title>GFC | Product Edit</title>
         <section className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-20 p-20">

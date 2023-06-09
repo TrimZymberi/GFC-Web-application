@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -168,5 +169,33 @@ class OrderController extends Controller
         }
 
         return response()->json(['order' => $query]);
+    }
+
+    public function count()
+    {
+        $count = Order::where('status', 'delivered')->count();
+
+        return response()->json(['count' => $count]);
+    }
+
+    public function calculateOrderTotals()
+    {
+        $orders = Order::with('orderItems')->get();
+
+        foreach ($orders as $order) {
+            $total = 0;
+
+            foreach ($order->orderItems as $item) {
+                $total += $item->product->retail_price * $item->quantity;
+            }
+
+            DB::table('orders')->where('id', $order->id)->update(['total' => $total]);
+
+            // Alternatively, you can update the total using the Order model
+            $order->total = $total;
+            $order->save();
+        }
+
+        return response()->json(['message' => 'Order totals calculated and stored successfully.']);
     }
 }

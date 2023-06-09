@@ -169,4 +169,10 @@ class UserController extends Controller
             'drivers' => $drivers
         ], 200);
     }
+
+    public function count()
+    {
+        $count = User::all()->count();
+        return response()->json(['count' => $count]);
+    }
 }
