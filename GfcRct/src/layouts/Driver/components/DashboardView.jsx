@@ -1,27 +1,24 @@
 import React from 'react';
-import {FaSearch,FaRegBell,FaEnvelope} from 'react-icons/fa'
 import { useStateContext } from '../../../contexts/ContextProvider';
+import {MdChevronRight} from 'react-icons/md'
+import { Link } from "react-router-dom";
 
 export default function DashboardView() {
     const{currentUser, }=useStateContext();
   return (
     <div className='flex items-center justify-between bg-[#F9F5F6]  h-[70px] shadow-lg px-[25px]'>
-        <div className='flex items-center rounded-[5px]'>
-            <input type="text" className='bg-[#F8F9FC] h-[40px] border-none outline-none pl-[13px] w-[350px] rounded-[5px] placeholder:text-[14px] leading-[20px] font-normal' placeholder='Search for ...' />
-            <div className='bg-[#CD1818] h-[40px] px-[14px] flex items-center justify-center cursor-pointer rounded-tr-[5px] rounded-br-[5px]'>
-                <FaSearch color="white"/>
+        
+            <div className='flex items-center gap-[15px] relative'>
+                <h2>Driver Order</h2>
+                <p>{currentUser.name}</p>
+                <div className='ml-[1120px]'>
+                <button className="rounded-xl bg-gradient-to-br from-[#FF416C] to-[#FF4B2B] px-3 py-1 text-base font-medium text-white transition duration-200 hover:shadow-lg hover:shadow-[#FF416C]/50">
+                <Link to='doneoreder'> Done Orders<MdChevronRight className="text-lg" /></Link>
+                </button>
+                
+                </div>
             </div>
         </div>
 
-        <div className='flex items-center gap-[15px] relative'>
-            <div className='flex items-center gap-[25px] border-r-[3px] pr-[25px]'>
-                <FaRegBell/>
-                <FaEnvelope/>
-            </div>
-            <div className='flex items-center gap-[15px] relative'>
-                <p>{currentUser.name}</p>
-            </div>
-        </div>
-    </div>
   );
 }
