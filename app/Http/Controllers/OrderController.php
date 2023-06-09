@@ -60,6 +60,29 @@ class OrderController extends Controller
         ]);
     }
 
+    public function driverOrders(Request $request)
+    {
+        $perPage = $request->input('perPage', 10);
+        $driverId = $request->input('driver_id');
+
+        $query = Order::with('user', 'orderItems.product', 'orderItems')
+            ->where('driver_id', $driverId)
+            ->where('status', '!=', 'delivered')
+            ->orderBy('created_at', 'desc');
+
+        $orders = $query->paginate($perPage);
+
+        $currentPage = $request->input('page', 1);
+
+        return response()->json([
+            'orders' => $orders->items(),
+            'current_page' => $currentPage,
+            'total' => $orders->total(),
+            'per_page' => $orders->perPage(),
+            'last_page' => $orders->lastPage(),
+        ]);
+    }
+
     public function getOrderItems($orderId)
     {
         $order = Order::with('user', 'orderItems.product')->find($orderId);
@@ -138,6 +161,34 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order updated successfully.']);
     }
 
+    public function driverEditOrder(Request $request, $orderId)
+    {
+        $order = Order::find($orderId);
+
+        if (!$order) {
+            return response()->json(['error' => 'Unable to update order: Order not found.'], 404);
+        }
+
+        $order->status = $request->input('status');
+
+        $order->save();
+        $orderItems = $request->input('order_items');
+
+        if (!empty($orderItems)) {
+            foreach ($orderItems as $item) {
+                $orderItem = OrderItem::find($item['id']);
+                if ($orderItem) {
+                    $orderItem->quantity = $item['quantity'];
+                    $orderItem->save();
+                } else {
+                    return response()->json(['error' => 'Unable to update order: Order item not found.'], 404);
+                }
+            }
+        }
+
+        return response()->json(['message' => 'Order updated successfully.']);
+    }
+
     public function ordertrack($id)
     {
         $order = Order::with('user', 'orderItems.product', 'orderItems')->find($id);
@@ -178,24 +229,24 @@ class OrderController extends Controller
         return response()->json(['count' => $count]);
     }
 
-    public function calculateOrderTotals()
-    {
-        $orders = Order::with('orderItems')->get();
+    // public function calculateOrderTotals()
+    // {
+    //     $orders = Order::with('orderItems')->get();
 
-        foreach ($orders as $order) {
-            $total = 0;
+    //     foreach ($orders as $order) {
+    //         $total = 0;
 
-            foreach ($order->orderItems as $item) {
-                $total += $item->product->retail_price * $item->quantity;
-            }
+    //         foreach ($order->orderItems as $item) {
+    //             $total += $item->product->retail_price * $item->quantity;
+    //         }
 
-            DB::table('orders')->where('id', $order->id)->update(['total' => $total]);
+    //         DB::table('orders')->where('id', $order->id)->update(['total' => $total]);
 
-            // Alternatively, you can update the total using the Order model
-            $order->total = $total;
-            $order->save();
-        }
+    //         // Alternatively, you can update the total using the Order model
+    //         $order->total = $total;
+    //         $order->save();
+    //     }
 
-        return response()->json(['message' => 'Order totals calculated and stored successfully.']);
-    }
+    //     return response()->json(['message' => 'Order totals calculated and stored successfully.']);
+    // }
 }
