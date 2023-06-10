@@ -28,14 +28,13 @@ import UserList from "./layouts/Manager/views/UserList"
 import UserEdit from "./layouts/Manager/components/UserEdit"
 import UserCreate from "./layouts/Manager/components/UserCreate"
 import DriverLayout from "./layouts/Driver/DriverLayout"
-import DriverDashboard from "./layouts/Driver/views/DriverDashboard"
 import OrderTrack from "./layouts/Customer/components/OrderTrack";
 import DriverOrder from "./layouts/Driver/components/DriverOrder";
 import DriverManageOrder from "./layouts/Driver/views/DriverManageOrder";
 import DoneOrders from "./layouts/Driver/components/DoneOrders";
 import Calendar from "./layouts/Driver/components/Calendar";
 import Checkout from "./layouts/Customer/components/Chechout";
-
+import Dashboardd from "./layouts/Driver/views/Dashboard";
 
 
 const router = createBrowserRouter([
@@ -143,7 +142,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'dashboard',
-                element: <DriverDashboard />
+                element: <Dashboardd />
             },
             {
                 path: 'dashboard/driverorder',

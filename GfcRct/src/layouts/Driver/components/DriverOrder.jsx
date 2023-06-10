@@ -21,17 +21,15 @@ export default function DriverOrder() {
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [selectedOrderItems, setSelectedOrderItems] = useState([]);
 
-    const [selectedStatus, setSelectedStatus] = useState('');
-    const [selectedDriverId, setSelectedDriverId] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('delivered');
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const pageParam = urlParams.get('page');
         const page = parseInt(pageParam) || 1;
-
         setCurrentPage(page);
 
-        axiosClient.get(`/orders?page=${page}&perPage=10`)
+        axiosClient.get(`/driverorders?page=${page}&perPage=10&driver_id=${currentUser.id}`)
             .then(response => {
                 setOrders(response.data.orders);
                 setLoading(false);
@@ -43,15 +41,15 @@ export default function DriverOrder() {
             .catch(error => {
                 console.error('Failed to fetch orders', error);
             });
-            setReloadTable(false);
-    }, [reloadTable]);
+        setReloadTable(false);
+    }, [currentUser.id, reloadTable]);
 
-   
+
     // ^ FUNCTIONS
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
-        axiosClient.get(`/orders?page=${pageNumber}&perPage=${ordersPerPage}`)
+        axiosClient.get(`/driverorders?page=${pageNumber}&perPage=${ordersPerPage}`)
             .then(response => {
                 setOrders(response.data.current_page);
                 setLoading(false);
@@ -74,6 +72,22 @@ export default function DriverOrder() {
                 console.error('Failed to fetch order items', error);
             });
     };
+
+    const handleChanges = (orderId) => {
+        axiosClient
+            .put(`/driverorders/${orderId}`, { status: selectedStatus })
+            .then((res) => {
+                Swal.fire({
+                    icon: "success",
+                    text: res.data.message,
+                });
+                setReloadTable(true);
+            })
+            .catch((error) => {
+                console.error("Failed to update order status", error);
+            });
+    };
+
 
     const closeModal = () => {
         setLoadingModal(false);
@@ -102,69 +116,26 @@ export default function DriverOrder() {
         return total;
     };
 
-    const convertImageURL = (items) => {
-        let imageURL = null;
-        const productQuantities = {};
-
-        for (let i = 0; i < items.order_items.length; i++) {
-            const item = items.order_items[i];
-            const productId = item.product_id;
-            const imageURL_raw = item.product.preview;
-            if (productQuantities.hasOwnProperty(productId)) {
-                productQuantities[productId] = imageURL_raw;
-            } else {
-                productQuantities[productId] = imageURL_raw;
-            }
-            imageURL = imageURL_raw.replace('../GfcRct', '');
-            console.log(imageURL)
-        }
-
+    let convertImageURL = (items) => {
+        const imageURL = items.replace('../GfcRct', '');
         return imageURL;
-    };
-
-    const handleStatusChange = (orderId) => {
-
-        const employeeId = currentUser.id;
-        console.log(currentUser.id)
-        axiosClient
-            .put(`/orders/${orderId}`, { status: selectedStatus, driver_id: selectedDriverId, employee_id: employeeId })
-            .then((res) => {
-                Swal.fire({
-                    icon: "success",
-                    text: res.data.message,
-                });
-                setReloadTable(true);
-            })
-            .catch((error) => {
-                console.error("Failed to update order status", error);
-            });
-    };
-
-    const getStatusOptions = (status) => {
-        const allStatuses = ["delivering", "delivered", "canceled"];
-        const filteredStatuses = allStatuses.filter((s) => s !== status);
-        return filteredStatuses.map((s) => (
-            <option key={s} value={s} selected={s === status} disabled={s === status}>
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-            </option>
-        ));
     };
 
     const getStatusTableColor = (status) => {
         switch (status) {
-            case 'canceled':
+            case 'cancelled':
                 return (
-                    <div className='bg-red-400 h-20' >
+                    <div className='flex bg-red-400 h-20' >
                     </div>
                 );
             case 'delivering':
                 return (
-                    <div className='bg-green-200 h-20' >
+                    <div className='flex bg-green-200 h-20' >
                     </div>
                 );
             case 'delivered':
                 return (
-                    <div className='bg-green-500 h-20' >
+                    <div className='flex bg-green-500 h-20' >
                     </div>
                 );
 
@@ -178,25 +149,21 @@ export default function DriverOrder() {
     if (loadingModal) {
         return (
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <div
-                    className="bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-95"
-                >
-                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead className="text-xs border-gray-150 uppercase bg-white">
-                            <tr className='bg-white'>
-                                <th scope="col" className="p-4">
-
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
+                <div className="grid items-start justify-start">
+                    <table className="grid grid-cols-2 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead className="border-r-2 text-xs border-gray-100 uppercase bg-white">
+                            <tr className="grid grid-cols-1 justify-start bg-white">
+                                <th scope="col" className="p-4"></th>
+                                <th scope="col" className="px-6 py-10">
                                     Order
                                 </th>
-                                <th scope="col" className="px-6 py-3">
+                                <th scope="col" className="px-6 py-12">
                                     Ordered by
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Status
+                                <th scope="col" className="px-6 py-4">
+                                    Contact Number
                                 </th>
-                                <th scope="col" className="px-6 py-3">
+                                <th scope="col" className="px-6 py-10">
                                     City & Address
                                 </th>
                                 <th scope="col" className="px-6 py-3">
@@ -205,15 +172,16 @@ export default function DriverOrder() {
                             </tr>
                         </thead>
                         <tbody>
-                            {
+                            {orders && orders.length > 0 ? (
                                 orders.map((order) => (
-                                    <tr key={order.id} className="bg-white">
+                                    <tr key={order.id} className="grid grid-cols-1 bg-white">
                                         <input type="hidden" name="employee_id" value={currentUser.id} />
-                                        <td>
-                                            {getStatusTableColor(order.status)}
-                                        </td>
-                                        <td scope="row" className="flex items-center justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div class="text-center">
+                                        <td>{getStatusTableColor(order.status)}</td>
+                                        <td
+                                            scope="row"
+                                            className="flex items-center justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                        >
+                                            <div className="text-center">
                                                 <button
                                                     onClick={() => openModal(order.id)}
                                                     className="text-red-500 hover:underline px-5 py-2.5 mr-2 mb-2 focus:outline-none"
@@ -235,15 +203,9 @@ export default function DriverOrder() {
                                                 <div className="font-normal text-gray-500">{order.user.email}</div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <div className='flex justify-center'>
-                                                <select
-                                                    name="status"
-                                                    className="rounded-xl h-8 text-xs text-gray-700 border-none bg-gray-100 focus:outline-none"
-                                                    onChange={(e) => setSelectedStatus(e.target.value)}
-                                                >
-                                                    <option value={order.status} disabled selected>{order.status.charAt(0).toUpperCase() + order.status.slice(1)}</option>
-                                                </select>
+                                        <td className="px-6 py-4 text-start">
+                                            <div className="pl-3">
+                                                <div className="text-base text-gray-800 font-semibold">044138813</div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -252,15 +214,38 @@ export default function DriverOrder() {
                                                 <div className="font-normal text-gray-500">{order.user.address}</div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-center">
                                             <button
-                                                type='submit'
-                                                className="font-medium bg-gray-50 p-3 rounded-md hover:bg-gray-200 text-gray-500 dark:text-red-500"
-                                            >Finish</button>
+                                                value={'delivered'}
+                                                onClick={() => handleStatusChange(order.id)}
+                                                type="submit"
+                                                className="font-medium bg-green-100 p-3 rounded-md hover:bg-green-300 text-green-700"
+                                            >
+                                                Delivered
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
-                            }
+                            ) : (
+                                <tr>
+                                    <td colSpan={6} className="p-4">
+                                        <svg
+                                            aria-hidden="true"
+                                            className="flex-shrink-0 inline w-5 h-5 mr-3"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                fillRule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                                clipRule="evenodd"
+                                            ></path>
+                                        </svg>
+                                        Loading Orders.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -283,26 +268,21 @@ export default function DriverOrder() {
     // & MAIN
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <div
-                className="bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-95"
-            >
-                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs border-gray-150 uppercase bg-white">
-                        <tr className='bg-white'>
-                            <th scope="col" className="p-4">
-
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
+            <div className="grid items-start justify-start">
+                <table className="grid grid-cols-2 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="border-r-2 text-xs border-gray-100 uppercase bg-white">
+                        <tr className="grid grid-cols-1 justify-start bg-white">
+                            <th scope="col" className="p-4"></th>
+                            <th scope="col" className="px-6 py-10">
                                 Order
                             </th>
-                            <th scope="col" className="px-6 py-3">
+                            <th scope="col" className="px-6 py-12">
                                 Ordered by
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Status
+                            <th scope="col" className="px-6 py-4">
+                                Contact Number
                             </th>
-                            
-                            <th scope="col" className="px-6 py-3">
+                            <th scope="col" className="px-6 py-10">
                                 City & Address
                             </th>
                             <th scope="col" className="px-6 py-3">
@@ -313,13 +293,14 @@ export default function DriverOrder() {
                     <tbody>
                         {orders && orders.length > 0 ? (
                             orders.map((order) => (
-                                <tr key={order.id} className='bg-white'>
+                                <tr key={order.id} className="grid grid-cols-1 bg-white">
                                     <input type="hidden" name="employee_id" value={currentUser.id} />
-                                    <td>
-                                        {getStatusTableColor(order.status)}
-                                    </td>
-                                    <td scope="row" className="flex items-center justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <div class="text-center">
+                                    <td>{getStatusTableColor(order.status)}</td>
+                                    <td
+                                        scope="row"
+                                        className="flex items-center justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                                    >
+                                        <div className="text-center">
                                             <button
                                                 onClick={() => openModal(order.id)}
                                                 className="text-red-500 hover:underline px-5 py-2.5 mr-2 mb-2 focus:outline-none"
@@ -341,36 +322,46 @@ export default function DriverOrder() {
                                             <div className="font-normal text-gray-500">{order.user.email}</div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
-                                        <div className='flex justify-center'>
-                                            <select
-                                                name="status"
-                                                className="rounded-xl h-8 text-xs text-gray-700 border-none bg-gray-100 focus:outline-none"
-                                                onChange={(e) => setSelectedStatus(e.target.value)}
-                                            >
-                                                <option value={order.status} disabled selected>{order.status.charAt(0).toUpperCase() + order.status.slice(1)}</option>
-                                                {getStatusOptions(order.status)}
-                                            </select>
+                                    <td className="px-6 py-4 text-start">
+                                        <div className="pl-3">
+                                            <div className="text-base text-gray-800 font-semibold">044138813</div>
                                         </div>
                                     </td>
-                
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="pl-3">
                                             <div className="text-base text-gray-800 font-semibold">{order.user.city}</div>
                                             <div className="font-normal text-gray-500">{order.user.address}</div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4">
+                                    <td className="px-6 py-4 text-center">
                                         <button
-                                            onClick={() => handleStatusChange(order.id)}
-                                            type='submit'
-                                            className="font-medium bg-gray-50 p-3 rounded-md hover:bg-gray-200 text-gray-500 dark:text-red-500">Finish</button>
+                                            onClick={() => handleChanges(order.id)}
+                                            type="submit"
+                                            className="font-medium bg-green-100 p-3 rounded-md hover:bg-green-300 text-green-700"
+                                        >
+                                            Delivered
+                                        </button>
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={7} className='text-center p-4'><svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>No orders were found.</td>
+                                <td colSpan={6} className="text-center p-4">
+                                    <svg
+                                        aria-hidden="true"
+                                        className="flex-shrink-0 inline w-5 h-5 mr-3"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                            clipRule="evenodd"
+                                        ></path>
+                                    </svg>
+                                    No orders were found.
+                                </td>
                             </tr>
                         )}
                     </tbody>
@@ -404,17 +395,17 @@ export default function DriverOrder() {
                             selectedOrderItems.order_items.map((item) => (
                                 <div key={item.id} className="grid grid-cols-2">
                                     <div className="grid grid-cols-1 p-4 border-y-2 border-l-2 ">
-                                            <img
-                                                src={convertImageURL(selectedOrderItems)}
-                                                alt="food icon"
-                                                className="w-24 h-24 mx-auto rounded-md shadow-md"
-                                            />
-                                            <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
-                                                {item.product.name}
-                                            </h5>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                                                {item.product.description}
-                                            </p>
+                                        <img
+                                            src={convertImageURL(item.product.preview)}
+                                            alt="food icon"
+                                            className="w-24 h-24 mx-auto rounded-md"
+                                        />
+                                        <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
+                                            {item.product.name}
+                                        </h5>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                            {item.product.description}
+                                        </p>
                                     </div>
                                     <div className="grid grid-cols-1 gap-6 border-y-2 border-r-2 p-4">
                                         <div className="grid grid-cols-2 items-center">
