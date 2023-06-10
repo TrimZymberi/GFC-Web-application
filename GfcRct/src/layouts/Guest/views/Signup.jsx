@@ -53,7 +53,6 @@ export default function Signup() {
       })
       .then(() => {
         navigate("/");
-        showNotificationWithMessage("You registered successfully. You can now login.", "success");
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.errors) {

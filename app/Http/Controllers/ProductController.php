@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
-use Dotenv\Util\Str;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Mime\Part\File;
 
 class ProductController extends Controller
 {
@@ -108,6 +106,7 @@ class ProductController extends Controller
         }
 
         $category = Category::where('name', $data['category_id'])->first();
+
         if (!$category) {
             return response()->json([
                 'status' => 'error',
@@ -140,29 +139,6 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $product = Product::find($id);
-
-        if (!$product) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'No product found'
-            ], 404);
-        }
-
-        return response()->json([
-            'status' => 'success',
-            'product' => $product
-        ]);
-    }
-
-    /**
-     * Retrieve a specific product for display.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function display($id)
     {
         $product = Product::find($id);
 

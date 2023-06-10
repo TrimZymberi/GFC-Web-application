@@ -131,16 +131,32 @@ class OrderController extends Controller
         $order->employee_id = $request->input('employee_id');
 
         $status = $request->input('status');
-        if ($status !== 'cancelled') {
+
+        if (!$status) {
+            return response()->json(['error' => 'Unable to update order, you did not change your order status.'], 404);
+        }
+
+        if ($status === 'cancelled') {
             $driverName = $request->input('driver_id');
-            $driver = User::where('name', $driverName)->first();
-            if ($driver) {
-                $order->driver_id = $driver->id;
-            } else {
-                return response()->json(['error' => 'Unable to update order: Driver not found.'], 404);
+            if(!$driverName) {
+                $order->driver_id = null;
+            }else {
+                return response()->json(['error' => 'Unable to update order, you cannot assign a driver and cancel at the same time.'], 404);
             }
         } else {
-            $order->driver_id = null;
+            if ($status !== 'cancelled') {
+                $driverName = $request->input('driver_id');
+                $driver = User::where('name', $driverName)->first();
+                if ($driver) {
+                    if ($status === 'delivering') {
+                        $order->driver_id = $driver->id;
+                    } else {
+                        return response()->json(['error' => 'Unable to update order, delivering is required to assign a driver.'], 404);
+                    }
+                } else {
+                    return response()->json(['error' => 'Unable to update order, driver was not chosen for the delivery.'], 404);
+                }
+            }
         }
 
         $order->save();
@@ -153,13 +169,14 @@ class OrderController extends Controller
                     $orderItem->quantity = $item['quantity'];
                     $orderItem->save();
                 } else {
-                    return response()->json(['error' => 'Unable to update order: Order item not found.'], 404);
+                    return response()->json(['error' => 'Unable to update order, order item not found.'], 404);
                 }
             }
         }
 
-        return response()->json(['message' => 'Order updated successfully.']);
+        return response()->json(['message' => 'Order was updated successfully.']);
     }
+
 
     public function driverEditOrder(Request $request, $orderId)
     {

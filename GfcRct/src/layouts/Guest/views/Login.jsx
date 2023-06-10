@@ -45,11 +45,6 @@ export default function Login() {
           )
         } else if (data.user.role === 'customer') {
           navigate('../app');
-          Swal.fire(
-            `Hello ${data.user.name}!`,
-            `Welcome back ${data.user.role}.`,
-            'info'
-          )
         }else if (data.user.role === 'driver') {
           navigate('../workdrive');
           Swal.fire(
@@ -63,9 +58,11 @@ export default function Login() {
         if (error.response && error.response.data && error.response.data.errors) {
           const errors = error.response.data.errors;
           setError({
-            email: errors && errors.email ? errors.email.join("<br>") : "",
-            password: errors && errors.password ? errors.password.join("<br>") : "",
-            other: errors && errors.error ? errors.error.join("<br>") : "",
+            name: errors.name ? errors.name.join("<br>") : "",
+            email: errors.email ? errors.email.join("<br>") : "",
+            emailex: errors.email ? errors.email[0] : "",
+            password: errors.password ? errors.password.join("<br>") : "",
+            other: errors.error ? errors.error.join("<br>") : "",
           });
         } else if (error.response && error.response.data && error.response.data.error) {
           setError({

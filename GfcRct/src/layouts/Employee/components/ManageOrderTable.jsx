@@ -15,12 +15,13 @@ export default function ManageOrderTable() {
     const [loadingModal, setLoadingModal] = useState(false);
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
-    const [currentStatus, setCurrentStatus] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
     const [reloadTable, setReloadTable] = useState(false);
-    const [error, setError] = useState({ __html: "" });
+    const [error, setError] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
+
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [selectedOrderItems, setSelectedOrderItems] = useState([]);
 
@@ -66,19 +67,6 @@ export default function ManageOrderTable() {
             setReloadTable(false);
         });
     }, [reloadTable]);
-
-
-    // const fetchOrdersByStatus = (status) => {
-    //     axiosClient.get(`/orders?page=${currentPage}&perPage=${ordersPerPage}&status=${status}`)
-    //       .then(response => {
-    //         setOrders(response.data.current_page);
-    //         setCurrentStatus(response.data.status);
-    //         setLoading(false);
-    //       })
-    //       .catch(error => {
-    //         console.error('Failed to fetch orders', error);
-    //       });
-    //   };
 
     // ^ FUNCTIONS
 
@@ -128,35 +116,48 @@ export default function ManageOrderTable() {
 
     let convertImageURL = (items) => {
         const imageURL = items.replace('../GfcRct', '');
-        return imageURL
+        return imageURL;
     };
 
     const handleChanges = (orderId) => {
         const employeeId = currentUser.id;
+
+        if (selectedStatus === 'cancelled') {
+            Swal.fire({
+                title: 'You are cancelling an order',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    proceedWithChanges(orderId, employeeId);
+                }
+            });
+        } else {
+            proceedWithChanges(orderId, employeeId);
+        }
+    };
+
+    const proceedWithChanges = (orderId, employeeId) => {
         axiosClient
-            .put(`/orders/${orderId}`, { status: selectedStatus, driver_id: selectedDriverId, employee_id: employeeId })
+            .put(`/orders/${orderId}`, {
+                status: selectedStatus,
+                driver_id: selectedDriverId,
+                employee_id: employeeId
+            })
             .then((res) => {
-                console.log(res)
                 Swal.fire({
-                    icon: "success",
-                    text: res.data.message,
+                    icon: 'success',
+                    text: res.data.message
                 });
                 setReloadTable(true);
             })
             .catch((error) => {
-                console.log(error);
-                if (error.response && error.response.data && error.response.data.errors) {
-                    const errors = error.response.data.errors;
-                    setError({
-                        other: errors.error ? errors.error.join("<br>") : "",
-                    });
-                } else if (error.response && error.response.data && error.response.data.error) {
-                    setError({
-                        other: error.response.data.error,
-                    });
-                } else {
-                    setError({ other: "An error occurred. Please try again later." });
-                }
+                setShowAlert(true);
+                setError(error.response.data);
             });
     };
 
@@ -180,7 +181,7 @@ export default function ManageOrderTable() {
         const allStatuses = ["pending", "delivering", "cancelled"];
         const filteredStatuses = allStatuses.filter((s) => s !== status);
         return filteredStatuses.map((s) => (
-            <option key={s} value={s} selected={s === status} disabled={s === status}>
+            <option key={s} value={s} defaultValue={s === status} disabled={s === status}>
                 {s.charAt(0).toUpperCase() + s.slice(1)}
             </option>
         ));
@@ -214,7 +215,6 @@ export default function ManageOrderTable() {
         return (
             <div>
                 <MOTableFilter
-                // currentStatus={currentStatus}
                 />
                 <MOTLoadingModal_skeleton
                     orders={orders}
@@ -245,10 +245,29 @@ export default function ManageOrderTable() {
     // & MAIN
     return (
         <div className='parent'>
-            <MOTableFilter
-            // currentStatus={currentStatus}
-            // fetchOrdersByStatus={fetchOrdersByStatus}
-            />
+            {showAlert && (
+                <div id="alert-border-2" className="flex fixed z-40 justify-top transition-transform bottom-100 top-1 left-100 right-1 shadow-md w-max p-4 mb-4 text-red-800 border-b-4 border-red-400 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800" role="alert">
+                    <svg className="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path>
+                    </svg>
+                    <div className="ml-3 text-sm font-medium">
+                        {error.error}
+                    </div>
+                    <button
+                        type="button"
+                        className="ml-1 -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-border-2"
+                        aria-label="Close"
+                        onClick={() => setShowAlert(false)}
+                    >
+                        <span className="sr-only">Dismiss</span>
+                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            )}
+            <MOTableFilter />
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
 
                 <div
@@ -476,6 +495,7 @@ export default function ManageOrderTable() {
                         </div>
                     </div>
                 )}
+
             </div >
             <Pagination
                 currentPage={currentPage}

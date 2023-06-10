@@ -29,7 +29,7 @@ import UserEdit from "./layouts/Manager/components/UserEdit"
 import UserCreate from "./layouts/Manager/components/UserCreate"
 import DriverLayout from "./layouts/Driver/DriverLayout"
 import OrderTrack from "./layouts/Customer/components/OrderTrack";
-import Checkout from "./layouts/Customer/components/Chechout";
+import Checkout from "./layouts/Customer/components/Checkout";
 import DriverDashboard from "./layouts/Driver/views/Dashboard";
 
 
@@ -51,6 +51,10 @@ const router = createBrowserRouter([
                 element: <AboutUs />
             },
             {
+                path: 'ourlocations',
+                element: <OurLocations />
+            },
+            {
                 path: 'login',
                 element: <Login />
             },
@@ -58,10 +62,6 @@ const router = createBrowserRouter([
                 path: 'signup',
                 element: <Signup />
             },
-            {
-                path: 'ourlocations',
-                element: <OurLocations />
-            }
         ]
     },
     {
@@ -83,10 +83,6 @@ const router = createBrowserRouter([
             {
                 path: 'order',
                 element: <Order />
-            },
-            {
-                path: 'orderinvoice',
-                element: <OrderInvoice />
             },
             {
                 path: 'orderhistory/:page',

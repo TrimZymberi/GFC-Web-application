@@ -24,7 +24,7 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'preview' => 'required', // optional image file
+            'preview' => 'required',
             'name' => 'required|string|max:255',
             'category_id' => 'required',
             'description' => 'required|string',
@@ -43,14 +43,10 @@ class ProductRequest extends FormRequest
     {
         return [
             'preview' => 'nullable|string',
-            // 'preview.image' => 'Product image must be an image file.',
-            // 'preview.mimes' => 'Product image must be a file of type: jpeg, png, jpg, gif.',
-            // 'preview.max' => 'Product image may not be greater than 2mb.',
             'name.required' => 'Product name is required.',
             'name.string' => 'Product name must be a string.',
             'name.max' => 'Product name may not be greater than 255 characters.',
             'category_id.required' => 'Category ID is required.',
-            // 'category_id.exists' => 'Invalid category ID.',
             'description.required' => 'Product description is required.',
             'description.string' => 'Product description must be a string.',
             'retail_price.required' => 'Product retail price is required.',
