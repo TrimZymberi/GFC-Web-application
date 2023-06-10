@@ -153,7 +153,7 @@ export default function DriverOrder() {
                     <table className="grid grid-cols-2 w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="border-r-2 text-xs border-gray-100 uppercase bg-white">
                             <tr className="grid grid-cols-1 justify-start bg-white">
-                                <th scope="col" className="p-4"></th>
+                                <th scope="col" className="p-4">Driver: {currentUser.name}</th>
                                 <th scope="col" className="px-6 py-10">
                                     Order
                                 </th>
@@ -272,7 +272,7 @@ export default function DriverOrder() {
                 <table className="grid grid-cols-2 w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="border-r-2 text-xs border-gray-100 uppercase bg-white">
                         <tr className="grid grid-cols-1 justify-start bg-white">
-                            <th scope="col" className="p-4"></th>
+                            <th scope="col" className="ml-2 text-black">Driver: <span className='text-gray-500'>{currentUser.name}</span></th>
                             <th scope="col" className="px-6 py-10">
                                 Order
                             </th>
@@ -482,11 +482,13 @@ export default function DriverOrder() {
                     </div>
                 </div>
             )}
-            <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                paginate={paginate}
-            />
+            <div className='f'>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    paginate={paginate}
+                />
+            </div>
         </div >
     );
 }

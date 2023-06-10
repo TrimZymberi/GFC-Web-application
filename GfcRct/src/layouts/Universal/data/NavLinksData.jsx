@@ -22,7 +22,7 @@ const navLinks = {
         { to: '/logout', text: 'Log out' },
     ],
     driverLinks: [
-        { to: '/workspace', text: 'Home' },
+        { to: `dashboard/orders?page=${pageNumber}`, text: 'Dashboard' },
         { to: '/logout', text: 'Log out' },
     ],
     managerLinks: [
