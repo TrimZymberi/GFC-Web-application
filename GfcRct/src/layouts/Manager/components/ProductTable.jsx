@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import axiosClient from '../../../api/axios';
 import { Link } from 'react-router-dom';
 import ProductTable_skeleton from './core/ProductTable_skeleton';
+import MOTable_pagination from '../../Employee/components/core/MOTable_pagination';
 
 export default function ProductTable() {
     const [loading, setLoading] = useState(true);
@@ -12,48 +13,76 @@ export default function ProductTable() {
     const [category, setCategory] = useState({});
     const [loadingData, setLoadingData] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
+    const [productsPerPage] = useState(10);
+    const [reloadTable, setReloadTable] = useState(false);
+
     useEffect(() => {
-        axiosClient.get('product').then(res => {
-            if (Array.isArray(res.data.product)) {
-                setProduct(res.data.product);
-            } else {
-                setProduct([]);
-            }
-            setLoading(false);
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageParam = urlParams.get('page');
+        const page = parseInt(pageParam) || 1;
 
-            res.data.product.forEach((item) => {
-                setLoadingData(true);
-                axiosClient.get(`users/${item.user_id}/name`).then(res => {
-                    const name = res.data.name;
-                    setUsers(prevState => ({
-                        ...prevState,
-                        [item.user_id]: name
-                    }));
-                }).catch(error => {
-                    console.error(error);
-                });
-            });
+        setCurrentPage(page);
 
-            res.data.product.forEach((item) => {
-                setLoadingData(true);
-                axiosClient.get(`category/${item.category_id}/name`).then(res => {
-                    const name = res.data.name;
-                    setCategory(prevState => ({
-                        ...prevState,
-                        [item.category_id]: name
-                    }));
-                    setLoadingData(false);
-                }).catch(error => {
-                    console.error(error);
-                    setLoadingData(false);
+        axiosClient
+            .get(`/products?page=${page}&perPage=10`)
+            .then(response => {
+                setProduct(response.data.product);
+                setLoading(false);
+
+                const totalProducts = response.data.total;
+                const totalPages = Math.ceil(totalProducts / productsPerPage);
+                setTotalPages(totalPages);
+
+
+                response.data.product.forEach((item) => {
+                    setLoadingData(true);
+                    axiosClient.get(`users/${item.user_id}/name`).then(res => {
+                        const name = res.data.name;
+                        setUsers(prevState => ({
+                            ...prevState,
+                            [item.user_id]: name
+                        }));
+                    }).catch(error => {
+                        console.error(error);
+                    });
                 });
+
+                response.data.product.forEach((item) => {
+                    setLoadingData(true);
+                    axiosClient.get(`category/${item.category_id}/name`).then(res => {
+                        const name = res.data.name;
+                        setCategory(prevState => ({
+                            ...prevState,
+                            [item.category_id]: name
+                        }));
+                        setLoadingData(false);
+                    }).catch(error => {
+                        console.error(error);
+                        setLoadingData(false);
+                    });
+                });
+            }).catch(error => {
+                console.error(error);
+                setLoading(false);
+                setLoadingData(false);
             });
-        }).catch(error => {
-            console.error(error);
-            setLoading(false);
-            setLoadingData(false);
-        });
-    }, []);
+        setReloadTable(false);
+    }, [reloadTable]);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        axiosClient.get(`/products?page=${pageNumber}&perPage=${productsPerPage}`)
+            .then(response => {
+                setCategory(response.data.current_page);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Failed to fetch orders', error);
+            });
+    };
+
 
     const deleteProduct = (e, id) => {
         e.preventDefault();
@@ -105,7 +134,7 @@ export default function ProductTable() {
 
     if (loading) {
         return (
-           <ProductTable_skeleton />
+            <ProductTable_skeleton />
         )
     }
 
@@ -277,6 +306,11 @@ export default function ProductTable() {
                     {ProductDetails}
                 </tbody>
             </table >
+            <MOTable_pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                paginate={paginate}
+            />
         </div>
     );
 }
