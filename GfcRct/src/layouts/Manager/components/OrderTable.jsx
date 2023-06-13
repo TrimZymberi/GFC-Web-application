@@ -282,12 +282,12 @@ export default function OrderTable() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-base text-center bg-red-100 rounded-md border-2 border-red-200 shadow-sm text-red-400 font-semibold">
+                                            <div className="text-base text-center bg-red-100 rounded-md border-2 border-red-300 shadow-sm text-red-900 font-medium">
                                                 {order.employee_name}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-base text-center bg-blue-100 rounded-md border-2 border-blue-200 shadow-sm text-blue-400 font-semibold">{order.driver_name}</div>
+                                            <div className="text-base text-center bg-blue-100 rounded-md border-2 border-blue-300 shadow-sm text-blue-900 font-medium">{order.driver_name}</div>
                                         </td>
                                     </tr>
                                 ))

@@ -99,17 +99,26 @@ class OrderController extends Controller
         $currentPage = $request->input('page', 1);
 
         $orders->transform(function ($order) {
-            $driver = DB::table('users')->select('name')->where('id', $order->driver_id)->first();
-            $order->driver_name = $driver->name;
-
-            $employee = DB::table('users')->select('name')->where('id', $order->employee_id)->first();
-            $order->employee_name = $employee->name;
-
+            if (!$order->driver_id) {
+                $order->driver_name = 'No driver assigned';
+            } else {
+                $driver = DB::table('users')->select('name')->where('id', $order->driver_id)->first();
+                $order->driver_name = $driver ? $driver->name : 'Unknown driver';
+            }
+        
+            if (!$order->employee_id) {
+                $order->employee_name = 'No employee assigned';
+            } else {
+                $employee = DB::table('users')->select('name')->where('id', $order->employee_id)->first();
+                $order->employee_name = $employee ? $employee->name : 'Unknown employee';
+            }
+        
             unset($order->driver_id);
             unset($order->employee_id);
-
+        
             return $order;
         });
+        
 
         return response()->json([
             'orders' => $orders->items(),
