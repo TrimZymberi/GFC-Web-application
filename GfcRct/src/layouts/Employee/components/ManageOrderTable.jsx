@@ -25,6 +25,7 @@ export default function ManageOrderTable() {
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [selectedOrderItems, setSelectedOrderItems] = useState([]);
 
+    const [timeFilter, setTimeFilter] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedDriverId, setSelectedDriverId] = useState('');
     const [drivers, setDrivers] = useState([]);
@@ -37,8 +38,17 @@ export default function ManageOrderTable() {
         setCurrentPage(page);
 
         const fetchOrders = () => {
-            return axiosClient.get(`/orders?page=${page}&perPage=10`)
-                .then(response => {
+            let url = `/orders?page=${page}&perPage=10`;
+
+            if (timeFilter === 'latest') {
+                url += '&orderBy=created_at:desc';
+            } else if (timeFilter === 'oldest') {
+                url += '&orderBy=created_at:asc';
+            }
+
+            return axiosClient
+                .get(url)
+                .then((response) => {
                     setOrders(response.data.orders);
                     setLoading(false);
 
@@ -46,7 +56,7 @@ export default function ManageOrderTable() {
                     const totalPages = Math.ceil(totalOrders / ordersPerPage);
                     setTotalPages(totalPages);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error('Failed to fetch orders', error);
                 });
         };
@@ -76,6 +86,18 @@ export default function ManageOrderTable() {
             .then(response => {
                 setOrders(response.data.current_page);
                 setLoading(false);
+            })
+            .catch(error => {
+                console.error('Failed to fetch orders', error);
+            });
+    };
+
+    const filter = (timeFilter) => {
+        setTimeFilter(timeFilter)
+        axiosClient.get(`/orders?page=${currentPage}&perPage=${ordersPerPage}&orderBy=${timeFilter}`)
+            .then(response => {
+                setOrders(response.data.orders);
+                console.log(orders)
             })
             .catch(error => {
                 console.error('Failed to fetch orders', error);
@@ -267,7 +289,9 @@ export default function ManageOrderTable() {
                     </button>
                 </div>
             )}
-            <MOTableFilter />
+            <MOTableFilter
+                filter={filter}
+            />
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
 
                 <div

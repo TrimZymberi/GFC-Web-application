@@ -130,7 +130,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/workdrive',
-                element: <Navigate to="dashboard" />
+                element: <Navigate to="dashboard/orders" />
             },
             {
                 path: 'dashboard/:page',
@@ -175,7 +175,7 @@ const router = createBrowserRouter([
                 element: <ProductEdit />
             },
             {
-                path: 'orderList',
+                path: 'orderlist',
                 element: <OrderList />
             },
             {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function MOTable_filters_search({ currentStatus, setCurrentStatus }) {
+export default function MOTable_filters_search({ filter }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -8,7 +8,7 @@ export default function MOTable_filters_search({ currentStatus, setCurrentStatus
   };
 
   const handleFilterClick = (status) => {
-    setCurrentStatus(status);
+    filter(status)
     setIsDropdownOpen(false);
   };
 
@@ -48,41 +48,19 @@ export default function MOTable_filters_search({ currentStatus, setCurrentStatus
               <li>
                 <a
                   href="#"
-                  className={`block px-4 py-2 hover:bg-red-100 dark:hover:bg-gray-600 dark:hover:text-white ${currentStatus === 'cancelled' ? 'font-bold' : ''
-                    }`}
-                  onClick={() => handleFilterClick('cancelled')}
+                  className={`block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white $`}
+                  onClick={() => handleFilterClick('latest')}
                 >
-                  Cancelled orders
+                  Latest Orders
                 </a>
               </li>
               <li>
                 <a
                   href="#"
-                  className={`block px-4 py-2 hover:bg-green-100 dark:hover:bg-gray-600 dark:hover:text-white ${currentStatus === 'delivered' ? 'font-bold' : ''
-                    }`}
-                  onClick={() => handleFilterClick('delivered')}
+                  className={`block px-4 py-2 hover:bg-lime-100 dark:hover:bg-gray-600 dark:hover:text-white`}
+                  onClick={() => handleFilterClick('oldest')}
                 >
-                  Finished orders
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className={`block px-4 py-2 hover:bg-orange-100 dark:hover:bg-gray-600 dark:hover:text-white ${currentStatus === 'delivering' ? 'font-bold' : ''
-                    }`}
-                  onClick={() => handleFilterClick('delivering')}
-                >
-                  Delivering orders
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className={`block px-4 py-2 hover:bg-yellow-100 dark:hover:bg-gray-600 dark:hover:text-white ${currentStatus === 'pending' ? 'font-bold' : ''
-                    }`}
-                  onClick={() => handleFilterClick('pending')}
-                >
-                  Pending orders
+                  Oldest orders
                 </a>
               </li>
             </ul>
@@ -91,7 +69,7 @@ export default function MOTable_filters_search({ currentStatus, setCurrentStatus
       </div>
 
       {/* Search input */}
-      <label htmlFor="table-search" className="sr-only">
+      {/* <label htmlFor="table-search" className="sr-only">
         Search
       </label>
       <div className="relative">
@@ -116,7 +94,7 @@ export default function MOTable_filters_search({ currentStatus, setCurrentStatus
           className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-2xl w-60 h-8 bg-gray-50 focus:ring-red-500 focus:border-red-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
           placeholder="Search for orders"
         />
-      </div>
+      </div> */}
     </div>
   );
 }

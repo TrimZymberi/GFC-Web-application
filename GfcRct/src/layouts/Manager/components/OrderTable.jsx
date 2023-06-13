@@ -1,382 +1,426 @@
 import React, { useEffect, useState } from 'react';
-import ProductListData from '../data/ProductListData';
-import Swal from 'sweetalert2';
+import { useStateContext } from '../../../contexts/ContextProvider';
 import axiosClient from '../../../api/axios';
-import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import MOTableFilter from '../../Employee/components/core/MOTable_filters_search';
+import MOTableSkeleton from '../../Employee/components/core/MOTable_skeleton';
+import Pagination from '../../Employee/components/core/MOTable_pagination';
+import OLLoadingModal_skeleton from './core/OLLoadingModal_skeleton'
+import MOTable_filters_search from '../../Employee/components/core/MOTable_filters_search';
+import MOLoadingModal_skeleton from '../../Employee/components/core/MOLoadingModal_skeleton';
+import MOTable_pagination from '../../Employee/components/core/MOTable_pagination';
 
-export default function ProductTable() {
+export default function OrderTable() {
+    const { currentUser } = useStateContext();
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [loadingModal, setLoadingModal] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [product, setProduct] = useState([]);
-    const [user, setUsers] = useState({});
-    const [category, setCategory] = useState({});
-    const [loadingData, setLoadingData] = useState(false);
+    const [orders, setOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(10);
+    const [totalPages, setTotalPages] = useState(0);
+    const [reloadTable, setReloadTable] = useState(false);
+    const [error, setError] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
+
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [selectedOrderItems, setSelectedOrderItems] = useState([]);
+
+    const [timeFilter, setTimeFilter] = useState('');
 
     useEffect(() => {
-        axiosClient.get('product').then(res => {
-            console.log(res.data);
-            if (Array.isArray(res.data.product)) {
-                setProduct(res.data.product);
-            } else {
-                setProduct([]);
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageParam = urlParams.get('page');
+        const page = parseInt(pageParam) || 1;
+
+        setCurrentPage(page);
+
+        const fetchOrders = () => {
+            let url = `/allorders?page=${page}&perPage=10`;
+
+            if (timeFilter === 'latest') {
+                url += '&orderBy=created_at:desc';
+            } else if (timeFilter === 'oldest') {
+                url += '&orderBy=created_at:asc';
             }
-            setLoading(false);
 
-            res.data.product.forEach((item) => {
-                setLoadingData(true);
-                axiosClient.get(`users/${item.user_id}/name`).then(res => {
-                    const name = res.data.name;
-                    setUsers(prevState => ({
-                        ...prevState,
-                        [item.user_id]: name
-                    }));
-                }).catch(error => {
-                    console.error(error);
+            return axiosClient
+                .get(url)
+                .then((response) => {
+                    setOrders(response.data.orders);
+                    console.log(orders)
+                    setLoading(false);
+
+                    const totalOrders = response.data.total;
+                    const totalPages = Math.ceil(totalOrders / ordersPerPage);
+                    setTotalPages(totalPages);
+                })
+                .catch((error) => {
+                    console.error('Failed to fetch orders', error);
                 });
-            });
+        };
 
-            res.data.product.forEach((item) => {
-                setLoadingData(true);
-                axiosClient.get(`category/${item.category_id}/name`).then(res => {
-                    const name = res.data.name;
-                    setCategory(prevState => ({
-                        ...prevState,
-                        [item.category_id]: name
-                    }));
-                    setLoadingData(false);
-                }).catch(error => {
-                    console.error(error);
-                    setLoadingData(false);
-                });
-            });
-        }).catch(error => {
-            console.error(error);
-            setLoading(false);
-            setLoadingData(false);
+
+        Promise.all([fetchOrders()]).then(() => {
+            setReloadTable(false);
         });
-    }, []);
+    }, [reloadTable]);
 
-    const deleteProduct = (e, id) => {
-        e.preventDefault();
-        const thisClicked = e.currentTarget;
-        thisClicked.innerText = 'Deleting...';
+    // ^ FUNCTIONS
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axiosClient
-                    .delete(`product/${id}/delete`)
-                    .then((res) => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Deleted',
-                            text: res.data.message,
-                        }).then(() => {
-                            thisClicked.closest('tr').remove();
-                        });
-                    })
-                    .catch(function (error) {
-                        if (error.response) {
-                            if (error.response.status === 404) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: error.response.data.message,
-                                });
-                                thisClicked.innerText = 'Delete';
-                            } else if (error.response.status === 500) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: error.response.data,
-                                });
-                                thisClicked.innerText = 'Delete';
-                            }
-                        }
-                    });
-            } else {
-                thisClicked.innerText = `Delete`;
-            }
-        });
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        axiosClient.get(`/allorders?page=${pageNumber}&perPage=${ordersPerPage}`)
+            .then(response => {
+                setOrders(response.data.current_page);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Failed to fetch orders', error);
+            });
     };
 
-    if (loading) {
+    const filter = (timeFilter) => {
+        setTimeFilter(timeFilter)
+        axiosClient.get(`/allorders?page=${currentPage}&perPage=${ordersPerPage}&orderBy=${timeFilter}`)
+            .then(response => {
+                setOrders(response.data.orders);
+                console.log(orders)
+            })
+            .catch(error => {
+                console.error('Failed to fetch orders', error);
+            });
+    };
+
+    const openModal = (orderId) => {
+        setLoadingModal(true);
+        axiosClient.get(`/orders/${orderId}/items`)
+            .then(response => {
+                setSelectedOrderItems(response.data.order);
+                setSelectedOrderId(orderId);
+                setLoadingModal(false);
+                setModalVisible(true);
+            })
+            .catch(error => {
+                console.error('Failed to fetch order items', error);
+            });
+    };
+
+
+    const closeModal = () => {
+        setLoadingModal(false);
+        setModalVisible(false);
+    };
+
+    const calculateTotal = (items) => {
+        let total = 0;
+
+        for (const item of items.order_items) {
+            const { quantity, product } = item;
+            total += quantity * product.retail_price;
+        }
+
+        total = total.toFixed(2);
+
+        return total;
+    };
+
+    let convertImageURL = (items) => {
+        const imageURL = items.replace('../GfcRct', '');
+        return imageURL;
+    };
+
+    const getStatusTableColor = (status) => {
+        switch (status) {
+            case 'cancelled':
+                return (
+                    <div className='bg-red-400 h-20 text-end p-1 font-bold text-red-900' >
+                        Cancelled
+                    </div>
+                );
+            case 'delivering':
+                return (
+                    <div className='bg-lime-200 h-20 p-1 text-end font-bold text-lime-900' >
+                        Delivering
+                    </div>
+                );
+            case 'delivered':
+                return (
+                    <div className='bg-green-200 h-20 p-1 text-end font-bold text-green-900' >
+                        Delivered
+                    </div>
+                );
+            case 'pending':
+                return (
+                    <div className='bg-yellow-200 h-20 p-1 text-end font-bold text-yellow-700' >
+                        Pending
+                    </div>
+                );
+            default:
+                return null;
+        }
+    };
+
+    // * LOADERS
+
+    if (loadingModal) {
         return (
-            <div role="status" className="bg-white backdrop-filter backdrop-blur-lg bg-opacity-95 max-w p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
-                <div className="flex items-center justify-between pt-4">
-                    <div>
-                        <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                        <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    </div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                    <div className="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-                </div>
+            <div>
+                <MOTable_filters_search
+                    filter={filter}
+                />
+                <OLLoadingModal_skeleton 
+                    orders={orders}
+                    getStatusTableColor={getStatusTableColor}
+                    openModal={openModal}
+                    calculateTotal={calculateTotal}
+                    modalVisible={modalVisible}
+                    closeModal={closeModal}
+                    selectedOrderItems={selectedOrderItems}
+                    selectedOrderId={selectedOrderId}
+                    convertImageURL={convertImageURL}
+                />
+                <MOLoadingModal_skeleton />
+                <MOTable_pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    paginate={paginate}
+                />
             </div>
         )
     }
 
-    const handleImageError = (e) => {
-        console.error('Image loading error', e);
-        // You can show a fallback image or handle the error gracefully
-    };
-
-    const createBlobURL = (file) => {
-        const blob = new Blob([file], { type: 'application/octet-stream' });
-        return URL.createObjectURL(blob);
-    };
-
-    let ProductDetails = '';
-    ProductDetails = (product.map((item, index) => {
-        const createdDate = new Date(item.created_at);
-        const imageUrl = createBlobURL(item.preview);
-        if (loadingData) {
-
-            return (
-                <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{item.id}</div>
-                    </td>
-                    
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900 text-center">{item.name}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{item.description}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">EUR {item.retail_price}€</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">EUR {item.market_price}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500">{createdDate.toDateString()}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500 underline text-center flex items-center justify-center">
-                            <svg aria-hidden="true" class="opacity-100 w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" /><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" /></svg>
-                        </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-500 underline text-center flex items-center justify-center">
-                            <svg aria-hidden="true" class="opacity-100 w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-red-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" /><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" /></svg>
-                        </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center justify-center active:scale-105">
-                            <Link to={`productedit/${item.id}`} className="flex gap-2 mr-2 bg-cyan-100 text-black px-3 py-1 rounded-lg focus:outline-none focus:shadow-outline-blue" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                </svg>
-                                <p className='text-black'>Edit</p>
-                            </Link>
-                        </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center justify-center active:scale-105">
-                            <button onClick={(e) => deleteProduct(e, item.id)} className="flex bg-red-300 gap-2 px-3 py-1 rounded-lg focus:outline-none focus:shadow-outline-red" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                                <p className='text-black'>Delete</p>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            );
-        }
-
+    if (loading) {
         return (
-            <tr key={index}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{item.id}</div>
-                </td>
-               
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{item.name}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{item.description}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">EUR {item.retail_price}€</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">EUR {item.market_price}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">{createdDate.toDateString()}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-center text-gray-500">{user[item.user_id]}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-center text-gray-500">{category[item.category_id]}</div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center justify-center active:scale-105">
-                        <Link to={`productedit/${item.id}`} className="flex gap-2 mr-2 bg-cyan-100 text-black px-3 py-1 rounded-lg focus:outline-none focus:shadow-outline-blue" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                            </svg>
-                            <p className='text-black'>Edit</p>
-                        </Link>
-                    </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center justify-center active:scale-105">
-                        <button onClick={(e) => deleteProduct(e, item.id)} className="flex bg-red-300 gap-2 px-3 py-1 rounded-lg focus:outline-none focus:shadow-outline-red" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            <p className='text-black'>Delete</p>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        );
-    }))
+            <MOTableSkeleton />
+        )
+    }
 
-
+    // & MAIN
     return (
-        <div className="overflow-x-auto w-full">
-            <table className="w-full border border-gray-300 divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                    <tr>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            ID
-                        </th>
-                       
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Order Name
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Description
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Retail Price
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Market Price
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Date Created
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Created by
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Category
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Edit Order
-                        </th>
-                        <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Delete Order
-                        </th>
-                    </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                    {ProductDetails}
-                </tbody>
-            </table >
-        </div>
+        <div className='parent'>
+            {showAlert && (
+                <div id="alert-border-2" className="flex fixed z-40 justify-top transition-transform bottom-100 top-1 left-100 right-1 shadow-md w-max p-4 mb-4 text-red-800 border-b-4 border-red-400 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800" role="alert">
+                    <svg className="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"></path>
+                    </svg>
+                    <div className="ml-3 text-sm font-medium">
+                        {error.error}
+                    </div>
+                    <button
+                        type="button"
+                        className="ml-1 -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-border-2"
+                        aria-label="Close"
+                        onClick={() => setShowAlert(false)}
+                    >
+                        <span className="sr-only">Dismiss</span>
+                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+            )}
+            <MOTableFilter
+                filter={filter}
+            />
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
+                <div
+                    className="bg-white rounded-md shadow-xl backdrop-filter backdrop-blur-lg bg-opacity-95"
+                >
+                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs border-gray-150 uppercase bg-white">
+                            <tr className='bg-white'>
+                                <th scope="col" className="p-4">
+
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-center">
+                                    Order
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Ordered by
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-center">
+                                    Managed by
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-center">
+                                    Assigned Driver
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders && orders.length > 0 ? (
+                                orders.map((order) => (
+                                    <tr key={order.id} className='bg-white'>
+                                        <input type="hidden" name="employee_id" value={currentUser.id} />
+                                        <td>
+                                            {getStatusTableColor(order.status)}
+                                        </td>
+                                        <td scope="row" className="flex items-center justify-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            <div class="text-center">
+                                                <button
+                                                    onClick={() => openModal(order.id)}
+                                                    className="text-red-500 hover:underline px-5 py-2.5 mr-2 mb-2 focus:outline-none"
+                                                    type="button"
+                                                    data-drawer-target="drawer-swipe"
+                                                    data-drawer-show="drawer-swipe"
+                                                    data-drawer-placement="bottom"
+                                                    data-drawer-edge="true"
+                                                    data-drawer-edge-offset="bottom-[60px]"
+                                                    aria-controls="drawer-swipe"
+                                                >
+                                                    View Order
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 text-start">
+                                            <div className="pl-3">
+                                                <div className="text-base text-gray-800 font-semibold">{order.user.name}</div>
+                                                <div className="font-normal text-gray-500">{order.user.email}</div>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-base text-center bg-red-100 rounded-md border-2 border-red-200 shadow-sm text-red-400 font-semibold">
+                                                {order.employee_name}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-base text-center bg-blue-100 rounded-md border-2 border-blue-200 shadow-sm text-blue-400 font-semibold">{order.driver_name}</div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={7} className='text-center p-4'><svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>No orders were found.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+                {modalVisible && (
+                    <div
+                        id="drawer-swipe"
+                        className="fixed z-40 w-full overflow-y-auto max-h-screen bg-white border-t-2 border-gray-300 dark:border-gray-700 transition-transform bottom-0 top-90 left-0 right-0"
+                        tabIndex="-1"
+                        aria-labelledby="drawer-swipe-label"
+                    >
+                        <div className="flex justify-between px-4 py-3">
+                            <h5
+                                onClick={closeModal}
+                                className="text-sm font-semibold text-gray-600 cursor-pointer dark:text-gray-400"
+                            >
+                                Close
+                            </h5>
+                            <h5 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                                Order Details
+                            </h5>
+                            <h5 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
+                                &nbsp;
+                            </h5>
+                        </div>
+                        <div
+                            className="px-4 py-6 grid gap-2 sm:grid-cols-1 md-grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                        >
+                            {
+                                selectedOrderItems.order_items.map((item) => (
+                                    <div key={item.id} className="grid grid-cols-2">
+                                        <div className="grid grid-cols-1 p-4 border-y-2 border-l-2 ">
+                                            <img
+                                                src={convertImageURL(item.product.preview)}
+                                                alt="food icon"
+                                                className="w-24 h-24 mx-auto rounded-md"
+                                            />
+                                            <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
+                                                {item.product.name}
+                                            </h5>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                                                {item.product.description}
+                                            </p>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-6 border-y-2 border-r-2 p-4">
+                                            <div className="grid grid-cols-2 items-center">
+                                                <h5 className="text-sm font-bold text-gray-800 dark:text-white">
+                                                    Quantity
+                                                </h5>
+                                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                    {item.quantity}
+                                                </p>
+                                            </div>
+                                            <div className="grid grid-cols-2 items-center">
+                                                <h5 className="text-sm font-bold text-gray-800 dark:text-white">
+                                                    Price
+                                                </h5>
+                                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                    {item.product.retail_price}EUR
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                            {
+                                orders
+                                    .filter((item) => item.id === selectedOrderId)
+                                    .map((item) => (
+                                        <div key={item.id} className="grid grid-cols-2">
+                                            <div className="grid grid-cols-1 border-y-2 gap-2 p-4 border-l-2 items-center">
+                                                <h5 className="text-xl font-bold text-gray-800 dark:text-white text-center">
+                                                    Total of order
+                                                </h5>
+                                                <h3 className="font-bold text-gray-700">Comment / Request</h3>
+                                                <h5 className="text-gray-500 bg-gray-100 border-gray-200 p-1 border-2">
+                                                    {selectedOrderItems.comment}
+                                                </h5>
+                                            </div>
+                                            <div className="grid grid-cols-1 gap-6 border-y-2 border-r-2 p-4">
+                                                <div className="grid grid-cols-2 items-center">
+                                                    <h5 className="text-sm font-bold text-gray-800 dark:text-white">
+                                                        Order ID
+                                                    </h5>
+                                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                        #{item.id}
+                                                    </p>
+                                                </div>
+                                                <div className="grid grid-cols-2 items-center">
+                                                    <h5 className="text-sm font-bold text-gray-800 dark:text-white">
+                                                        City
+                                                    </h5>
+                                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                                                        {item.user.city}
+                                                    </p>
+                                                </div>
+                                                <div className="grid grid-cols-2 items-center">
+                                                    <h5 className="text-sm font-bold text-gray-800 dark:text-white">
+                                                        Address
+                                                    </h5>
+                                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                        {item.user.address}
+                                                    </p>
+                                                </div>
+                                                <div className="grid grid-cols-2 items-center">
+                                                    <h5 className="text-sm font-bold text-gray-800 dark:text-white">
+                                                        Total
+                                                    </h5>
+                                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                        {calculateTotal(selectedOrderItems)}EUR
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                            }
+                        </div>
+                    </div>
+                )}
+
+            </div >
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                paginate={paginate}
+            />
+        </div >
     );
 }

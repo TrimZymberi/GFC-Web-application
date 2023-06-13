@@ -54,7 +54,8 @@ Route::get('/categories', [CategoryController::class, 'getCategories'])->name('c
 
 Route::get('driverls', [UserController::class, 'drivername']);
 
-Route::get('/orders', [OrderController::class, 'getOrders'])->name('orders')->middleware('web');
+Route::get('/orders', [OrderController::class, 'getOrdersEmployee'])->name('orders')->middleware('web');
+Route::get('/allorders', [OrderController::class, 'allOrders'])->name('orders')->middleware('web');
 Route::get('/driverorders', [OrderController::class, 'driverOrders'])->name('driverorders')->middleware('web');
 Route::get('/orders/{orderId}/items', [OrderController::class, 'getOrderItems']);
 Route::put('/orders/{orderId}', [OrderController::class, 'editOrder']);

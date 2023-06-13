@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function getOrders(Request $request)
+    public function getOrdersEmployee(Request $request)
     {
         $perPage = $request->input('perPage', 10);
         $userId = $request->input('user_id');
         $status = $request->input('status', 'pending');
+        $orderBy = $request->input('orderBy', 'latest');
 
         $query = Order::with('user', 'orderItems.product', 'orderItems');
 
@@ -36,20 +37,79 @@ class OrderController extends Controller
         switch ($status) {
             case 'pending':
                 $query->orderBy('status', 'desc');
-                $query->orderBy('created_at', 'desc');
                 break;
             case 'selected':
-                $query->orderBy('status', 'desc');
-                $query->orderBy('selected_at', 'desc');
-                break;
-            default:
                 $query->orderBy('status', 'asc');
                 break;
+            default:
+                $query->orderBy('status', 'desc');
+                break;
+        }
+
+        if ($orderBy === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
         }
 
         $orders = $query->paginate($perPage);
 
         $currentPage = $request->input('page', 1);
+
+        return response()->json([
+            'orders' => $orders->items(),
+            'current_page' => $currentPage,
+            'total' => $orders->total(),
+            'per_page' => $orders->perPage(),
+            'last_page' => $orders->lastPage(),
+        ]);
+    }
+
+    public function allOrders(Request $request)
+    {
+        $perPage = $request->input('perPage', 10);
+        $userId = $request->input('user_id');
+        $orderBy = $request->input('orderBy', 'latest');
+        $status = $request->input('status', 'pending');
+
+        $query = Order::with('user','orderItems.product', 'orderItems');
+
+        if ($userId) {
+            $query->whereHas('user', function ($q) use ($userId) {
+                $q->where('id', $userId);
+            });
+        }
+
+
+        if ($orderBy === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        if ($status === 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+
+        $orders = $query->paginate($perPage);
+
+        $currentPage = $request->input('page', 1);
+
+        $orders->transform(function ($order) {
+            $driver = DB::table('users')->select('name')->where('id', $order->driver_id)->first();
+            $order->driver_name = $driver->name;
+
+            $employee = DB::table('users')->select('name')->where('id', $order->employee_id)->first();
+            $order->employee_name = $employee->name;
+
+            unset($order->driver_id);
+            unset($order->employee_id);
+
+            return $order;
+        });
 
         return response()->json([
             'orders' => $orders->items(),
@@ -138,9 +198,9 @@ class OrderController extends Controller
 
         if ($status === 'cancelled') {
             $driverName = $request->input('driver_id');
-            if(!$driverName) {
+            if (!$driverName) {
                 $order->driver_id = null;
-            }else {
+            } else {
                 return response()->json(['error' => 'Unable to update order, you cannot assign a driver and cancel at the same time.'], 404);
             }
         } else {
