@@ -30,7 +30,7 @@ const navLinks = {
         { to: 'userlist', text: 'User List' },
         { to: 'productlist', text: 'Product List' },
         { to: `categorylist/category?page=${pageNumber}`, text: 'Category List' },
-        { to: 'orderList', text: 'Order List' },
+        { to: 'orderlist', text: 'Order List' },
         { to: '/logout', text: 'Log out' },
     ]
 };

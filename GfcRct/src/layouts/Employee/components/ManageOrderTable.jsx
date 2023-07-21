@@ -213,17 +213,26 @@ export default function ManageOrderTable() {
         switch (status) {
             case 'cancelled':
                 return (
-                    <div className='bg-red-400 h-20' >
+                    <div className='bg-red-400 h-20 text-end p-1 font-bold text-red-900' >
+                        Cancelled
                     </div>
                 );
             case 'delivering':
                 return (
-                    <div className='bg-green-200 h-20' >
+                    <div className='bg-lime-200 h-20 p-1 text-end font-bold text-lime-900' >
+                        Delivering
+                    </div>
+                );
+            case 'delivered':
+                return (
+                    <div className='bg-green-200 h-20 p-1 text-end font-bold text-green-900' >
+                        Delivered
                     </div>
                 );
             case 'pending':
                 return (
-                    <div className='bg-yellow-200 h-20' >
+                    <div className='bg-yellow-200 h-20 p-1 text-end font-bold text-yellow-700' >
+                        Pending
                     </div>
                 );
             default:

@@ -124,20 +124,20 @@ const router = createBrowserRouter([
             },
         ]
     },
-    {
-        path: '/workdrive',
-        element: <DriverLayout />,
-        children: [
-            {
-                path: '/workdrive',
-                element: <Navigate to="dashboard/orders" />
-            },
-            {
-                path: 'dashboard/:page',
-                element: <DriverDashboard />
-            },
-        ]
-    },
+    // {
+    //     path: '/workdrive',
+    //     element: <DriverLayout />,
+    //     children: [
+    //         {
+    //             path: '/workdrive',
+    //             element: <Navigate to="dashboard/orders" />
+    //         },
+    //         {
+    //             path: 'dashboard/:page',
+    //             element: <DriverDashboard />
+    //         },
+    //     ]
+    // },
     {
         path: '/management',
         element: <ManagerLayout />,
